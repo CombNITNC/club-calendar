@@ -4,7 +4,6 @@ export type UpdateInput = {
   askDurationToUpdate(): Promise<[Date, Date]>;
   askName(): Promise<string>;
   askDate(): Promise<Date>;
-  askDuration(): Promise<[Date, Date]>;
 };
 
 export type UpdateOutput = {
