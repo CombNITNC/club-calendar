@@ -31,12 +31,10 @@ export const CreateService = async (
   const date = await input.askDate();
   const [start, end] = await input.askDuration();
   const regulars: Meeting[] = [];
-  if (date.getTime() < start.getTime()) {
-    const day = date.getDate();
-    date.setTime(start.getTime());
-    date.setDate(day < start.getDate() ? day + 1 : day);
+  while (date.getDate() < start.getDate()) {
+    date.setDate(date.getDate() + 7);
   }
-  for (; date.getTime() < end.getTime(); date.setDate(date.getDate() + 7)) {
+  for (; date.getTime() <= end.getTime(); date.setDate(date.getDate() + 7)) {
     regulars.push(RegularMeeting.from(name, new Date(date)));
   }
   output.save(...regulars);
