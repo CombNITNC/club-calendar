@@ -1,10 +1,11 @@
 {
-  "name": "club-calendar-proto",
+  "name": "club-calendar",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "test": "jest"
   },
   "keywords": [],
   "author": "MikuroXina",
@@ -15,8 +16,10 @@
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.24",
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.17",
+    "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "typescript": "^3.7.4"
   }
