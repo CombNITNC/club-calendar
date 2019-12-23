@@ -1,5 +1,5 @@
-import {Meeting, MeetingKind} from '../meeting';
-import {OthersMeeting} from '../value_objects/other_meeting';
+import { Meeting, MeetingKind } from '../meeting';
+import { OthersMeeting } from '../value_objects/other_meeting';
 import { RegularMeeting } from '../value_objects/regular_meeting';
 
 export type CreateInput = {
@@ -12,9 +12,12 @@ export type CreateInput = {
 
 export type CreateOutput = {
   save(...meetings: Meeting[]): Promise<void>;
-}
+};
 
-export const CreateService = async (input: CreateInput, output: CreateOutput) => {
+export const CreateService = async (
+  input: CreateInput,
+  output: CreateOutput
+) => {
   const kind = await input.askKind();
   if (kind == 'Others') {
     const name = await input.askName();
@@ -31,7 +34,7 @@ export const CreateService = async (input: CreateInput, output: CreateOutput) =>
   if (date.getTime() < start.getTime()) {
     const day = date.getDate();
     date.setTime(start.getTime());
-    date.setDate((day < start.getDate()) ? day + 1 : day);      
+    date.setDate(day < start.getDate() ? day + 1 : day);
   }
   for (; date.getTime() > end.getTime(); date.setDate(date.getDate() + 7)) {
     regulars.push(RegularMeeting.from(name, new Date(date)));

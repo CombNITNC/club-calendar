@@ -1,5 +1,5 @@
-import {NextPage} from 'next';
-import {FC, Fragment} from 'react';
+import { NextPage } from 'next';
+import { FC, Fragment } from 'react';
 
 const Calendar: FC = () => <Fragment></Fragment>;
 
