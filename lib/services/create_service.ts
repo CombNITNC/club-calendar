@@ -19,7 +19,7 @@ export const CreateService = async (
   output: CreateOutput
 ) => {
   const kind = await input.askKind();
-  if (kind == 'Others') {
+  if (kind === 'Others') {
     const name = await input.askName();
     const date = await input.askDate();
     const others = OthersMeeting.from(name, date);
@@ -27,7 +27,7 @@ export const CreateService = async (
     return;
   }
 
-  const name = await input.askName();
+  const name = '定例会';
   const date = await input.askDate();
   const [start, end] = await input.askDuration();
   const regulars: Meeting[] = [];
