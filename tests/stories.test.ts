@@ -1,6 +1,6 @@
 import { CreateService } from '../lib/services/create_service';
 import { MeetingKind } from '../lib/meeting';
-import { RegularMeeting } from '../lib/value_objects/regular_meeting';
+import { RegularMeeting } from '../lib/entities/regular_meeting';
 
 const regularName = '定例会';
 test('定例会の登録1', done => {

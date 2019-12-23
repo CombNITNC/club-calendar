@@ -1,6 +1,6 @@
 import { Meeting, MeetingKind } from '../meeting';
-import { OthersMeeting } from '../value_objects/other_meeting';
-import { RegularMeeting } from '../value_objects/regular_meeting';
+import { OthersMeeting } from '../entities/other_meeting';
+import { RegularMeeting } from '../entities/regular_meeting';
 
 export type CreateInput = {
   askKind(): Promise<MeetingKind>;
