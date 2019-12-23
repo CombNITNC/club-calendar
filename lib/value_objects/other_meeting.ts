@@ -1,6 +1,7 @@
 import { Meeting, MeetingKind } from '../meeting';
 
 export class OthersMeeting {
+  _id = '';
   name = '';
   date = new Date();
   expired = false;
