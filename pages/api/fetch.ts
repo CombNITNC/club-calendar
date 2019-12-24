@@ -1,5 +1,3 @@
-import url from 'url';
-
 import { FetchService } from '../../lib/services/fetch_service';
 import { MeetingKind, testDatas } from '../../lib/meeting';
 import { ParsedUrlQuery } from 'querystring';

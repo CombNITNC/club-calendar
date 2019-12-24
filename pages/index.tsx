@@ -27,15 +27,17 @@ const Index: NextPage<{ meetings: Meeting[] }> = ({ meetings }) => (
 );
 
 Index.getInitialProps = async (): Promise<{ meetings: Meeting[] }> => {
-  const res = await fetch(
-    'http://localhost:3000/api/fetch?kind=Others&from=2020-01-01&to=2020-12-31'
+  const [regulars, others] = await Promise.all(
+    [
+      'http://localhost:3000/api/fetch?kind=Regular&from=2020-01-01&to=2020-12-31',
+      'http://localhost:3000/api/fetch?kind=Others&from=2020-01-01&to=2020-12-31',
+    ].map(url =>
+      fetch(url)
+        .then(res => res.json())
+        .then(json => json.meetings)
+    )
   );
-  if (res.status !== 200) {
-    console.error('Fail to fetch the meeting datas');
-    return { meetings: [] };
-  }
-  const { meetings } = await res.json();
-  return { meetings };
+  return { meetings: [...regulars, ...others] };
 };
 
 export default Index;
