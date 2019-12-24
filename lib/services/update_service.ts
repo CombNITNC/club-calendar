@@ -18,6 +18,7 @@ export const UpdateService = async (
   const duration = await input.askDurationToUpdate();
   const updateNeeds: Meeting[] = [];
   for (const toUpdate of await output.read(duration)) {
+    if (toUpdate.expired) continue;
     if (toUpdate.kind === 'Regular') {
       const date = await input.askDate();
       updateNeeds.push({ ...toUpdate, date });
