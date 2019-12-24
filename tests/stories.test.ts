@@ -11,9 +11,10 @@ test('定例会の登録1', done => {
       askDate: async () => new Date('2019-04-08'),
       askDuration: async () => [new Date('2019-04-04'), new Date('2019-04-31')],
       modifyByException: async meetings => meetings,
+      reportCreatedIds: async id => {},
     },
     {
-      save: async (...meetings): Promise<void> => {
+      save: async (...meetings): Promise<string[]> => {
         expect(meetings).toEqual([
           RegularMeeting.from(regularName, new Date('2019-04-08')),
           RegularMeeting.from(regularName, new Date('2019-04-15')),
@@ -21,6 +22,7 @@ test('定例会の登録1', done => {
           RegularMeeting.from(regularName, new Date('2019-04-29')),
         ]);
         done();
+        return new Array(4).map(n => n.toString());
       },
     }
   );
@@ -34,13 +36,15 @@ test('定例会の登録2', done => {
       askDate: async () => new Date('2019-09-16'),
       askDuration: async () => [new Date('2019-09-24'), new Date('2019-09-30')],
       modifyByException: async meetings => meetings,
+      reportCreatedIds: async ids => {},
     },
     {
-      save: async (...meetings): Promise<void> => {
+      save: async (...meetings): Promise<string[]> => {
         expect(meetings).toEqual([
           RegularMeeting.from(regularName, new Date('2019-09-30')),
         ]);
         done();
+        return ['0'];
       },
     }
   );
