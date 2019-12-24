@@ -1,6 +1,7 @@
 export type MeetingKind = 'Regular' | 'Others';
 
 export type Meeting = {
+  _id?: string;
   kind: MeetingKind;
   name: string;
   date: Date;
@@ -11,19 +12,19 @@ export const testDatas: Meeting[] = [
   {
     kind: 'Others',
     name: 'エイプリルフール',
-    date: new Date("2020-04-01"),
+    date: new Date('2020-04-01'),
     expired: false,
   },
   {
     kind: 'Others',
     name: 'こどもの日',
-    date: new Date("2020-05-05"),
+    date: new Date('2020-05-05'),
     expired: false,
   },
   {
     kind: 'Regular',
     name: '第一回定例会',
-    date: new Date("2020-04-06"),
+    date: new Date('2020-04-06'),
     expired: false,
   },
 ];
