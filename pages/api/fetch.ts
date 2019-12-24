@@ -36,12 +36,12 @@ const dateFromString = (str: DateString) => new Date(str);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET' || req.url == null) {
-    res.status(400).end('Request Wrong');
+    res.status(400).end('Bad Request');
     return;
   }
   const { query } = req;
   if (!validateQuery(query)) {
-    res.status(400).end('Parameter Wrong');
+    res.status(400).end('Bad Request');
     return;
   }
 
