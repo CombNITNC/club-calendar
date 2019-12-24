@@ -11,13 +11,19 @@ export const testDatas: Meeting[] = [
   {
     kind: 'Others',
     name: 'エイプリルフール',
-    date: new Date(2020, 3, 1),
+    date: new Date("2020-04-01"),
     expired: false,
   },
   {
     kind: 'Others',
     name: 'こどもの日',
-    date: new Date(2020, 4, 1),
+    date: new Date("2020-05-05"),
+    expired: false,
+  },
+  {
+    kind: 'Regular',
+    name: '第一回定例会',
+    date: new Date("2020-04-06"),
     expired: false,
   },
 ];
