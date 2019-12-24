@@ -6,6 +6,10 @@ import { Meeting, testDatas } from './meeting';
 
 export class OnMemoryRepository
   implements FetchOutput, CreateOutput, UpdateOutput, AbortOutput {
+  static readonly inst = new OnMemoryRepository();
+
+  private constructor() {}
+
   meetings: Meeting[] = testDatas;
   incremental: number = 0;
 

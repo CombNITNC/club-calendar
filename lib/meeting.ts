@@ -8,6 +8,16 @@ export type Meeting = {
   expired: boolean;
 };
 
+export type DateString = string;
+
+export const dateFromString = (str: DateString) => new Date(str);
+
+export const validateKind = (str: any): str is MeetingKind =>
+  str === 'Regular' || str === 'Others';
+
+export const validateDateString = (str: any): str is DateString =>
+  typeof str === 'string' && Date.parse(str) != NaN;
+
 export const testDatas: Meeting[] = [
   {
     kind: 'Others',

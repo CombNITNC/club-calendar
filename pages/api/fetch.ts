@@ -1,21 +1,21 @@
 import { FetchService } from '../../lib/services/fetch_service';
-import { MeetingKind, testDatas } from '../../lib/meeting';
+import {
+  MeetingKind,
+  testDatas,
+  DateString,
+  validateKind,
+  validateDateString,
+  dateFromString,
+} from '../../lib/meeting';
 import { ParsedUrlQuery } from 'querystring';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-type DateString = string;
+import { OnMemoryRepository } from '../../lib/repository';
 
 export type FetchParameter = {
   kind: MeetingKind;
   from: DateString;
   to: DateString;
 };
-
-const validateKind = (str: any): str is MeetingKind =>
-  str === 'Regular' || str === 'Others';
-
-const validateDateString = (str: any): str is DateString =>
-  typeof str === 'string' && Date.parse(str) != NaN;
 
 const validateQuery = (query: ParsedUrlQuery): query is FetchParameter => {
   if (!('kind' in query) || !validateKind(query.kind)) {
@@ -29,8 +29,6 @@ const validateQuery = (query: ParsedUrlQuery): query is FetchParameter => {
   }
   return true;
 };
-
-const dateFromString = (str: DateString) => new Date(str);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET' || req.url == null) {
@@ -57,10 +55,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           );
       },
     },
-    {
-      read: async (duration: [Date, Date]) => {
-        return testDatas;
-      },
-    }
+    OnMemoryRepository.inst
   );
 };
