@@ -39,7 +39,8 @@
       "_id": "hoge",
       "kind": "Others",
       "name": "ホゲ談義",
-      "date": "2019-12-12T12:12:00"
+      "date": "2019-12-12T12:12:00",
+      "expired": false
     }
   ]
 }
@@ -80,7 +81,7 @@
 
 更新に成功すると `200 Meeting Updated` を返す。
 
-### 更新
+### 中止
 
 `POST /api/abort` に以下の JSON を付けてアクセスする。
 
@@ -94,7 +95,7 @@
 }
 ```
 
-更新に成功すると `200 Meeting Aborted` を返す。
+更新に成功するとその集会の `expired` 属性が `true` になり、`200 Meeting Aborted` を返す。
 
 ## 使用例
 
