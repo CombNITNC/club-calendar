@@ -8,10 +8,11 @@ export type CreateInput = {
   askDate(): Promise<Date>;
   askDuration(): Promise<[Date, Date]>;
   modifyByException(meetings: Meeting[]): Promise<Meeting[]>;
+  reportCreatedIds(ids: string[]): Promise<void>;
 };
 
 export type CreateOutput = {
-  save(...meetings: Meeting[]): Promise<void>;
+  save(...meetings: Meeting[]): Promise<string[]>;
 };
 
 export const CreateService = async (
@@ -37,5 +38,6 @@ export const CreateService = async (
   for (; date.getTime() <= end.getTime(); date.setDate(date.getDate() + 7)) {
     regulars.push(RegularMeeting.from(name, new Date(date)));
   }
-  output.save(...regulars);
+  const ids = await output.save(...regulars);
+  input.reportCreatedIds(ids);
 };
