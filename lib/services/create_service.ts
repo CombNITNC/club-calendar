@@ -1,13 +1,9 @@
-import { Meeting, MeetingKind } from '../meeting';
-import { OthersMeeting } from '../entities/other_meeting';
+import { Meeting } from '../meeting';
 import { RegularMeeting } from '../entities/regular_meeting';
 
 export type CreateInput = {
-  askKind(): Promise<MeetingKind>;
-  askName(): Promise<string>;
-  askDate(): Promise<Date>;
+  askMeeting(): Promise<Meeting>;
   askDuration(): Promise<[Date, Date]>;
-  modifyByException(meetings: Meeting[]): Promise<Meeting[]>;
   reportCreatedIds(ids: string[]): Promise<void>;
 };
 
@@ -19,17 +15,14 @@ export const CreateService = async (
   input: CreateInput,
   output: CreateOutput
 ) => {
-  const kind = await input.askKind();
-  if (kind === 'Others') {
-    const name = await input.askName();
-    const date = await input.askDate();
-    const others = OthersMeeting.from(name, date);
-    output.save(others);
+  const meeting = await input.askMeeting();
+  if (meeting.kind === 'Others') {
+    const ids = await output.save(meeting);
+    input.reportCreatedIds(ids);
     return;
   }
 
-  const name = await input.askName();
-  const date = await input.askDate();
+  const { name, date } = meeting;
   const [start, end] = await input.askDuration();
   const regulars: Meeting[] = [];
   while (date.getDate() < start.getDate()) {

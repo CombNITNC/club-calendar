@@ -1,7 +1,6 @@
 import { FetchService } from '../../lib/services/fetch_service';
 import {
   MeetingKind,
-  testDatas,
   DateString,
   validateKind,
   validateDateString,
