@@ -1,6 +1,7 @@
 import { CreateService } from '../lib/services/create_service';
 import { MeetingKind } from '../lib/meeting';
 import { RegularMeeting } from '../lib/entities/regular_meeting';
+import { UpdateService } from '../lib/services/update_service';
 
 const regularName = '定例会';
 test('定例会の登録1', done => {
@@ -41,6 +42,29 @@ test('定例会の登録2', done => {
         ]);
         done();
         return ['0'];
+      },
+    }
+  );
+});
+
+test('定例会の更新1', done => {
+  UpdateService(
+    { askId: async () => 'hoge', askParam: async () => ({ name: 'ホゲ談義' }) },
+    {
+      find: async id => ({
+        kind: 'Regular',
+        name: 'ホゲホゲ談義',
+        date: new Date('2019-09-30T16:15:00'),
+        expired: false,
+      }),
+      update: async meeting => {
+        expect(meeting).toEqual({
+          kind: 'Regular',
+          name: 'ホゲ談義',
+          date: new Date('2019-09-30T16:15:00'),
+          expired: false,
+        });
+        done();
       },
     }
   );
