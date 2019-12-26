@@ -1,19 +1,16 @@
 import { Meeting } from '../meeting';
 
 export type AbortInput = {
-  askDurationToAbort(): Promise<[Date, Date]>;
+  askIdToAbort(): Promise<string>;
 };
 
 export type AbortOutput = {
-  read(duration: [Date, Date]): Promise<Meeting[]>;
+  find(id: string): Promise<Meeting>;
   update(...meetings: Meeting[]): Promise<void>;
 };
 
 export const AbortService = async (input: AbortInput, output: AbortOutput) => {
-  const duration = await input.askDurationToAbort();
-  const abortNeeds: Meeting[] = [];
-  for (const toAbort of await output.read(duration)) {
-    abortNeeds.push({ ...toAbort, expired: true });
-  }
-  output.update(...abortNeeds);
+  const id = await input.askIdToAbort();
+  const found = await output.find(id);
+  output.update({ ...found, expired: true });
 };
