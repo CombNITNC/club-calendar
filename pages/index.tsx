@@ -47,17 +47,10 @@ const Index: NextPage<{ meetings: Meeting[] }> = ({ meetings }) => {
 };
 
 Index.getInitialProps = async (): Promise<{ meetings: Meeting[] }> => {
-  const [regulars, others] = await Promise.all(
-    [
-      'http://localhost:3000/api/meetings?kind=Regular&from=2020-01-01&to=2020-12-31',
-      'http://localhost:3000/api/meetings?kind=Others&from=2020-01-01&to=2020-12-31',
-    ].map(url =>
-      fetch(url)
-        .then(res => res.json())
-        .then(json => json.meetings)
-    )
-  );
-  return { meetings: [...regulars, ...others] };
+  const meetings = await fetch('http://localhost:3000/api/meetings')
+    .then(res => res.json())
+    .then(json => json.meetings);
+  return { meetings };
 };
 
 export default Index;

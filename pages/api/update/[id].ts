@@ -47,5 +47,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       askParam: async () => param,
     },
     OnMemoryRepository.inst
-  );
+  ).catch(e => res.status(400).end(e));
 };

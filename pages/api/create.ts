@@ -52,5 +52,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
     },
     OnMemoryRepository.inst
-  );
+  ).catch(e => res.status(400).end(e));
 };
