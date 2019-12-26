@@ -24,6 +24,16 @@ export class OnMemoryRepository
     return addedIds;
   };
 
+  getAll = async (): Promise<Meeting[]> => {
+    return this.meetings;
+  };
+
+  find = async (id: string): Promise<Meeting> => {
+    const found = this.meetings.find(m => m._id === id);
+    if (found == null) throw 'Illegal id';
+    return found;
+  };
+
   read = async (): Promise<Meeting[]> => {
     return this.meetings;
   };
@@ -41,8 +51,16 @@ export class RealRepository
     return [];
   }
 
+  async getAll(): Promise<Meeting[]> {
+    return [];
+  }
+
   async read(duration: [Date, Date]): Promise<Meeting[]> {
     return [];
+  }
+
+  async find(id: string): Promise<Meeting> {
+    return { kind: 'Others', name: '', date: new Date(), expired: true };
   }
 
   async update(...meetings: Meeting[]): Promise<void> {}

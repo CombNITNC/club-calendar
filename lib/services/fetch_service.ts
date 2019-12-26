@@ -5,10 +5,10 @@ export type FetchInput = {
 };
 
 export type FetchOutput = {
-  read(): Promise<Meeting[]>;
+  getAll(): Promise<Meeting[]>;
 };
 
 export const FetchService = async (input: FetchInput, output: FetchOutput) => {
-  const fetched = await output.read();
+  const fetched = await output.getAll();
   return input.show(fetched);
 };

@@ -1,6 +1,7 @@
 export type MeetingKind = 'Regular' | 'Others';
 
 export type Meeting = {
+  _id?: string;
   kind: MeetingKind;
   name: string;
   date: Date;
