@@ -1,7 +1,7 @@
 import { CreateService } from '../lib/services/create_service';
-import { MeetingKind } from '../lib/meeting';
 import { OthersMeeting } from '../lib/entities/other_meeting';
 import { UpdateService } from '../lib/services/update_service';
+import { AbortService } from '../lib/services/abort_service';
 
 test('その他の集会の登録1', done => {
   const name = 'helloworld2019';
@@ -39,6 +39,29 @@ test('その他の集会の更新1', done => {
           name: 'ホゲ談義',
           date: new Date('2019-09-30T16:15:00'),
           expired: false,
+        });
+        done();
+      },
+    }
+  );
+});
+
+test('その他の集会の中止1', done => {
+  AbortService(
+    { askIdToAbort: async () => 'hoge' },
+    {
+      find: async id => ({
+        kind: 'Others',
+        name: 'ホゲ談義',
+        date: new Date('2019-09-30T16:15:00'),
+        expired: false,
+      }),
+      update: async meeting => {
+        expect(meeting).toEqual({
+          kind: 'Others',
+          name: 'ホゲ談義',
+          date: new Date('2019-09-30T16:15:00'),
+          expired: true,
         });
         done();
       },
