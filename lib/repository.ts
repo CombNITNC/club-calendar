@@ -43,25 +43,62 @@ export class OnMemoryRepository
   };
 }
 
+import { Meetings } from '../db/meetings';
+
 export class RealRepository
   implements FetchOutput, CreateOutput, UpdateOutput, AbortOutput {
-  constructor() {}
+  static readonly inst = new RealRepository();
+
+  private constructor() {}
 
   async save(...meetings: Meeting[]): Promise<string[]> {
-    return [];
+    return new Promise((resolve, reject) => {
+      Meetings.insertMany(meetings, (e, res) => {
+        if (e != null) reject(e);
+        else resolve(res.map(m => m._id));
+      });
+    });
   }
 
   async getAll(): Promise<Meeting[]> {
-    return [];
+    return new Promise((resolve, reject) => {
+      Meetings.find({}, (e, res) => {
+        if (e != null) reject(e);
+        else resolve(res);
+      });
+    });
   }
 
   async read(duration: [Date, Date]): Promise<Meeting[]> {
-    return [];
+    const [from, to] = duration;
+    return new Promise((resolve, reject) => {
+      Meetings.find({ date: { $gte: from, $lte: to } }, (e, res) => {
+        if (e != null) reject(e);
+        else resolve(res);
+      });
+    });
   }
 
   async find(id: string): Promise<Meeting> {
-    return { kind: 'Others', name: '', date: new Date(), expired: true };
+    return new Promise((resolve, reject) => {
+      Meetings.find({ _id: id }, (e, res) => {
+        if (e != null) reject(e);
+        else if (res.length < 1) reject('the id not found');
+        else resolve(res[0]);
+      });
+    });
   }
 
-  async update(...meetings: Meeting[]): Promise<void> {}
+  async update(...meetings: Meeting[]): Promise<void> {
+    await Promise.all(
+      meetings.map(m => {
+        return new Promise((resolve, reject) => {
+          Meetings.replaceOne({ _id: m._id }, m, e => {
+            if (e != null) reject(e);
+            else resolve();
+          });
+        });
+      })
+    );
+  }
 }
