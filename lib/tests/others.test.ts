@@ -1,7 +1,7 @@
-import { CreateService } from '../lib/services/create_service';
-import { OthersMeeting } from '../lib/entities/other_meeting';
-import { UpdateService } from '../lib/services/update_service';
-import { AbortService } from '../lib/services/abort_service';
+import { CreateService } from '../services/create_service';
+import { OthersMeeting } from '../entities/other_meeting';
+import { UpdateService } from '../services/update_service';
+import { AbortService } from '../services/abort_service';
 
 test('その他の集会の登録1', done => {
   const name = 'helloworld2019';
