@@ -20,18 +20,21 @@ export const validateDateString = (str: any): str is DateString =>
 
 export const testDatas: Meeting[] = [
   {
+    _id: 'xxxx',
     kind: 'Others',
     name: 'エイプリルフール',
     date: new Date('2020-04-01'),
     expired: false,
   },
   {
+    _id: 'yyyy',
     kind: 'Others',
     name: 'こどもの日',
     date: new Date('2020-05-05'),
     expired: false,
   },
   {
+    _id: 'zzzz',
     kind: 'Regular',
     name: '第一回定例会',
     date: new Date('2020-04-06'),

@@ -1,7 +1,7 @@
 import { Meeting, MeetingKind } from '../meeting';
 
 export class RegularMeeting implements Meeting {
-  private _id: string = '';
+  public readonly _id: string = '';
   public readonly name: string = '';
   public readonly date = new Date();
   public readonly expired: boolean = false;
