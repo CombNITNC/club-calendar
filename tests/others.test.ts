@@ -6,11 +6,8 @@ test('その他の集会の登録1', done => {
   const name = 'helloworld2019';
   CreateService(
     {
-      askKind: async (): Promise<MeetingKind> => 'Others',
-      askName: async (): Promise<string> => name,
-      askDate: async () => new Date('2019-04-08'),
+      askMeeting: async () => OthersMeeting.from(name, new Date('2019-04-08')),
       askDuration: async () => [new Date('2019-04-04'), new Date('2019-04-31')],
-      modifyByException: async meetings => meetings,
       reportCreatedIds: async id => {},
     },
     {

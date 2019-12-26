@@ -24,11 +24,8 @@ export class OnMemoryRepository
     return addedIds;
   };
 
-  read = async (duration: [Date, Date]): Promise<Meeting[]> => {
-    const [from, to] = duration;
-    return this.meetings.filter(
-      m => from.getTime() <= m.date.getTime() && m.date.getTime() < to.getTime()
-    );
+  read = async (): Promise<Meeting[]> => {
+    return this.meetings;
   };
 
   update = async (...meetings: Meeting[]): Promise<void> => {

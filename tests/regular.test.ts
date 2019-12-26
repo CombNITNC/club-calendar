@@ -6,11 +6,9 @@ const regularName = '定例会';
 test('定例会の登録1', done => {
   CreateService(
     {
-      askKind: async (): Promise<MeetingKind> => 'Regular',
-      askName: async (): Promise<string> => regularName,
-      askDate: async () => new Date('2019-04-08'),
+      askMeeting: async () =>
+        RegularMeeting.from(regularName, new Date('2019-04-08')),
       askDuration: async () => [new Date('2019-04-04'), new Date('2019-04-31')],
-      modifyByException: async meetings => meetings,
       reportCreatedIds: async id => {},
     },
     {
@@ -31,11 +29,9 @@ test('定例会の登録1', done => {
 test('定例会の登録2', done => {
   CreateService(
     {
-      askKind: async (): Promise<MeetingKind> => 'Regular',
-      askName: async (): Promise<string> => regularName,
-      askDate: async () => new Date('2019-09-16'),
+      askMeeting: async () =>
+        RegularMeeting.from(regularName, new Date('2019-09-16')),
       askDuration: async () => [new Date('2019-09-24'), new Date('2019-09-30')],
-      modifyByException: async meetings => meetings,
       reportCreatedIds: async ids => {},
     },
     {
