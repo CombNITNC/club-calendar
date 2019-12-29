@@ -7,23 +7,27 @@ export type MeetingCellProps = {
 };
 
 const MeetingCell: FC<MeetingCellProps> = ({ meeting, onChange }) => {
-  const { kind, date, expired } = meeting;
-  const [name, setName] = useState<string>(meeting.name);
+  const { date, expired } = meeting;
+  const [kind, setKind] = useState(meeting.kind);
+  const [name, setName] = useState(meeting.name);
 
   return (
     <Fragment>
-      {kind === 'Regular' ? (
-        <div className="regular">定例会</div>
-      ) : (
-        <div className="others">その他の集会</div>
-      )}
+      <select
+        onChange={e =>
+          setKind(e.target.value === 'Regular' ? 'Regular' : 'Others')
+        }
+      >
+        <option value="Regular">定例会</option>
+        <option value="Others">その他の集会</option>
+      </select>
       <input
         type="textarea"
         defaultValue={name}
         onChange={e => setName(e.target.value)}
       ></input>
       <div>{date.toString()}</div>
-      <button onClick={e => onChange({ ...meeting, name })}>適用</button>
+      <button onClick={e => onChange({ ...meeting, name, kind })}>適用</button>
       <style jsx>{`
         .regular {
           color: darkred;
