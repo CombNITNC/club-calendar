@@ -17,11 +17,25 @@ const Calendar: FC<{ meetings: Meeting[] }> = ({ meetings }) => (
 
 const Index: NextPage<{ initial: Meeting[] }> = ({ initial }) => {
   const [meetings, setMeetings] = useState<Meeting[]>(initial);
+  const [updating, setUpdating] = useState<boolean>(false);
 
   return (
     <Fragment>
       <h1>部内カレンダー</h1>
       <Calendar meetings={meetings} />
+      <button
+        disabled={updating}
+        onClick={e => {
+          setUpdating(true);
+          getAll().then(meetings => {
+            console.log(meetings);
+            setMeetings(meetings);
+            setUpdating(false);
+          });
+        }}
+      >
+        更新
+      </button>
       <button
         onClick={async e => {
           const res = await fetch('http://localhost:3000/api/create', {

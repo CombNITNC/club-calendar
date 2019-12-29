@@ -43,17 +43,17 @@ export class OnMemoryRepository
   };
 }
 
-import { Meetings } from '../db/meetings';
+import { GetMeetings } from '../db/meetings';
 
 export class RealRepository
   implements FetchOutput, CreateOutput, UpdateOutput, AbortOutput {
   static readonly inst = new RealRepository();
 
-  private constructor() {}
+  private constructor(private Meetings = GetMeetings()) {}
 
   async save(...meetings: Meeting[]): Promise<string[]> {
     return new Promise((resolve, reject) => {
-      Meetings.insertMany(meetings, (e, res) => {
+      this.Meetings.insertMany(meetings, (e, res) => {
         if (e != null) reject(e);
         else resolve(res.map(m => m._id));
       });
@@ -61,18 +61,13 @@ export class RealRepository
   }
 
   async getAll(): Promise<Meeting[]> {
-    return new Promise((resolve, reject) => {
-      Meetings.find({}, (e, res) => {
-        if (e != null) reject(e);
-        else resolve(res);
-      });
-    });
+    return await this.Meetings.find({});
   }
 
   async read(duration: [Date, Date]): Promise<Meeting[]> {
     const [from, to] = duration;
     return new Promise((resolve, reject) => {
-      Meetings.find({ date: { $gte: from, $lte: to } }, (e, res) => {
+      this.Meetings.find({ date: { $gte: from, $lte: to } }, (e, res) => {
         if (e != null) reject(e);
         else resolve(res);
       });
@@ -81,7 +76,7 @@ export class RealRepository
 
   async find(id: string): Promise<Meeting> {
     return new Promise((resolve, reject) => {
-      Meetings.find({ _id: id }, (e, res) => {
+      this.Meetings.find({ _id: id }, (e, res) => {
         if (e != null) reject(e);
         else if (res.length < 1) reject('the id not found');
         else resolve(res[0]);
@@ -93,7 +88,7 @@ export class RealRepository
     await Promise.all(
       meetings.map(m => {
         return new Promise((resolve, reject) => {
-          Meetings.replaceOne({ _id: m._id }, m, e => {
+          this.Meetings.replaceOne({ _id: m._id }, m, e => {
             if (e != null) reject(e);
             else resolve();
           });

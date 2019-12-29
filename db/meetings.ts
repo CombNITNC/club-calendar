@@ -19,16 +19,23 @@ const MeetingSchema = new Schema({
 
 const uri = process.env.DB_HOST || 'mongodb://example.com';
 
+console.log('connecting to DB ' + process.env.DB_HOST);
 const con = mongoose.createConnection(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  dbName: 'meetings',
+  user: process.env.DB_USER,
+  pass: process.env.DB_PASS,
 });
-con.on('error', () => console.error('connection failure'));
+con.on('error', () => console.error('DB connection failure'));
 con.once('open', () => {
-  console.log('Connecting to DB ...');
+  console.log('connected to DB ' + process.env.DB_HOST);
 });
+let Meetings: Model<MeetingDocument> | null = null;
 
-export const Meetings: Model<MeetingDocument> = mongoose.model(
-  'Meetings',
-  MeetingSchema
-);
+export const GetMeetings = (): Model<MeetingDocument> => {
+  if (Meetings == null) {
+    Meetings = con.model('Meetings', MeetingSchema);
+  }
+  return Meetings;
+};
