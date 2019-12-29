@@ -100,14 +100,6 @@ JSON には更新したい属性だけを渡す。
 
 `PUT /api/abort/[id]` に以下の JSON を付けてアクセスする。
 
-正常な JSON を渡さないと `400 Bad Request` を返す。
-
-`_id` だけを渡す。
-
-```json
-{
-  "_id": "hoge"
-}
-```
+正常な ID でないと `400 Bad Request` を返す。
 
 更新に成功すると、`202 Accepted` を返す。
