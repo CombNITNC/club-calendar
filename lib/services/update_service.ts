@@ -18,5 +18,9 @@ export const UpdateService = async (
 ) => {
   const [id, param] = await Promise.all([input.askId(), input.askParam()]);
   const toUpdate = await output.find(id);
-  output.update({ ...toUpdate, ...param });
+  output.update({
+    ...toUpdate,
+    name: param.name || toUpdate.name,
+    date: param.date || toUpdate.date,
+  });
 };

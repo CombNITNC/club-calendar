@@ -1,40 +1,56 @@
 import { NextPage } from 'next';
-import { FC, Fragment, useState, useEffect } from 'react';
+import { FC, Fragment, useState } from 'react';
 import fetch from 'isomorphic-unfetch';
 import { Meeting } from '../lib/meeting';
+import MeetingCell from '../components/MeetingCell';
 
-const Calendar: FC<{ meetings: Meeting[] }> = ({ meetings }) => (
+const Calendar: FC<{
+  meetings: Meeting[];
+  onChange: (newMeeting: Meeting) => void;
+}> = ({ meetings, onChange }) => (
   <Fragment>
     <ul>
       {meetings.map(m => (
         <li key={m._id}>
-          {m.name} -- {m.date.toString()}
+          <MeetingCell meeting={m} onChange={onChange} />
         </li>
       ))}
     </ul>
   </Fragment>
 );
 
-const Index: NextPage<{ initial: Meeting[] }> = ({ initial }) => {
-  const [meetings, setMeetings] = useState<Meeting[]>(initial);
+const Index: NextPage = () => {
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [updating, setUpdating] = useState<boolean>(false);
 
   return (
     <Fragment>
       <h1>部内カレンダー</h1>
-      <Calendar meetings={meetings} />
+      <Calendar
+        meetings={meetings}
+        onChange={async newMeeting => {
+          const { _id, ...body } = newMeeting;
+          setUpdating(true);
+          await fetch(`http://localhost:3000/api/update/${_id}`, {
+            method: 'PUT',
+            body: JSON.stringify(body),
+          });
+          const meetings = await getAll();
+          setMeetings(meetings);
+          setUpdating(false);
+        }}
+      />
       <button
         disabled={updating}
         onClick={e => {
           setUpdating(true);
           getAll().then(meetings => {
-            console.log(meetings);
             setMeetings(meetings);
             setUpdating(false);
           });
         }}
       >
-        更新
+        取得
       </button>
       <button
         onClick={async e => {
@@ -64,12 +80,8 @@ const getAll = async (): Promise<Meeting[]> => {
   const { meetings } = await fetch(
     'http://localhost:3000/api/meetings'
   ).then(res => res.json());
+  console.log(meetings);
   return meetings;
-};
-
-Index.getInitialProps = async (): Promise<{ initial: Meeting[] }> => {
-  const meetings = await getAll();
-  return { initial: meetings };
 };
 
 export default Index;

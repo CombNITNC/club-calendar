@@ -75,25 +75,24 @@ export class RealRepository
   }
 
   async find(id: string): Promise<Meeting> {
-    return new Promise((resolve, reject) => {
-      this.Meetings.find({ _id: id }, (e, res) => {
-        if (e != null) reject(e);
-        else if (res.length < 1) reject('the id not found');
-        else resolve(res[0]);
-      });
-    });
+    const found = await this.Meetings.findOne({ _id: id });
+    if (found == null) {
+      throw 'the meeting has not found';
+    }
+    return {
+      _id: id,
+      name: found.name,
+      date: found.date,
+      kind: found.kind,
+      expired: found.expired,
+    };
   }
 
   async update(...meetings: Meeting[]): Promise<void> {
-    await Promise.all(
-      meetings.map(m => {
-        return new Promise((resolve, reject) => {
-          this.Meetings.replaceOne({ _id: m._id }, m, e => {
-            if (e != null) reject(e);
-            else resolve();
-          });
-        });
-      })
-    );
+    for (const m of meetings) {
+      console.log(m);
+      const { _id, ...others } = m;
+      await this.Meetings.replaceOne({ _id }, others);
+    }
   }
 }

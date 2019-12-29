@@ -9,13 +9,16 @@ export interface MeetingDocument extends Document {
   expired: boolean;
 }
 
-const MeetingSchema = new Schema({
-  _id: String,
-  name: String,
-  kind: { type: String, match: /Regular|Others/ },
-  date: Date,
-  expired: Boolean,
-});
+const MeetingSchema = new Schema(
+  {
+    _id: String,
+    name: String,
+    kind: { type: String, match: /Regular|Others/ },
+    date: Date,
+    expired: Boolean,
+  },
+  { versionKey: false }
+);
 
 const uri = process.env.DB_HOST || 'mongodb://example.com';
 

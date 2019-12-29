@@ -1,8 +1,11 @@
 import { FetchService } from '../../lib/services/fetch_service';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { OnMemoryRepository, RealRepository } from '../../lib/repository';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const { OnMemoryRepository, RealRepository } = await import(
+    '../../lib/repository'
+  );
+
   if (req.method !== 'GET' || req.url == null) {
     res.status(400).end('Bad Request');
     return;
@@ -10,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   FetchService(
     {
       show: async meetings => {
-        res.status(200).end(JSON.stringify({ meetings }));
+        res.status(200).json({ meetings });
       },
     },
     RealRepository.inst

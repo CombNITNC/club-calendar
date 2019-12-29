@@ -5,7 +5,6 @@ import {
   validateKind,
   MeetingKind,
 } from '../../lib/meeting';
-import { OnMemoryRepository } from '../../lib/repository';
 import { CreateService } from '../../lib/services/create_service';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -25,6 +24,10 @@ const validateParam = (body: any): body is CreateParam => {
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const { OnMemoryRepository, RealRepository } = await import(
+    '../../lib/repository'
+  );
+
   if (req.method !== 'POST') {
     res.status(400).end('Bad Request');
     return;
@@ -48,9 +51,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         return [date, date];
       },
       reportCreatedIds: async ids => {
-        res.status(200).end(JSON.stringify({ ids }));
+        res.status(200).json({ ids });
       },
     },
-    OnMemoryRepository.inst
+    RealRepository.inst
   ).catch(e => res.status(400).end(e));
 };
