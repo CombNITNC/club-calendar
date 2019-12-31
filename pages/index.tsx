@@ -15,18 +15,11 @@ const MeetingCell: FC<MeetingCellProps> = ({ disabled, meeting, onChange }) => {
 
   return (
     <Fragment>
-      <select
-        defaultValue={kind}
-        onChange={e =>
-          setM({
-            ...m,
-            kind: e.target.value === 'Regular' ? 'Regular' : 'Others',
-          })
-        }
-      >
-        <option value="Regular">定例会</option>
-        <option value="Others">その他の集会</option>
-      </select>
+      {kind === 'Regular' ? (
+        <div className="regular">定例会</div>
+      ) : (
+        <div className="others">その他の集会</div>
+      )}
       <input
         type="textarea"
         defaultValue={name}
