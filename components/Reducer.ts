@@ -43,12 +43,11 @@ export const MeetingsReducer: Reducer<State, Action> = (
   return state;
 };
 
-const getAll = async (root: string): Promise<Meeting[]> => {
-  const { meetings } = await fetch(root + 'api/meetings').then(res =>
+const refresh = async (state: State, dispatch: (action: Action) => void) => {
+  const { meetings } = await fetch(state.root + 'api/meetings').then(res =>
     res.json()
   );
-  console.log(meetings);
-  return meetings;
+  dispatch({ type: 'fetch-end', newMeetings: meetings });
 };
 
 export const MeetingsMiddleware = (
@@ -57,8 +56,7 @@ export const MeetingsMiddleware = (
 ) => async (action: Action) => {
   dispatch(action);
   if (action.type === 'refresh') {
-    const meetings = await getAll(state.root);
-    dispatch({ type: 'fetch-end', newMeetings: meetings });
+    await refresh(state, dispatch);
     return;
   }
   if (action.type === 'new') {
@@ -70,6 +68,7 @@ export const MeetingsMiddleware = (
         date: action.date,
       }),
     });
+    await refresh(state, dispatch);
     return;
   }
   if (action.type === 'update') {
@@ -81,12 +80,14 @@ export const MeetingsMiddleware = (
         date: action.date,
       }),
     });
+    await refresh(state, dispatch);
     return;
   }
   if (action.type === 'abort') {
     await fetch(state.root + `api/abort/${action.id}`, {
       method: 'PUT',
     });
+    await refresh(state, dispatch);
     return;
   }
 };
