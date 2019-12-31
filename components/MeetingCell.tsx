@@ -3,13 +3,14 @@ import { Meeting } from '../lib/meeting';
 
 export type MeetingCellProps = {
   meeting: Meeting;
-  onChange: (newMeeting: Meeting) => void;
+  onChange: (newMeeting: Meeting) => Promise<void>;
 };
 
 const MeetingCell: FC<MeetingCellProps> = ({ meeting, onChange }) => {
   const { date, expired } = meeting;
   const [kind, setKind] = useState(meeting.kind);
   const [name, setName] = useState(meeting.name);
+  const [updating, setUpdating] = useState(false);
 
   return (
     <Fragment>
@@ -27,7 +28,16 @@ const MeetingCell: FC<MeetingCellProps> = ({ meeting, onChange }) => {
         onChange={e => setName(e.target.value)}
       ></input>
       <div>{date.toString()}</div>
-      <button onClick={e => onChange({ ...meeting, name, kind })}>適用</button>
+      <button
+        disabled={updating}
+        onClick={async e => {
+          setUpdating(true);
+          await onChange({ ...meeting, name, kind });
+          setUpdating(false);
+        }}
+      >
+        適用
+      </button>
       <style jsx>{`
         .regular {
           color: darkred;

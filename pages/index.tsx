@@ -6,7 +6,7 @@ import MeetingCell from '../components/MeetingCell';
 
 const Calendar: FC<{
   meetings: Meeting[];
-  onChange: (newMeeting: Meeting) => void;
+  onChange: (newMeeting: Meeting) => Promise<void>;
 }> = ({ meetings, onChange }) => (
   <Fragment>
     <ul>
@@ -19,7 +19,7 @@ const Calendar: FC<{
   </Fragment>
 );
 
-const Index: NextPage = () => {
+const Index: NextPage<{ root: string }> = ({ root }) => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [updating, setUpdating] = useState<boolean>(false);
 
@@ -31,30 +31,29 @@ const Index: NextPage = () => {
         onChange={async newMeeting => {
           const { _id, ...body } = newMeeting;
           setUpdating(true);
-          await fetch(`http://localhost:3000/api/update/${_id}`, {
+          const res = await fetch(root + `api/update/${_id}`, {
             method: 'PUT',
             body: JSON.stringify(body),
           });
-          const meetings = await getAll();
+          const meetings = await getAll(root);
           setMeetings(meetings);
           setUpdating(false);
         }}
       />
       <button
         disabled={updating}
-        onClick={e => {
+        onClick={async e => {
           setUpdating(true);
-          getAll().then(meetings => {
-            setMeetings(meetings);
-            setUpdating(false);
-          });
+          const meetings = await getAll(root);
+          setMeetings(meetings);
+          setUpdating(false);
         }}
       >
         取得
       </button>
       <button
         onClick={async e => {
-          const res = await fetch('http://localhost:3000/api/create', {
+          const res = await fetch(root + 'api/create', {
             method: 'post',
             body: JSON.stringify({
               kind: 'Others',
@@ -62,7 +61,8 @@ const Index: NextPage = () => {
               date: '2019-12-12T12:12:00',
             }),
           });
-          getAll().then(setMeetings);
+          const meetings = await getAll(root);
+          setMeetings(meetings);
         }}
       >
         集会を作る
@@ -76,10 +76,22 @@ const Index: NextPage = () => {
   );
 };
 
-const getAll = async (): Promise<Meeting[]> => {
-  const { meetings } = await fetch(
-    'http://localhost:3000/api/meetings'
-  ).then(res => res.json());
+Index.getInitialProps = async ({ req }) => {
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+
+  const rootUrl = () => {
+    if ('browser' in process) return `${protocol}://${window.location.host}/`;
+
+    if (req != null) return `${protocol}://${req.headers.host}/`;
+    return '/';
+  };
+  return { root: rootUrl() };
+};
+
+const getAll = async (root: string): Promise<Meeting[]> => {
+  const { meetings } = await fetch(root + 'api/meetings').then(res =>
+    res.json()
+  );
   console.log(meetings);
   return meetings;
 };
