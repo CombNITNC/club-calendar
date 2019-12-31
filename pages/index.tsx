@@ -1,18 +1,63 @@
 import { NextPage } from 'next';
-import { FC, Fragment, useState } from 'react';
-import fetch from 'isomorphic-unfetch';
+import { FC, Fragment, useState, useReducer } from 'react';
 import { Meeting } from '../lib/meeting';
-import MeetingCell from '../components/MeetingCell';
+import { MeetingsReducer, MeetingsMiddleware } from '../components/Reducer';
+
+export type MeetingCellProps = {
+  meeting: Meeting;
+  onChange: (newMeeting: Meeting) => void;
+  disabled: boolean;
+};
+
+const MeetingCell: FC<MeetingCellProps> = ({ disabled, meeting, onChange }) => {
+  const { date, name, kind, expired } = meeting;
+  const [m, setM] = useState(meeting);
+
+  return (
+    <Fragment>
+      <select
+        defaultValue={kind}
+        onChange={e =>
+          setM({
+            ...m,
+            kind: e.target.value === 'Regular' ? 'Regular' : 'Others',
+          })
+        }
+      >
+        <option value="Regular">定例会</option>
+        <option value="Others">その他の集会</option>
+      </select>
+      <input
+        type="textarea"
+        defaultValue={name}
+        onChange={e => setM({ ...m, name: e.target.value })}
+      ></input>
+      <div>{date.toString()}</div>
+      <button disabled={disabled} onClick={async e => onChange(m)}>
+        適用
+      </button>
+      <style jsx>{`
+        .regular {
+          color: darkred;
+        }
+        .others {
+          color: darkgreen;
+        }
+      `}</style>
+    </Fragment>
+  );
+};
 
 const Calendar: FC<{
   meetings: Meeting[];
-  onChange: (newMeeting: Meeting) => Promise<void>;
-}> = ({ meetings, onChange }) => (
+  onChange: (newMeeting: Meeting) => void;
+  disabled: boolean;
+}> = ({ meetings, onChange, disabled }) => (
   <Fragment>
     <ul>
       {meetings.map(m => (
         <li key={m._id}>
-          <MeetingCell meeting={m} onChange={onChange} />
+          <MeetingCell disabled={disabled} meeting={m} onChange={onChange} />
         </li>
       ))}
     </ul>
@@ -20,49 +65,49 @@ const Calendar: FC<{
 );
 
 const Index: NextPage<{ root: string }> = ({ root }) => {
-  const [meetings, setMeetings] = useState<Meeting[]>([]);
-  const [updating, setUpdating] = useState<boolean>(false);
+  const [state, dispatchRoot] = useReducer(MeetingsReducer, {
+    root,
+    meetings: [],
+    requesting: false,
+  });
+  const dispatch = MeetingsMiddleware(state, dispatchRoot);
+  const { meetings, requesting } = state;
 
   return (
     <Fragment>
       <h1>部内カレンダー</h1>
       <Calendar
         meetings={meetings}
-        onChange={async newMeeting => {
-          const { _id, ...body } = newMeeting;
-          setUpdating(true);
-          const res = await fetch(root + `api/update/${_id}`, {
-            method: 'PUT',
-            body: JSON.stringify(body),
+        disabled={requesting}
+        onChange={newMeeting => {
+          const { _id, date } = newMeeting;
+          dispatch({
+            type: 'update',
+            ...newMeeting,
+            id: _id,
+            date: date.toString(),
           });
-          const meetings = await getAll(root);
-          setMeetings(meetings);
-          setUpdating(false);
         }}
       />
       <button
-        disabled={updating}
-        onClick={async e => {
-          setUpdating(true);
-          const meetings = await getAll(root);
-          setMeetings(meetings);
-          setUpdating(false);
+        disabled={requesting}
+        onClick={e => {
+          dispatch({ type: 'refresh' });
         }}
       >
         取得
       </button>
       <button
+        disabled={requesting}
         onClick={async e => {
-          const res = await fetch(root + 'api/create', {
-            method: 'post',
-            body: JSON.stringify({
-              kind: 'Others',
+          dispatch({
+            type: 'new',
+            ...{
               name: 'ホゲ談義',
-              date: '2019-12-12T12:12:00',
-            }),
+              date: new Date('2020-02-02').toString(),
+              kind: 'Others',
+            },
           });
-          const meetings = await getAll(root);
-          setMeetings(meetings);
         }}
       >
         集会を作る
@@ -86,14 +131,6 @@ Index.getInitialProps = async ({ req }) => {
     return '/';
   };
   return { root: rootUrl() };
-};
-
-const getAll = async (root: string): Promise<Meeting[]> => {
-  const { meetings } = await fetch(root + 'api/meetings').then(res =>
-    res.json()
-  );
-  console.log(meetings);
-  return meetings;
 };
 
 export default Index;
