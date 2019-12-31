@@ -60,7 +60,7 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'new') {
-    await fetch(state.root + 'api/create', {
+    const res = await fetch(state.root + 'api/create', {
       method: 'POST',
       body: JSON.stringify({
         kind: action.kind,
@@ -68,11 +68,14 @@ export const MeetingsMiddleware = (
         date: action.date,
       }),
     });
+    if (!res.ok) {
+      console.error({ action });
+    }
     await refresh(state, dispatch);
     return;
   }
   if (action.type === 'update') {
-    await fetch(state.root + `api/update/${action.id}`, {
+    const res = await fetch(state.root + `api/update/${action.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         kind: action.kind,
@@ -80,13 +83,19 @@ export const MeetingsMiddleware = (
         date: action.date,
       }),
     });
+    if (!res.ok) {
+      console.error({ action });
+    }
     await refresh(state, dispatch);
     return;
   }
   if (action.type === 'abort') {
-    await fetch(state.root + `api/abort/${action.id}`, {
+    const res = await fetch(state.root + `api/abort/${action.id}`, {
       method: 'PUT',
     });
+    if (!res.ok) {
+      console.error({ action });
+    }
     await refresh(state, dispatch);
     return;
   }
