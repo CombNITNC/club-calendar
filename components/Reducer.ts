@@ -55,14 +55,13 @@ export const MeetingsMiddleware = (
   state: State,
   dispatch: (action: Action) => void
 ) => async (action: Action) => {
+  dispatch(action);
   if (action.type === 'refresh') {
-    dispatch(action);
     const meetings = await getAll(state.root);
     dispatch({ type: 'fetch-end', newMeetings: meetings });
     return;
   }
   if (action.type === 'new') {
-    dispatch(action);
     await fetch(state.root + 'api/create', {
       method: 'POST',
       body: JSON.stringify({
@@ -74,7 +73,6 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'update') {
-    dispatch(action);
     await fetch(state.root + `api/update/${action.id}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -86,7 +84,6 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'abort') {
-    dispatch(action);
     await fetch(state.root + `api/abort/${action.id}`, {
       method: 'PUT',
     });
