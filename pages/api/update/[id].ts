@@ -1,8 +1,4 @@
-import {
-  DateString,
-  validateDateString,
-  dateFromString,
-} from '../../../lib/meeting';
+import { DateString, validateDateString } from '../../../lib/meeting';
 import { UpdateService } from '../../../lib/services/update_service';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -34,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, date: dateStr } = body;
   const param = {
     name,
-    date: (dateStr && dateFromString(dateStr)) || undefined,
+    date: dateStr?.toDate(),
   };
 
   UpdateService(

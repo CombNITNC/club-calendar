@@ -8,9 +8,17 @@ export type Meeting = {
   expired: boolean;
 };
 
-export type DateString = string;
+export class DateString {
+  private readonly str: string;
 
-export const dateFromString = (str: DateString) => new Date(str);
+  constructor(date: Date) {
+    this.str = date.toString();
+  }
+
+  toDate() {
+    return new Date(this.str);
+  }
+}
 
 export const validateKind = (str: any): str is MeetingKind =>
   str === 'Regular' || str === 'Others';

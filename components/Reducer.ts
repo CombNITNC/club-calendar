@@ -1,5 +1,5 @@
 import { Reducer } from 'react';
-import { Meeting, MeetingKind } from '../lib/meeting';
+import { Meeting, MeetingKind, DateString } from '../lib/meeting';
 
 export type State = {
   root: string;
@@ -12,7 +12,7 @@ export type Action =
       type: 'new';
       name: string;
       kind: MeetingKind;
-      date: string;
+      date: DateString;
     }
   | {
       type: 'refresh';
@@ -22,7 +22,7 @@ export type Action =
       id: string;
       name: string;
       kind: MeetingKind;
-      date: string;
+      date: DateString;
     }
   | {
       type: 'abort';

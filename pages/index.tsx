@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { FC, Fragment, useState, useReducer } from 'react';
-import { Meeting } from '../lib/meeting';
+import { Meeting, DateString } from '../lib/meeting';
 import { MeetingsReducer, MeetingsMiddleware } from '../components/Reducer';
 
 export type MeetingCellProps = {
@@ -85,7 +85,7 @@ const Index: NextPage<{ root: string }> = ({ root }) => {
             type: 'update',
             ...newMeeting,
             id: _id,
-            date: date.toString(),
+            date: new DateString(newMeeting.date),
           });
         }}
       />
@@ -104,7 +104,7 @@ const Index: NextPage<{ root: string }> = ({ root }) => {
             type: 'new',
             ...{
               name: 'ホゲ談義',
-              date: new Date('2020-02-02').toString(),
+              date: new DateString(new Date('2020-02-02')),
               kind: 'Others',
             },
           });

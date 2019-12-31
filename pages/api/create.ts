@@ -1,7 +1,6 @@
 import {
   DateString,
   validateDateString,
-  dateFromString,
   validateKind,
   MeetingKind,
 } from '../../lib/meeting';
@@ -40,12 +39,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     {
       askMeeting: async () => ({
         ...body,
-        date: dateFromString(body.date),
+        date: body.date.toDate(),
         expired: false,
         _id: '0',
       }),
       askDuration: async () => {
-        const date = dateFromString(body.date);
+        const date = body.date.toDate();
         return [date, date];
       },
       reportCreatedIds: async ids => {
