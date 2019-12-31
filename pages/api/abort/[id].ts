@@ -2,9 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { AbortService } from '../../../lib/services/abort_service';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { OnMemoryRepository, RealRepository } = await import(
-    '../../../lib/repository'
-  );
+  const { RealRepository } = await import('../../../lib/repository');
 
   if (req.method !== 'PUT') {
     res.status(400).end('Bad Request');

@@ -24,9 +24,7 @@ const validateParam = (body: any): body is CreateParam => {
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { OnMemoryRepository, RealRepository } = await import(
-    '../../lib/repository'
-  );
+  const { RealRepository } = await import('../../lib/repository');
 
   if (req.method !== 'POST') {
     res.status(400).end('Bad Request');

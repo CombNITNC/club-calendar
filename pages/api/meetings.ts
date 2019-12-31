@@ -2,9 +2,7 @@ import { FetchService } from '../../lib/services/fetch_service';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { OnMemoryRepository, RealRepository } = await import(
-    '../../lib/repository'
-  );
+  const { RealRepository } = await import('../../lib/repository');
 
   if (req.method !== 'GET' || req.url == null) {
     res.status(400).end('Bad Request');
