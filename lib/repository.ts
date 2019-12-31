@@ -90,7 +90,6 @@ export class RealRepository
 
   async update(...meetings: Meeting[]): Promise<void> {
     for (const m of meetings) {
-      console.log(m);
       const { _id, ...others } = m;
       await this.Meetings.replaceOne({ _id }, others);
     }
