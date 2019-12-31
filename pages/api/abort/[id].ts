@@ -13,9 +13,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).end('Bad Request');
     return;
   }
-  AbortService({ askIdToAbort: async () => id }, RealRepository.inst)
-    .then(() => {
-      res.status(202).end('Accepted');
-    })
-    .catch(e => res.status(400).end(e));
+
+  await AbortService(
+    { askIdToAbort: async () => id },
+    RealRepository.inst
+  ).catch(e => res.status(400).end(e));
+
+  res.status(202).end('Accepted');
 };

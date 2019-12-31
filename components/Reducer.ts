@@ -44,9 +44,7 @@ export const MeetingsReducer: Reducer<State, Action> = (
 };
 
 const refresh = async (state: State, dispatch: (action: Action) => void) => {
-  const { meetings } = await fetch(state.root + 'api/meetings').then(res =>
-    res.json()
-  );
+  const { meetings } = await (await fetch(state.root + 'api/meetings')).json();
   dispatch({ type: 'fetch-end', newMeetings: meetings });
 };
 

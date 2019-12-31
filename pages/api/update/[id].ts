@@ -33,15 +33,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     date: dateStr?.toDate(),
   };
 
-  UpdateService(
+  await UpdateService(
     {
       askId: async () => id,
       askParam: async () => param,
     },
     RealRepository.inst
-  )
-    .then(() => {
-      res.status(202).end('Accepted');
-    })
-    .catch(e => res.status(400).end(e));
+  ).catch(e => res.status(400).end(e));
+
+  res.status(202).end('Accepted');
 };
