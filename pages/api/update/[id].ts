@@ -15,8 +15,6 @@ const validateParam = (body: any): body is UpdateBody => {
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { RealRepository } = await import('../../../lib/repository');
-
   if (req.method !== 'PUT') {
     res.status(400).end('Bad Request');
     return;
@@ -38,7 +36,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       askId: async () => id,
       askParam: async () => param,
     },
-    RealRepository.inst
+    process.env.NODE_ENV === 'production'
+      ? await (await import('../../../lib/repository')).RealRepository.inst
+      : await (await import('../../../lib/repository')).OnMemoryRepository.inst
   ).catch(e => res.status(400).end(e));
 
   res.status(202).end('Accepted');
