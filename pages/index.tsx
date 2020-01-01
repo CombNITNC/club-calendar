@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { FC, Fragment, useState, useReducer } from 'react';
+import { FC, useState, useReducer } from 'react';
 import { Meeting, DateString } from '../lib/meeting';
 import { MeetingsReducer, MeetingsMiddleware } from '../components/Reducer';
 
@@ -14,7 +14,7 @@ const MeetingCell: FC<MeetingCellProps> = ({ disabled, meeting, onChange }) => {
   const [m, setM] = useState(meeting);
 
   return (
-    <Fragment>
+    <>
       {kind === 'Regular' ? (
         <div className="regular">定例会</div>
       ) : (
@@ -37,7 +37,7 @@ const MeetingCell: FC<MeetingCellProps> = ({ disabled, meeting, onChange }) => {
           color: darkgreen;
         }
       `}</style>
-    </Fragment>
+    </>
   );
 };
 
@@ -46,7 +46,7 @@ const Calendar: FC<{
   onChange: (newMeeting: Meeting) => void;
   disabled: boolean;
 }> = ({ meetings, onChange, disabled }) => (
-  <Fragment>
+  <>
     <ul>
       {meetings.map(m => (
         <li key={m._id}>
@@ -54,7 +54,7 @@ const Calendar: FC<{
         </li>
       ))}
     </ul>
-  </Fragment>
+  </>
 );
 
 const Index: NextPage<{ root: string }> = ({ root }) => {
@@ -67,7 +67,7 @@ const Index: NextPage<{ root: string }> = ({ root }) => {
   const { meetings, requesting } = state;
 
   return (
-    <Fragment>
+    <>
       <h1>部内カレンダー</h1>
       <Calendar
         meetings={meetings}
@@ -110,7 +110,7 @@ const Index: NextPage<{ root: string }> = ({ root }) => {
           color: darkblue;
         }
       `}</style>
-    </Fragment>
+    </>
   );
 };
 
