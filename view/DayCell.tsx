@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useRef } from 'react';
 import { Meeting } from '../lib/meeting';
 import MeetingDetails from './MeetingDetails';
 
@@ -19,11 +19,13 @@ export const DayCell: FC<DayCellProps> = ({ pos, day, meeting }) => {
       ? 'darkred'
       : 'black';
   const [showingDetails, setShowingDetails] = useState(false);
+  const ref = useRef(null);
   return (
     <>
       <div
-        onClick={() => {
-          if (meeting == null) return;
+        ref={ref}
+        onClick={e => {
+          if (meeting == null || ref.current != e.target) return;
           setShowingDetails(!showingDetails);
         }}
       >
