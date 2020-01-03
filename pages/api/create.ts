@@ -50,7 +50,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
     },
     process.env.NODE_ENV === 'production'
-      ? await (await import('../../lib/repository')).RealRepository.inst
-      : await (await import('../../lib/repository')).OnMemoryRepository.inst
+      ? await (await import('../../lib/repository/Real')).default
+      : await (await import('../../lib/repository/OnMemory')).default
   ).catch(e => res.status(400).end(e));
 };
