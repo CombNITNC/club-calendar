@@ -24,7 +24,7 @@ const App: FC<{ root: string }> = ({ root }) => {
             type: 'update',
             ...newMeeting,
             id: _id,
-            date: new DateString(newMeeting.date),
+            date: new DateString(date),
           });
         }}
       />
