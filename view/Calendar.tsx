@@ -56,19 +56,14 @@ const dayOffset = (date: Date): number => {
   return _date.getDay();
 };
 
-const Calendar: FC<{
-  meetings: Meeting[];
-  onChange: (newMeeting: Meeting) => void;
-  disabled: boolean;
-}> = ({ meetings, onChange, disabled }) => {
-  const day = 0 in meetings ? meetings[0].date : new Date();
+const DayGrid: FC<{ day: Date; meetings: Meeting[] }> = ({ day, meetings }) => {
   const meetingsByDay = meetings.reduce<{ [key: number]: Meeting }>(
     (prev, curr) => ({ ...prev, [curr.date.getDate()]: curr }),
     {}
   );
   return (
     <>
-      <div className="day-grid">
+      <div>
         {range(31, 1).map((e: number) => (
           <DayCell
             pos={e + dayOffset(day)}
@@ -79,12 +74,52 @@ const Calendar: FC<{
         ))}
       </div>
       <style jsx>{`
-        .day-grid {
+        div {
           display: grid;
           grid-auto-rows: auto;
           grid-template-columns: repeat(auto-fill, 4em);
         }
       `}</style>
+    </>
+  );
+};
+
+const MonthNav: FC<{ day: Date }> = ({ day }) => (
+  <>
+    <div className="month-nav">
+      <span className="button">〈</span>
+      <span>
+        {day.getFullYear()}年{day.getMonth() + 1}月
+      </span>
+      <span className="button">〉</span>
+    </div>
+    <style jsx>{`
+      div {
+        display: flex;
+        width: 28em;
+      }
+      span {
+        flex: auto;
+        text-align: center;
+      }
+      .button {
+        box-shadow: 1px 1px 5px gray;
+      }
+    `}</style>
+  </>
+);
+
+const Calendar: FC<{
+  meetings: Meeting[];
+  onChange: (newMeeting: Meeting) => void;
+  disabled: boolean;
+}> = ({ meetings, onChange, disabled }) => {
+  const day = 0 in meetings ? meetings[0].date : new Date();
+  return (
+    <>
+      <MonthNav day={day} />
+      <hr />
+      <DayGrid day={day} meetings={meetings} />
     </>
   );
 };
