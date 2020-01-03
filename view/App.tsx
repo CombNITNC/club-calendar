@@ -36,21 +36,6 @@ const App: FC<{ root: string }> = ({ root }) => {
       >
         取得
       </button>
-      <button
-        disabled={requesting}
-        onClick={async e => {
-          dispatch({
-            type: 'new',
-            ...{
-              name: 'ホゲ談義',
-              date: new DateString(new Date('2020-02-02')),
-              kind: 'Others',
-            },
-          });
-        }}
-      >
-        集会を作る
-      </button>
       <style jsx>{`
         h1 {
           color: darkblue;
