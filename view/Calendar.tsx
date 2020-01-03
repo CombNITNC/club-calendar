@@ -1,50 +1,6 @@
-import { FC, useState } from 'react';
+import { FC, useState, ReactElement } from 'react';
 import { Meeting } from '../lib/meeting';
-import MeetingDetails from './MeetingDetails';
-
-type DayCellProps = {
-  pos: number;
-  day: number;
-  meeting?: Meeting;
-};
-
-const DayCell: FC<DayCellProps> = ({ pos, day, meeting }) => {
-  const x = (pos % 7) + 1;
-  const color =
-    meeting != null
-      ? 'darkgreen'
-      : x === 7
-      ? 'darkblue'
-      : x === 1
-      ? 'darkred'
-      : 'black';
-  const [showingDetails, setShowingDetails] = useState(false);
-
-  return (
-    <>
-      <div
-        onClick={() => {
-          setShowingDetails(!showingDetails);
-        }}
-      >
-        {day}
-        <MeetingDetails visibility={showingDetails} meeting={meeting} />
-      </div>
-      <style jsx>{`
-        div {
-          display: inline-grid;
-          text-align: center;
-          outline: thin solid darkgray;
-          margin: 0;
-          height: 2em;
-          grid-column: ${x};
-          grid-row: ${Math.ceil((pos + 1) / 7)};
-          color: ${color};
-        }
-      `}</style>
-    </>
-  );
-};
+import { DayCell } from './DayCell';
 
 const range = (size: number, startAt = 0): number[] => {
   return [...Array(size).keys()].map((_, i) => i + startAt);
@@ -61,18 +17,26 @@ const DayGrid: FC<{ day: Date; meetings: Meeting[] }> = ({ day, meetings }) => {
     (prev, curr) => ({ ...prev, [curr.date.getDate()]: curr }),
     {}
   );
+  const dayCells: ReactElement[] = [];
+  let i = new Date(day);
+  i.setDate(1);
+  for (
+    let e = 1;
+    i.getMonth() === day.getMonth();
+    i.setDate(i.getDate() + 1), ++e
+  ) {
+    dayCells.push(
+      <DayCell
+        pos={e + dayOffset(day)}
+        day={e}
+        key={e}
+        meeting={meetingsByDay[e]}
+      />
+    );
+  }
   return (
     <>
-      <div>
-        {range(31, 1).map((e: number) => (
-          <DayCell
-            pos={e + dayOffset(day)}
-            day={e}
-            key={e}
-            meeting={meetingsByDay[e]}
-          />
-        ))}
-      </div>
+      <div>{dayCells}</div>
       <style jsx>{`
         div {
           display: grid;
@@ -84,14 +48,22 @@ const DayGrid: FC<{ day: Date; meetings: Meeting[] }> = ({ day, meetings }) => {
   );
 };
 
-const MonthNav: FC<{ day: Date }> = ({ day }) => (
+const MonthNav: FC<{ day: Date; goNext: () => void; goPrev: () => void }> = ({
+  day,
+  goNext,
+  goPrev,
+}) => (
   <>
     <div className="month-nav">
-      <span className="button">〈</span>
+      <span className="button" onClick={() => goPrev()}>
+        〈
+      </span>
       <span>
         {day.getFullYear()}年{day.getMonth() + 1}月
       </span>
-      <span className="button">〉</span>
+      <span className="button" onClick={() => goNext()}>
+        〉
+      </span>
     </div>
     <style jsx>{`
       div {
@@ -114,12 +86,25 @@ const Calendar: FC<{
   onChange: (newMeeting: Meeting) => void;
   disabled: boolean;
 }> = ({ meetings, onChange, disabled }) => {
-  const day = 0 in meetings ? meetings[0].date : new Date();
+  const initialDay = 0 in meetings ? meetings[0].date : new Date();
+  const [day, setDay] = useState(initialDay);
+  const moveMonth = (offset: number) => {
+    const cloned = new Date(day);
+    cloned.setMonth(day.getMonth() + offset);
+    return cloned;
+  };
   return (
     <>
-      <MonthNav day={day} />
+      <MonthNav
+        day={day}
+        goPrev={() => setDay(moveMonth(-1))}
+        goNext={() => setDay(moveMonth(1))}
+      />
       <hr />
-      <DayGrid day={day} meetings={meetings} />
+      <DayGrid
+        day={day}
+        meetings={meetings.filter(m => m.date.getMonth() === day.getMonth())}
+      />
     </>
   );
 };

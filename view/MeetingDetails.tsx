@@ -1,20 +1,17 @@
 import { FC } from 'react';
 import { Meeting } from '../lib/meeting';
 
-const MeetingDetails: FC<{ visibility: boolean; meeting?: Meeting }> = ({
-  visibility,
-  meeting,
-}) => (
+const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
   <>
-    <div>
-      <p>{meeting?.name}</p>
+    <div onClick={e => e.preventDefault()}>
+      <p>{meeting.name}</p>
       <p>
-        {meeting?.date
+        {meeting.date
           .getHours()
           ?.toString()
           .padStart(2, '0')}
         :
-        {meeting?.date
+        {meeting.date
           .getMinutes()
           ?.toString()
           .padStart(2, '0')}
@@ -56,7 +53,6 @@ const MeetingDetails: FC<{ visibility: boolean; meeting?: Meeting }> = ({
         z-index: 4;
       }
       div {
-        display: ${visibility && meeting != null ? 'inline-block' : 'none'};
         animation: fadeIn 0.3s;
       }
       @keyframes fadeIn {
