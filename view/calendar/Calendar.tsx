@@ -1,5 +1,5 @@
 import { FC, useState, ReactElement } from 'react';
-import { Meeting } from '../lib/meeting';
+import { Meeting } from '../../lib/meeting';
 import { DayCell } from './DayCell';
 
 const range = (size: number, startAt = 0): number[] => {
@@ -82,31 +82,21 @@ const MonthNav: FC<{ day: Date; goNext: () => void; goPrev: () => void }> = ({
 );
 
 const Calendar: FC<{
+  showing: Date;
   meetings: Meeting[];
   onChange: (newMeeting: Meeting) => void;
   disabled: boolean;
-}> = ({ meetings, onChange, disabled }) => {
-  const initialDay = 0 in meetings ? meetings[0].date : new Date();
-  const [day, setDay] = useState(initialDay);
-  const moveMonth = (offset: number) => {
-    const cloned = new Date(day);
-    cloned.setMonth(day.getMonth() + offset);
-    return cloned;
-  };
-  return (
-    <>
-      <MonthNav
-        day={day}
-        goPrev={() => setDay(moveMonth(-1))}
-        goNext={() => setDay(moveMonth(1))}
-      />
-      <hr />
-      <DayGrid
-        day={day}
-        meetings={meetings.filter(m => m.date.getMonth() === day.getMonth())}
-      />
-    </>
-  );
-};
+  goNext: () => void;
+  goPrev: () => void;
+}> = ({ showing, meetings, goNext, goPrev }) => (
+  <>
+    <MonthNav day={showing} goPrev={goPrev} goNext={goNext} />
+    <hr />
+    <DayGrid
+      day={showing}
+      meetings={meetings.filter(m => m.date.getMonth() === showing.getMonth())}
+    />
+  </>
+);
 
 export default Calendar;

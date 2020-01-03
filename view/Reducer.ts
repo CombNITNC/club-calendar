@@ -4,6 +4,7 @@ import { Meeting, MeetingKind, DateString } from '../lib/meeting';
 export type State = {
   root: string;
   meetings: Meeting[];
+  showing: Date;
   requesting: boolean;
 };
 
@@ -28,17 +29,36 @@ export type Action =
       type: 'abort';
       id: string;
     }
-  | { type: 'fetch-end'; newMeetings: Meeting[] };
+  | { type: 'fetch-end'; newMeetings: Meeting[] }
+  | { type: 'go-next-month' }
+  | { type: 'go-prev-month' };
+
+const moveMonth = (day: Date, offset: number) => {
+  const cloned = new Date(day);
+  cloned.setMonth(day.getMonth() + offset);
+  return cloned;
+};
 
 export const MeetingsReducer: Reducer<State, Action> = (
   state: State,
   action: Action
 ) => {
   if (action.type === 'fetch-end') {
-    return { ...state, meetings: action.newMeetings, requesting: false };
+    return {
+      ...state,
+      meetings: action.newMeetings,
+      requesting: false,
+      showing: action.newMeetings[0].date,
+    };
   }
   if (['abort', 'update', 'refresh', 'new'].some(v => v === action.type)) {
     return { ...state, requesting: true };
+  }
+  if (action.type === 'go-next-month') {
+    return { ...state, showing: moveMonth(state.showing, 1) };
+  }
+  if (action.type === 'go-prev-month') {
+    return { ...state, showing: moveMonth(state.showing, -1) };
   }
   return state;
 };
