@@ -45,7 +45,13 @@ export const MeetingsReducer: Reducer<State, Action> = (
 
 const refresh = async (state: State, dispatch: (action: Action) => void) => {
   const { meetings } = await (await fetch(state.root + 'api/meetings')).json();
-  dispatch({ type: 'fetch-end', newMeetings: meetings });
+  dispatch({
+    type: 'fetch-end',
+    newMeetings: meetings.map((m: Meeting & { date: DateString }) => ({
+      ...m,
+      date: new Date(m.date),
+    })),
+  });
 };
 
 export const MeetingsMiddleware = (
