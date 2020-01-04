@@ -2,6 +2,7 @@ import { DateString } from '../lib/meeting';
 import { useReducer, FC } from 'react';
 import { MeetingsReducer, MeetingsMiddleware } from './Reducer';
 import Calendar from './calendar/Calendar';
+import { Regular } from './creation/Regular';
 
 const App: FC<{ root: string }> = ({ root }) => {
   const [state, dispatchRoot] = useReducer(MeetingsReducer, {
@@ -40,6 +41,7 @@ const App: FC<{ root: string }> = ({ root }) => {
       >
         取得
       </button>
+      <Regular />
       <style jsx>{`
         h1 {
           color: darkblue;

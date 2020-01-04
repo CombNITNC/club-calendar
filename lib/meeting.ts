@@ -9,7 +9,7 @@ export type Meeting = {
 };
 
 export class DateString {
-  private readonly str: string;
+  public readonly str: string;
 
   constructor(date: Date) {
     this.str = date.toString();
@@ -29,6 +29,12 @@ export class DateString {
 
   static ableTo(obj: any): boolean {
     return typeof obj === 'string' && Date.parse(obj) != NaN;
+  }
+
+  toFormValueString() {
+    return this.toDate()
+      .toISOString()
+      .slice(0, 10);
   }
 }
 
