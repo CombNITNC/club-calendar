@@ -9,14 +9,27 @@ export type Meeting = {
 };
 
 export class DateString {
-  private readonly str: string;
+  public readonly str: string;
 
   constructor(date: Date) {
     this.str = date.toString();
   }
 
+  static fromStr(str: string) {
+    if (Date.parse(str) == NaN) {
+      throw 'str cannot be converted to Date';
+    }
+    return new DateString(new Date(str));
+  }
+
   toDate() {
     return new Date(this.str);
+  }
+
+  toFormValueString() {
+    return this.toDate()
+      .toISOString()
+      .slice(0, 10);
   }
 }
 
