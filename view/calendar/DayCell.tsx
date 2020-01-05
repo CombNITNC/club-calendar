@@ -40,7 +40,7 @@ export const DayCell: FC<DayCellProps> = ({ pos, day, meeting }) => {
         div {
           display: inline-grid;
           text-align: center;
-          outline: thin solid darkgray;
+          box-shadow: 1px 1px 2px darkgray;
           margin: 0;
           height: 2em;
           grid-column: ${x};
