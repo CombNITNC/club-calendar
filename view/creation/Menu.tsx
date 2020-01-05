@@ -15,6 +15,8 @@ export const Menu: FC<{
     <style jsx>{`
       .menu-box {
         position: fixed;
+        display: flex;
+        flex-flow: column nowrap;
         bottom: 1em;
         right: 1em;
         box-shadow: 1px 1px 2px lightgray;
@@ -22,8 +24,9 @@ export const Menu: FC<{
         cursor: pointer;
       }
       .menu-item {
-        margin: 0;
-        padding: 2px;
+        padding: 0.5em;
+        height: 2em;
+        font-size: 16pt;
         box-shadow: 0px 1px 2px lightgray;
       }
     `}</style>
