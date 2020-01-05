@@ -91,7 +91,7 @@ const Calendar: FC<{
 }> = ({ showing, meetings, goNext, goPrev }) => (
   <>
     <MonthNav day={showing} goPrev={goPrev} goNext={goNext} />
-    <hr />
+    <p></p>
     <DayGrid
       day={showing}
       meetings={meetings.filter(m => m.date.getMonth() === showing.getMonth())}
