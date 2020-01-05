@@ -10,12 +10,6 @@ export type State = {
 
 export type Action =
   | {
-      type: 'new';
-      name: string;
-      kind: MeetingKind;
-      date: DateString;
-    }
-  | {
       type: 'refresh';
     }
   | {
@@ -31,7 +25,8 @@ export type Action =
     }
   | { type: 'fetch-end'; newMeetings: Meeting[] }
   | { type: 'go-next-month' }
-  | { type: 'go-prev-month' };
+  | { type: 'go-prev-month' }
+  | { type: 'new-regular'; meeting: Meeting };
 
 const moveMonth = (day: Date, offset: number) => {
   const cloned = new Date(day);
@@ -83,13 +78,13 @@ export const MeetingsMiddleware = (
     await refresh(state, dispatch);
     return;
   }
-  if (action.type === 'new') {
+  if (action.type === 'new-regular') {
     const res = await fetch(state.root + 'api/create', {
       method: 'POST',
       body: JSON.stringify({
-        kind: action.kind,
-        name: action.name,
-        date: action.date,
+        kind: 'Regular',
+        name: action.meeting.name,
+        date: action.meeting.date,
       }),
     });
     if (!res.ok) {

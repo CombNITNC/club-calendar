@@ -3,6 +3,7 @@ import { useReducer, FC } from 'react';
 import { MeetingsReducer, MeetingsMiddleware } from './Reducer';
 import Calendar from './calendar/Calendar';
 import { Regular } from './creation/Regular';
+import { RegularMeeting } from '../lib/entities/regular_meeting';
 
 const App: FC<{ root: string }> = ({ root }) => {
   const [state, dispatchRoot] = useReducer(MeetingsReducer, {
@@ -41,7 +42,14 @@ const App: FC<{ root: string }> = ({ root }) => {
       >
         取得
       </button>
-      <Regular />
+      <Regular
+        onClick={v => {
+          dispatch({
+            type: 'new-regular',
+            meeting: RegularMeeting.from(v.name, v.date),
+          });
+        }}
+      />
       <style jsx>{`
         h1 {
           color: darkblue;
