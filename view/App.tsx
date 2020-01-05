@@ -7,6 +7,7 @@ import { RegularMeeting } from '../lib/entities/regular_meeting';
 import { Others } from './creation/Others';
 import { OthersMeeting } from '../lib/entities/other_meeting';
 import { Menu } from './creation/Menu';
+import { Modal } from './Modal';
 
 const App: FC<{ root: string }> = ({ root }) => {
   const [state, dispatchRoot] = useReducer(MeetingsReducer, {
@@ -46,31 +47,25 @@ const App: FC<{ root: string }> = ({ root }) => {
       >
         取得
       </button>
-      <span>
-        <Menu
-          items={[
-            ' - 集会追加メニュー - ',
-            '新しい定例会',
-            '新しいその他の集会',
-          ]}
-          onClick={i => {
-            switch (i) {
-              case 0:
-                dispatch({ type: 'close-modal' });
-                break;
-              case 1:
-                dispatch({ type: 'modal-regular' });
-                break;
-              case 2:
-                dispatch({ type: 'modal-others' });
-                break;
-            }
-          }}
-        />
-        {(() => {
-          switch (state.creationModal) {
-            case 'regular':
-              return (
+      <Menu
+        items={['新しい定例会', '新しいその他の集会']}
+        onClick={i => {
+          switch (i) {
+            case 0:
+              dispatch({ type: 'modal-regular' });
+              break;
+            case 1:
+              dispatch({ type: 'modal-others' });
+              break;
+          }
+        }}
+      />
+      {(() => {
+        switch (state.creationModal) {
+          case 'regular':
+            return (
+              <Modal close={() => dispatch({ type: 'close-modal' })}>
+                <h3>新しい定例会</h3>
                 <Regular
                   onClick={v => {
                     dispatch({
@@ -79,9 +74,12 @@ const App: FC<{ root: string }> = ({ root }) => {
                     });
                   }}
                 />
-              );
-            case 'others':
-              return (
+              </Modal>
+            );
+          case 'others':
+            return (
+              <Modal close={() => dispatch({ type: 'close-modal' })}>
+                <h3>新しいその他の集会</h3>
                 <Others
                   onClick={v => {
                     dispatch({
@@ -90,15 +88,16 @@ const App: FC<{ root: string }> = ({ root }) => {
                     });
                   }}
                 />
-              );
-            case 'none':
-              return <></>;
-          }
-        })()}
-      </span>
+              </Modal>
+            );
+        }
+      })()}
       <style jsx>{`
         h1 {
           color: darkblue;
+        }
+        h3 {
+          margin: 0;
         }
       `}</style>
     </>
