@@ -62,7 +62,7 @@ const formElements = (
   return Object.entries(schema).map(([key, v]) => {
     if (!isScheme(v)) {
       return (
-        <div>
+        <div key={key}>
           <label>{key}</label>
           {formElements(v, setter)}
         </div>
@@ -83,7 +83,7 @@ const formElements = (
         break;
     }
     return (
-      <div>
+      <div key={key}>
         <label>{key}</label>
         {body}
       </div>

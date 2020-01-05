@@ -6,6 +6,7 @@ import { Regular } from './creation/Regular';
 import { RegularMeeting } from '../lib/entities/regular_meeting';
 import { Others } from './creation/Others';
 import { OthersMeeting } from '../lib/entities/other_meeting';
+import { Menu } from './creation/Menu';
 
 const App: FC<{ root: string }> = ({ root }) => {
   const [state, dispatchRoot] = useReducer(MeetingsReducer, {
@@ -46,23 +47,26 @@ const App: FC<{ root: string }> = ({ root }) => {
         取得
       </button>
       <span>
-        <select
-          onChange={e => {
-            if (e.target.value === '0') {
-              dispatch({ type: 'close-modal' });
-            }
-            if (e.target.value === '1') {
-              dispatch({ type: 'modal-regular' });
-            }
-            if (e.target.value === '2') {
-              dispatch({ type: 'modal-others' });
+        <Menu
+          items={[
+            ' - 集会追加メニュー - ',
+            '新しい定例会',
+            '新しいその他の集会',
+          ]}
+          onClick={i => {
+            switch (i) {
+              case 0:
+                dispatch({ type: 'close-modal' });
+                break;
+              case 1:
+                dispatch({ type: 'modal-regular' });
+                break;
+              case 2:
+                dispatch({ type: 'modal-others' });
+                break;
             }
           }}
-        >
-          <option value="0"> - 集会追加メニュー - </option>
-          <option value="1">新しい定例会</option>
-          <option value="2">新しいその他の集会</option>
-        </select>
+        />
         {(() => {
           switch (state.creationModal) {
             case 'regular':
