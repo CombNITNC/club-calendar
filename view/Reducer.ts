@@ -5,6 +5,7 @@ export type State = {
   root: string;
   meetings: Meeting[];
   showing: Date;
+  creationModal: 'none' | 'regular' | 'others';
   requesting: boolean;
 };
 
@@ -26,7 +27,11 @@ export type Action =
   | { type: 'fetch-end'; newMeetings: Meeting[] }
   | { type: 'go-next-month' }
   | { type: 'go-prev-month' }
-  | { type: 'new-regular'; meeting: Meeting };
+  | { type: 'modal-regular' }
+  | { type: 'modal-others' }
+  | { type: 'close-modal' }
+  | { type: 'new-regular'; meeting: Meeting }
+  | { type: 'new-others'; meeting: Meeting };
 
 const moveMonth = (day: Date, offset: number) => {
   const cloned = new Date(day);
@@ -54,6 +59,15 @@ export const MeetingsReducer: Reducer<State, Action> = (
   }
   if (action.type === 'go-prev-month') {
     return { ...state, showing: moveMonth(state.showing, -1) };
+  }
+  if (action.type === 'close-modal') {
+    return { ...state, creationModal: 'none' };
+  }
+  if (action.type === 'modal-regular') {
+    return { ...state, creationModal: 'regular' };
+  }
+  if (action.type === 'modal-others') {
+    return { ...state, creationModal: 'others' };
   }
   return state;
 };
@@ -83,6 +97,21 @@ export const MeetingsMiddleware = (
       method: 'POST',
       body: JSON.stringify({
         kind: 'Regular',
+        name: action.meeting.name,
+        date: action.meeting.date,
+      }),
+    });
+    if (!res.ok) {
+      console.error({ action });
+    }
+    await refresh(state, dispatch);
+    return;
+  }
+  if (action.type === 'new-others') {
+    const res = await fetch(state.root + 'api/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        kind: 'Others',
         name: action.meeting.name,
         date: action.meeting.date,
       }),
