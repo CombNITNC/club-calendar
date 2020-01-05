@@ -15,8 +15,8 @@ export class DateString {
     this.str = date.toString();
   }
 
-  static fromStr(str: string) {
-    if (Date.parse(str) == NaN) {
+  static from(str: any) {
+    if (typeof str !== 'string' || Date.parse(str) == NaN) {
       throw 'str cannot be converted to Date';
     }
     return new DateString(new Date(str));
@@ -35,9 +35,6 @@ export class DateString {
 
 export const validateKind = (str: any): str is MeetingKind =>
   str === 'Regular' || str === 'Others';
-
-export const validateDateString = (str: any): str is DateString =>
-  typeof str === 'string' && Date.parse(str) != NaN;
 
 export const testDatas: Meeting[] = [
   {

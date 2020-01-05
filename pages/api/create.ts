@@ -1,13 +1,8 @@
-import {
-  DateString,
-  validateDateString,
-  validateKind,
-  MeetingKind,
-} from '../../lib/meeting';
+import { DateString, validateKind, MeetingKind } from '../../lib/meeting';
 import { CreateService } from '../../lib/services/create_service';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-type CreateParam = { kind: MeetingKind; name: string; date: DateString };
+type CreateParam = { kind: MeetingKind; name: string; date: string };
 
 const validateParam = (body: any): body is CreateParam => {
   if (!('kind' in body) || !validateKind(body.kind)) {
@@ -16,8 +11,12 @@ const validateParam = (body: any): body is CreateParam => {
   if (!('name' in body) || typeof body.name !== 'string') {
     return false;
   }
-  if (!('date' in body) || !validateDateString(body.date)) {
-    return false;
+  if (!('date' in body)) {
+    try {
+      DateString.from(body.date);
+    } catch {
+      return false;
+    }
   }
   return true;
 };
@@ -32,17 +31,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).end('Bad Request');
     return;
   }
+  const dateStr = DateString.from(body.date);
 
   CreateService(
     {
       askMeeting: async () => ({
         ...body,
-        date: body.date.toDate(),
+        date: dateStr.toDate(),
         expired: false,
         _id: '0',
       }),
       askDuration: async () => {
-        const date = body.date.toDate();
+        const date = dateStr.toDate();
         return [date, date];
       },
       reportCreatedIds: async ids => {
@@ -52,5 +52,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     process.env.NODE_ENV === 'production'
       ? await (await import('../../lib/repository/Real')).default
       : await (await import('../../lib/repository/OnMemory')).default
-  ).catch(e => res.status(400).end(e));
+  ).catch(e => {
+    console.error(e);
+    res.status(500).end('Internal Server Error');
+  });
 };
