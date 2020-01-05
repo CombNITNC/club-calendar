@@ -1,10 +1,6 @@
-import { FC, useState, ReactElement } from 'react';
+import { FC, ReactElement } from 'react';
 import { Meeting } from '../../lib/meeting';
 import { DayCell } from './DayCell';
-
-const range = (size: number, startAt = 0): number[] => {
-  return [...Array(size).keys()].map((_, i) => i + startAt);
-};
 
 const dayOffset = (date: Date): number => {
   const _date = new Date(date);
@@ -41,7 +37,7 @@ const DayGrid: FC<{ day: Date; meetings: Meeting[] }> = ({ day, meetings }) => {
         div {
           display: grid;
           grid-auto-rows: auto;
-          grid-template-columns: repeat(auto-fill, 4em);
+          grid-template-columns: repeat(auto-fill, 14.2%);
         }
       `}</style>
     </>
@@ -68,7 +64,7 @@ const MonthNav: FC<{ day: Date; goNext: () => void; goPrev: () => void }> = ({
     <style jsx>{`
       div {
         display: flex;
-        width: 28em;
+        margin: 0 auto;
       }
       span {
         flex: auto;
