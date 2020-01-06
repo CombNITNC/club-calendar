@@ -11,13 +11,79 @@ export class Errors {
   }
 }
 
+export type SchemeKind = 'string' | 'number' | 'date' | 'option' | 'check';
+
 export type Scheme = {
-  type: 'string' | 'number' | 'date' | 'option';
+  type: SchemeKind;
   value: any;
 };
 
 export type Schema = {
   [key: string]: Scheme | Schema;
+};
+
+const isScheme = (v: Scheme | Schema): v is Scheme =>
+  typeof v === 'object' && 'type' in v;
+
+const schemeElement = (
+  key: string,
+  v: Scheme,
+  setter: (ref: Scheme) => (e: ChangeEvent<HTMLInputElement>) => void
+) => {
+  switch (v.type) {
+    case 'string':
+      return <input defaultValue={v.value} onChange={setter(v)} />;
+    case 'date':
+      return <input type="date" defaultValue={v.value} onChange={setter(v)} />;
+    case 'number':
+      return (
+        <input type="number" defaultValue={v.value} onChange={setter(v)} />
+      );
+    case 'check':
+      return (
+        <input type="checkbox" defaultValue={v.value} onChange={setter(v)} />
+      );
+    case 'option':
+      return (
+        <>
+          <input
+            defaultValue={v.value[0]}
+            list={`list-${key}`}
+            onChange={setter(v)}
+          />
+          <datalist id={`list-${key}`}>
+            {v.value.map((m: string) => (
+              <option value={m}></option>
+            ))}
+          </datalist>
+        </>
+      );
+    default:
+      return <input />;
+  }
+};
+
+const formElements = (
+  schema: Schema,
+  setter: (ref: Scheme) => (e: ChangeEvent<HTMLInputElement>) => void
+): JSX.Element[] => {
+  return Object.entries(schema).map(([key, v]) => {
+    if (!isScheme(v)) {
+      return (
+        <div key={key}>
+          <label>{key}</label>
+          {formElements(v, setter)}
+        </div>
+      );
+    }
+    const body = schemeElement(key, v, setter);
+    return (
+      <div key={key}>
+        <label>{key}</label>
+        {body}
+      </div>
+    );
+  });
 };
 
 export function Form<S extends Schema, T>(
@@ -51,42 +117,3 @@ export function Form<S extends Schema, T>(
     </>
   );
 }
-
-const isScheme = (v: Scheme | Schema): v is Scheme =>
-  typeof v === 'object' && 'type' in v;
-
-const formElements = (
-  schema: Schema,
-  setter: (ref: Scheme) => (e: ChangeEvent<HTMLInputElement>) => void
-): JSX.Element[] => {
-  return Object.entries(schema).map(([key, v]) => {
-    if (!isScheme(v)) {
-      return (
-        <div key={key}>
-          <label>{key}</label>
-          {formElements(v, setter)}
-        </div>
-      );
-    }
-    let body: JSX.Element;
-    switch (v.type) {
-      case 'string':
-        body = <input defaultValue={v.value} onChange={setter(v)} />;
-        break;
-      case 'date':
-        body = (
-          <input type="date" defaultValue={v.value} onChange={setter(v)} />
-        );
-        break;
-      default:
-        body = <input />;
-        break;
-    }
-    return (
-      <div key={key}>
-        <label>{key}</label>
-        {body}
-      </div>
-    );
-  });
-};
