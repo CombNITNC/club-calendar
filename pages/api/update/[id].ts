@@ -1,14 +1,14 @@
-import { DateString, validateDateString } from '../../../lib/meeting';
+import { DateString } from '../../../lib/meeting';
 import { UpdateService } from '../../../lib/services/update_service';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-type UpdateBody = { name?: string; date?: DateString };
+type UpdateBody = { name?: string; date?: string };
 
 const validateParam = (body: any): body is UpdateBody => {
   if (!('name' in body && typeof body.name === 'string')) {
     return false;
   }
-  if (!('date' in body && validateDateString(body.date))) {
+  if (!('date' in body)) {
     return false;
   }
   return true;
@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, date: dateStr } = body;
   const param = {
     name,
-    date: dateStr?.toDate(),
+    date: dateStr ? DateString.from(dateStr).toDate() : undefined,
   };
 
   await UpdateService(
