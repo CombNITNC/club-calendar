@@ -20,14 +20,15 @@ export const Menu: FC<{
         bottom: 1em;
         right: 1em;
         box-shadow: 1px 1px 2px lightgray;
-        border-radius: 2px;
         cursor: pointer;
       }
       .menu-item {
         padding: 0.5em;
         height: 2em;
         font-size: 16pt;
-        box-shadow: 0px 1px 2px lightgray;
+        border-radius: 2px;
+        border: 1px solid gray;
+        background-color: white;
       }
     `}</style>
   </>

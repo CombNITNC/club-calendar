@@ -1,4 +1,4 @@
-import { FC, ChangeEvent } from 'react';
+import { FC, ChangeEvent, useState } from 'react';
 
 export class Errors {
   private errors: { [name: string]: string } = {};
@@ -101,19 +101,31 @@ export function Form<S extends Schema, T>(
       return;
     }
   };
-  return ({ onClick }) => (
-    <>
-      {formElements(value, setter)}
-      <button
-        onClick={() => {
-          if (!validator(value)) {
-            return;
+  return ({ onClick }) => {
+    const [sent, setSent] = useState(false);
+    return (
+      <>
+        {formElements(value, setter)}
+        <button
+          onClick={() => {
+            if (!validator(value)) {
+              return;
+            }
+            setSent(true);
+            setTimeout(() => setSent(false), 1500);
+            onClick(exporter(value));
+          }}
+        >
+          送信
+        </button>
+        {sent && <span>送信しました</span>}
+        <style jsx>{`
+          span {
+            color: green;
+            font-size: 12pt;
           }
-          onClick(exporter(value));
-        }}
-      >
-        送信
-      </button>
-    </>
-  );
+        `}</style>
+      </>
+    );
+  };
 }
