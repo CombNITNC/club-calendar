@@ -1,4 +1,4 @@
-import { Form, Schema } from './Form';
+import { Form } from './Form';
 import { DateString } from '../../lib/meeting';
 
 const schema = {

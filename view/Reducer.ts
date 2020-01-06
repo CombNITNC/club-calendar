@@ -76,7 +76,7 @@ const refresh = async (state: State, dispatch: (action: Action) => void) => {
   const { meetings } = await (await fetch(state.root + 'api/meetings')).json();
   dispatch({
     type: 'fetch-end',
-    newMeetings: meetings.map((m: Meeting & { date: DateString }) => ({
+    newMeetings: meetings.map((m: Meeting & { date: string }) => ({
       ...m,
       date: new Date(m.date),
     })),
