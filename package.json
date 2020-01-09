@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
+    "build": "next build",
     "test": "jest"
   },
   "keywords": [],
   "author": "MikuroXina",
-  "license": "Apache-2.0",
+  "license": "UNLICENSED",
   "dependencies": {
     "@slack/events-api": "^2.3.0",
     "@slack/interactive-messages": "^1.4.0",
