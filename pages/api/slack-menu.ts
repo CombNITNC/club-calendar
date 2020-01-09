@@ -28,8 +28,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).end('Bad Request');
     return;
   }
-  res.status(200).json({
-    response_action: 'update',
-    view: await (await import('../../slack/modal-block')).default(),
+  const { trigger_id } = JSON.parse(req.body.payload);
+  await fetch('https://slack.com/api/views.open', {
+    headers: {
+      Authorization: process.env.SLACK_OAUTH_TOKEN || '',
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      response_action: 'update',
+      trigger_id,
+      view: await (await import('../../slack/modal-block')).default(),
+    }),
   });
 };
