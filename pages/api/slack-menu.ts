@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const auth_token = req.headers['authorization'];
   const { trigger_id, response_url } = req.body;
-  await fetch(response_url, {
+  const open_res = await fetch(response_url, {
     headers: {
       'content-type': 'application/json',
       authorization: auth_token || '',
@@ -41,5 +41,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       view: await (await import('../../slack/modal-block')).default(),
     }),
   });
+  if (!open_res.ok) {
+    console.log(open_res.body);
+    res.status(500).end('Internal Server Error');
+    return;
+  }
   res.status(202).end('Accepted');
 };
