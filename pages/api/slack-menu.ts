@@ -29,7 +29,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   const { trigger_id, response_url } = req.body;
-  res.status(200).end('OK');
   await fetch(response_url, {
     headers: {
       'Content-type': 'application/json',
@@ -41,4 +40,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       view: await (await import('../../slack/modal-block')).default(),
     }),
   });
+  res.status(202).end('Accepted');
 };
