@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {} from '@slack/interactive-messages';
+import fetch from 'isomorphic-unfetch';
 
 type SlackMessage = {
   token: string;
@@ -28,9 +28,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).end('Bad Request');
     return;
   }
-  const { trigger_id } = req.body;
+  const { trigger_id, response_url } = req.body;
   res.status(200).end('OK');
-  await fetch('https://slack.com/api/views.open', {
+  await fetch(response_url, {
     headers: {
       'Content-type': 'application/json',
       Authorization: process.env.SLACK_OAUTH_TOKEN || '',
