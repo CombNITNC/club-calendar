@@ -31,11 +31,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { trigger_id } = JSON.parse(req.body.payload);
   await fetch('https://slack.com/api/views.open', {
     headers: {
+      'Content-type': 'application/json',
       Authorization: process.env.SLACK_OAUTH_TOKEN || '',
     },
     method: 'POST',
     body: JSON.stringify({
-      response_action: 'update',
       trigger_id,
       view: await (await import('../../slack/modal-block')).default(),
     }),
