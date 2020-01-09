@@ -29,6 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   const { trigger_id } = JSON.parse(req.body.payload);
+  res.status(200).end('OK');
   await fetch('https://slack.com/api/views.open', {
     headers: {
       'Content-type': 'application/json',
