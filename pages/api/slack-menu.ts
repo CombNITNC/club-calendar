@@ -28,11 +28,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).end('Bad Request');
     return;
   }
+  const auth_token = req.headers['authorization'];
   const { trigger_id, response_url } = req.body;
   await fetch(response_url, {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: process.env.SLACK_OAUTH_TOKEN || '',
+      'content-type': 'application/json',
+      authorization: auth_token || '',
     },
     method: 'POST',
     body: JSON.stringify({
