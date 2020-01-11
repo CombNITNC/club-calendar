@@ -3,6 +3,7 @@ import fetch from 'isomorphic-unfetch';
 
 type SlackMessage = {
   token: string;
+  trigger_id: string;
   team_id: string;
   team_domain: string;
   channel_id: string;
@@ -14,37 +15,34 @@ type SlackMessage = {
 };
 
 const validate = (obj: any): obj is SlackMessage => {
-  if (typeof obj !== 'object') {
+  if (typeof obj !== 'object' || obj == null) {
     return false;
   }
-  if (obj.command !== '/meeting') {
+  if (!(obj.hasOwnProperty('command') && obj.command === '/meeting')) {
     return false;
   }
   return true;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'POST') {
+  if (req.method !== 'POST' || !validate(req.body)) {
     res.status(400).end('Bad Request');
     return;
   }
-  const auth_token = req.headers['authorization'];
-  const { trigger_id, response_url } = req.body;
-  const open_res = await fetch(response_url, {
-    headers: {
-      'content-type': 'application/json',
-      authorization: auth_token || '',
-    },
+  const { trigger_id } = <SlackMessage>req.body;
+  const open_res = await fetch('https://slack.com/api/views.open', {
     method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: 'Bearer' + (process.env.SLACK_OAUTH_TOKEN || ''),
+    },
     body: JSON.stringify({
       trigger_id,
       view: await (await import('../../slack/modal-block')).default(),
     }),
   });
   if (!open_res.ok) {
-    console.log(open_res.body);
+    console.log(open_res.json());
     res.status(500).end('Internal Server Error');
-    return;
   }
-  res.status(202).end('Accepted');
 };
