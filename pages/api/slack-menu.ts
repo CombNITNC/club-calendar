@@ -35,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
-        Authorization: 'Bearer' + (process.env.SLACK_OAUTH_TOKEN || ''),
+        Authorization: 'Bearer ' + (process.env.SLACK_OAUTH_TOKEN || ''),
       },
       body: JSON.stringify({
         trigger_id,
