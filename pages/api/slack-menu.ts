@@ -35,8 +35,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       method: 'POST',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        Authorization: `Bearer ${process.env.SLACK_OAUTH_TOKEN || ''}`,
+        'content-type': 'application/json; charset=UTF-8',
+        authorization: `Bearer ${process.env.SLACK_OAUTH_TOKEN || ''}`,
       },
       body: JSON.stringify({
         trigger_id,
@@ -46,8 +46,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   ).json();
   if (!open_res.ok) {
     console.log(open_res);
-    res.status(500).end('Internal Server Error');
-    return;
   }
   res.status(200).json(open_res);
 };
