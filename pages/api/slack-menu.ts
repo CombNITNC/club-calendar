@@ -33,9 +33,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const open_res = await (
     await fetch('https://slack.com/api/views.open', {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-        Authorization: 'Bearer ' + (process.env.SLACK_OAUTH_TOKEN || ''),
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${process.env.SLACK_OAUTH_TOKEN || ''}`,
       },
       body: JSON.stringify({
         trigger_id,
