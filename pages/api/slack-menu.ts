@@ -30,21 +30,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   const { trigger_id } = <SlackMessage>req.body;
-  const open_res = await fetch('https://slack.com/api/views.open', {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-      Authorization: 'Bearer' + (process.env.SLACK_OAUTH_TOKEN || ''),
-    },
-    body: JSON.stringify({
-      trigger_id,
-      view: await (await import('../../slack/modal-block')).default(),
-    }),
-  });
+  const open_res = await (
+    await fetch('https://slack.com/api/views.open', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: 'Bearer' + (process.env.SLACK_OAUTH_TOKEN || ''),
+      },
+      body: JSON.stringify({
+        trigger_id,
+        view: await (await import('../../slack/modal-block')).default(),
+      }),
+    })
+  ).json();
   if (!open_res.ok) {
-    console.log(await open_res.json());
+    console.log(open_res);
     res.status(500).end('Internal Server Error');
     return;
   }
-  res.status(200).json(await open_res.json());
+  res.status(200).json(open_res);
 };
