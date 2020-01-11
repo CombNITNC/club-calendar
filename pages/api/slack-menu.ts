@@ -42,7 +42,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }),
   });
   if (!open_res.ok) {
-    console.log(open_res.json());
+    console.log(await open_res.json());
     res.status(500).end('Internal Server Error');
+    return;
   }
+  res.status(200).json(await open_res.json());
 };
