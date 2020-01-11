@@ -18,7 +18,7 @@ const validate = (obj: any): obj is SlackMessage => {
   if (typeof obj !== 'object' || obj == null) {
     return false;
   }
-  if (!(obj.hasOwnProperty('command') && obj.command === '/meeting')) {
+  if (!('command' in obj && obj.command === '/meeting')) {
     return false;
   }
   return true;
