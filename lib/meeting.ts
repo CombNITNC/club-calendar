@@ -26,12 +26,6 @@ export class DateString {
     return new Date(this.str);
   }
 
-  toFormValueString() {
-    return this.toDate()
-      .toISOString()
-      .slice(0, 10);
-  }
-
   static to(obj: any): DateString {
     if (!this.ableTo(obj)) {
       throw 'obj cannot convert to DateString';
