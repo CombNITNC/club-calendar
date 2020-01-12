@@ -1,13 +1,8 @@
-import {
-  DateString,
-  validateDateString,
-  validateKind,
-  MeetingKind,
-} from '../../lib/meeting';
+import { DateString, validateKind, MeetingKind } from '../../lib/meeting';
 import { CreateService } from '../../lib/services/create_service';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-type CreateParam = { kind: MeetingKind; name: string; date: DateString };
+type CreateParam = { kind: MeetingKind; name: string; date: string };
 
 const validateParam = (body: any): body is CreateParam => {
   if (!('kind' in body) || !validateKind(body.kind)) {
@@ -16,7 +11,7 @@ const validateParam = (body: any): body is CreateParam => {
   if (!('name' in body) || typeof body.name !== 'string') {
     return false;
   }
-  if (!('date' in body) || !validateDateString(body.date)) {
+  if (!('date' in body) || !DateString.ableTo(body.date)) {
     return false;
   }
   return true;
@@ -32,17 +27,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).end('Bad Request');
     return;
   }
+  const date = DateString.to(body.date).toDate();
 
   CreateService(
     {
       askMeeting: async () => ({
         ...body,
-        date: body.date.toDate(),
+        date,
         expired: false,
         _id: '0',
       }),
       askDuration: async () => {
-        const date = body.date.toDate();
         return [date, date];
       },
       reportCreatedIds: async ids => {
