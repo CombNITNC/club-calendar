@@ -9,7 +9,12 @@ import JSXSlack, {
 
 export default () =>
   JSXSlack(
-    <Modal title="集会の新規作成" submit="つくる" close="やめる">
+    <Modal
+      title="集会の新規作成"
+      submit="つくる"
+      close="やめる"
+      callbackId="create"
+    >
       <Select
         name="kind"
         label="種類"
