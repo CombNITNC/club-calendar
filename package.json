@@ -8,7 +8,7 @@
     "build": "next build",
     "test": "jest",
     "deploy": "now",
-    "deploy-production": "now --pro"
+    "deploy-production": "now --prod"
   },
   "keywords": [],
   "author": "MikuroXina",
