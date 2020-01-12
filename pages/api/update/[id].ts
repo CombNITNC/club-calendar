@@ -8,7 +8,7 @@ const validateParam = (body: any): body is UpdateBody => {
   if (!('name' in body && typeof body.name === 'string')) {
     return false;
   }
-  if (!('date' in body)) {
+  if (!('date' in body && DateString.ableTo(body.date))) {
     return false;
   }
   return true;
@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, date: dateStr } = body;
   const param = {
     name,
-    date: dateStr ? DateString.from(dateStr).toDate() : undefined,
+    date: dateStr ? DateString.to(dateStr).toDate() : undefined,
   };
 
   await UpdateService(

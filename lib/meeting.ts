@@ -31,6 +31,18 @@ export class DateString {
       .toISOString()
       .slice(0, 10);
   }
+
+  static to(obj: any): DateString {
+    if (!this.ableTo(obj)) {
+      throw 'obj cannot convert to DateString';
+    }
+    const str = new DateString(new Date(obj));
+    return str;
+  }
+
+  static ableTo(obj: any): boolean {
+    return typeof obj === 'string' && Date.parse(obj) != NaN;
+  }
 }
 
 export const validateKind = (str: any): str is MeetingKind =>

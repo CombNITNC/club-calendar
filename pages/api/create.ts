@@ -11,12 +11,8 @@ const validateParam = (body: any): body is CreateParam => {
   if (!('name' in body) || typeof body.name !== 'string') {
     return false;
   }
-  if (!('date' in body)) {
-    try {
-      DateString.from(body.date);
-    } catch {
-      return false;
-    }
+  if (!('date' in body) || !DateString.ableTo(body.date)) {
+    return false;
   }
   return true;
 };
@@ -31,18 +27,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).end('Bad Request');
     return;
   }
-  const dateStr = DateString.from(body.date);
+  const date = DateString.to(body.date).toDate();
 
   CreateService(
     {
       askMeeting: async () => ({
         ...body,
-        date: dateStr.toDate(),
+        date,
         expired: false,
         _id: '0',
       }),
       askDuration: async () => {
-        const date = dateStr.toDate();
         return [date, date];
       },
       reportCreatedIds: async ids => {

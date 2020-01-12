@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "name": "club-calendar",
+  "env": {
+    "DB_HOST": "mongodb+srv://cccluster-csezj.mongodb.net/test?retryWrites=true&w=majority",
+    "DB_USER": "Writer",
+    "DB_PASS": "@cc-db-pass",
+    "SLACK_CLIENT_SECRET": "@cc-slack-client",
+    "SLACK_SIGNING_SECRET": "@cc-slack-signing",
+    "SLACK_OAUTH_TOKEN": "@cc-slack-oauth"
+  }
+}

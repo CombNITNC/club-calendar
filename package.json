@@ -5,14 +5,19 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
-    "test": "jest"
+    "build": "next build",
+    "test": "jest",
+    "deploy": "now",
+    "deploy-production": "now --prod"
   },
   "keywords": [],
   "author": "MikuroXina",
-  "license": "Apache-2.0",
+  "license": "UNLICENSED",
   "dependencies": {
+    "@speee-js/jsx-slack": "^0.12.0",
     "@types/mongoose": "^5.5.35",
     "dotenv": "^8.2.0",
+    "isomorphic-unfetch": "^3.0.0",
     "micro": "^9.3.4",
     "mongoose": "^5.8.3",
     "next": "^9.1.6",
@@ -25,6 +30,7 @@
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.17",
     "jest": "^24.9.0",
+    "now": "^16.7.3",
     "prettier": "^1.19.1",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.4"
