@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { MeetingKind, validateKind, DateString } from '../../lib/meeting';
+import { MeetingKind, validateKind } from '../../lib/meeting';
+import fetch from 'isomorphic-unfetch';
 
 type SlackMessage = {
   type: 'view_submission';
@@ -95,7 +96,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       date: { selected_date: date },
     },
   } = mes.view.state.values;
-  console.log({ kind, name, date });
 
-  res.status(200).end('');
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  const create_loc = `${protocol}://${req.headers.host}/api/create`;
+  const create_res = await fetch(create_loc, {
+    method: 'POST',
+    body: JSON.stringify({ kind, name, date }),
+  });
+  if (!create_res.ok) {
+    console.log(await create_res.text());
+    res.status(500).end('Internal Server Error');
+    return;
+  }
+
+  res.status(200).end('集会を作成しました');
 };
