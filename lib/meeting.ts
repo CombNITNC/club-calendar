@@ -15,8 +15,21 @@ export class DateString {
     this.str = date.toString();
   }
 
+  static from(str: any) {
+    if (typeof str !== 'string' || Date.parse(str) == NaN) {
+      throw 'str cannot be converted to Date';
+    }
+    return new DateString(new Date(str));
+  }
+
   toDate() {
     return new Date(this.str);
+  }
+
+  toFormValueString() {
+    return this.toDate()
+      .toISOString()
+      .slice(0, 10);
   }
 
   static to(obj: any): DateString {
