@@ -1,6 +1,7 @@
 import { DateString, validateKind, MeetingKind } from '../../lib/meeting';
 import { CreateService } from '../../lib/services/create_service';
 import { NextApiRequest, NextApiResponse } from 'next';
+import hash from 'object-hash';
 
 type CreateParam = { kind: MeetingKind; name: string; date: string };
 
@@ -35,7 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ...body,
         date,
         expired: false,
-        _id: '0',
+        _id: hash(body),
       }),
       askDuration: async () => {
         return [date, date];
