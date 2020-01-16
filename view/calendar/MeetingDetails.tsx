@@ -21,7 +21,6 @@ const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
     <style jsx>{`
       div {
         position: relative;
-        font-size: 6pt;
         margin: 0;
         text-align: center;
         top: 25%;
