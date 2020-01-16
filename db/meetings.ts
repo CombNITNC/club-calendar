@@ -5,7 +5,7 @@ export interface MeetingDocument extends Document {
   _id: string;
   name: string;
   kind: MeetingKind;
-  date: Date;
+  date: number;
   expired: boolean;
 }
 
@@ -14,7 +14,7 @@ const MeetingSchema = new Schema(
     _id: String,
     name: String,
     kind: { type: String, match: /Regular|Others/ },
-    date: Date,
+    date: Number,
     expired: Boolean,
   },
   { versionKey: false }

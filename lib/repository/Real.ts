@@ -13,15 +13,21 @@ export class RealRepository
 
   async save(...meetings: Meeting[]): Promise<string[]> {
     return new Promise((resolve, reject) => {
-      this.Meetings.insertMany(meetings, (e, res) => {
-        if (e != null) reject(e);
-        else resolve(res.map(m => m._id));
-      });
+      this.Meetings.insertMany(
+        meetings.map(m => ({ ...m, date: m.date.getTime() })),
+        (e, res) => {
+          if (e != null) reject(e);
+          else resolve(res.map(m => m._id));
+        }
+      );
     });
   }
 
   async getAll(): Promise<Meeting[]> {
-    return await this.Meetings.find({});
+    return (await this.Meetings.find({})).map(d => ({
+      ...d,
+      date: new Date(d.date),
+    }));
   }
 
   async read(duration: [Date, Date]): Promise<Meeting[]> {
@@ -29,7 +35,7 @@ export class RealRepository
     return new Promise((resolve, reject) => {
       this.Meetings.find({ date: { $gte: from, $lte: to } }, (e, res) => {
         if (e != null) reject(e);
-        else resolve(res);
+        else resolve(res.map(d => ({ ...d, date: new Date(d.date) })));
       });
     });
   }
@@ -42,7 +48,7 @@ export class RealRepository
     return {
       _id: id,
       name: found.name,
-      date: found.date,
+      date: new Date(found.date),
       kind: found.kind,
       expired: found.expired,
     };
@@ -51,7 +57,8 @@ export class RealRepository
   async update(...meetings: Meeting[]): Promise<void> {
     for (const m of meetings) {
       const { _id, ...others } = m;
-      await this.Meetings.replaceOne({ _id }, others);
+      const doc = { ...others, date: others.date.getTime() };
+      await this.Meetings.replaceOne({ _id }, doc);
     }
   }
 }
