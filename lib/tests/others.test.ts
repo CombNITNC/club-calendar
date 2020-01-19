@@ -28,6 +28,7 @@ test('その他の集会の更新1', done => {
     { askId: async () => 'hoge', askParam: async () => ({ name: 'ホゲ談義' }) },
     {
       find: async id => ({
+        _id: '0',
         kind: 'Others',
         name: 'ホゲホゲ談義',
         date: new Date('2019-09-30T16:15:00'),
@@ -35,6 +36,7 @@ test('その他の集会の更新1', done => {
       }),
       update: async meeting => {
         expect(meeting).toEqual({
+          _id: '0',
           kind: 'Others',
           name: 'ホゲ談義',
           date: new Date('2019-09-30T16:15:00'),
@@ -51,6 +53,7 @@ test('その他の集会の中止1', done => {
     { askIdToAbort: async () => 'hoge' },
     {
       find: async id => ({
+        _id: '0',
         kind: 'Others',
         name: 'ホゲ談義',
         date: new Date('2019-09-30T16:15:00'),
@@ -58,6 +61,7 @@ test('その他の集会の中止1', done => {
       }),
       update: async meeting => {
         expect(meeting).toEqual({
+          _id: '0',
           kind: 'Others',
           name: 'ホゲ談義',
           date: new Date('2019-09-30T16:15:00'),
