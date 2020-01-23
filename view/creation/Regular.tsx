@@ -21,8 +21,9 @@ const schema = {
 export const Regular = Form(
   schema,
   (value: any) => {
+    const errors: string[] = [];
     if (value['名前'].value == '' || value['名前'].value == null) {
-      return false;
+      errors.push('名前を入力してください');
     }
     try {
       const [start, end] = ['開始', '終了'].map(k =>
@@ -31,12 +32,12 @@ export const Regular = Form(
           .getTime()
       );
       if (start >= end) {
-        return false;
+        errors.push('終了日は開始日より後にしてください');
       }
     } catch {
-      return false;
+      errors.push('日付の入力がおかしいです');
     }
-    return true;
+    return errors;
   },
   (v: typeof schema) => ({
     name: v['名前'].value,

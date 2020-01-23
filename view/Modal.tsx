@@ -25,8 +25,8 @@ export const Modal: FC<{ close: () => void }> = ({ children, close }) => {
           z-index: 5000;
         }
         .modal-container {
+          width: 100%;
           max-width: 440px;
-          min-width: 30%;
           margin: auto;
           padding: 1em;
           background-color: white;

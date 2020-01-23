@@ -1,15 +1,11 @@
-import { FC, ChangeEvent, useState } from 'react';
-
-export class Errors {
-  private errors: { [name: string]: string } = {};
-  addError(name: string, detail: string) {
-    this.errors[name] = detail;
-  }
-
-  getErrors(): { [name: string]: string } {
-    return this.errors;
-  }
-}
+import {
+  FC,
+  ChangeEvent,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react';
 
 export type SchemeKind = 'string' | 'number' | 'date' | 'option' | 'check';
 
@@ -88,27 +84,33 @@ const formElements = (
 
 export function Form<S extends Schema, T>(
   defaultValue: S,
-  validator: (value: any) => boolean,
+  validator: (value: any) => string[],
   exporter: (value: S) => T
 ): FC<{ onClick: (value: T) => void }> {
-  let value = { ...defaultValue };
-  const setter = (ref: Scheme) => (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    const cloned = { ...value };
-    ref.value = input;
-    if (!validator(value)) {
-      value = cloned; // Go back to as before
-      return;
-    }
-  };
   return ({ onClick }) => {
     const [sent, setSent] = useState(false);
+    const [value, setValue] = useState(defaultValue);
+    const [errors, setErrors] = useState<string[]>([]);
+    const isValidValue = errors.length === 0;
+
+    const setter = (ref: Scheme) => (e: ChangeEvent<HTMLInputElement>) => {
+      const input = e.target.value;
+      const cloned = { ...value };
+      ref.value = input;
+      console.log(value);
+      const newErrors = validator(value);
+      if (newErrors.length !== 0) {
+        setValue(cloned); // Go back to as before
+      }
+      setErrors(newErrors);
+    };
+
     return (
       <>
         {formElements(value, setter)}
         <button
           onClick={() => {
-            if (!validator(value)) {
+            if (!isValidValue) {
               return;
             }
             setSent(true);
@@ -118,11 +120,19 @@ export function Form<S extends Schema, T>(
         >
           送信
         </button>
+        <ul>
+          {errors.map(e => (
+            <li>{e}</li>
+          ))}
+        </ul>
         {sent && <span>送信しました</span>}
         <style jsx>{`
           span {
             color: green;
             font-size: 12pt;
+          }
+          li {
+            color: darkred;
           }
         `}</style>
       </>

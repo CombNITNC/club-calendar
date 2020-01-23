@@ -15,9 +15,9 @@ export const Others = Form(
   schema,
   (v: any) => {
     if (v['名前'].value === '') {
-      return false;
+      return ['名前を入力してください'];
     }
-    return true;
+    return [];
   },
   v => ({ name: v['名前'].value, date: new Date(v['日時'].value) })
 );
