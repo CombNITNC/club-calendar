@@ -1,0 +1,16 @@
+@startuml ユースケース
+
+left to right direction
+
+actor 部員
+actor 部長
+
+部長 --|> 部員
+
+rectangle カレンダー {
+  部員 --> (集会を見る)
+  部長 --> (集会を作る)
+  部長 --> (集会を中止する)
+}
+
+@enduml
