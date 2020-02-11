@@ -1,13 +1,13 @@
-import { DateString } from '../lib/meeting';
+import { DateString } from '../lib';
 import { useReducer, FC } from 'react';
-import { MeetingsReducer, MeetingsMiddleware } from './Reducer';
-import Calendar from './calendar/Calendar';
-import { Regular } from './creation/Regular';
-import { RegularMeeting } from '../lib/entities/regular_meeting';
-import { Others } from './creation/Others';
-import { OthersMeeting } from '../lib/entities/other_meeting';
-import { Menu } from './creation/Menu';
-import { Modal } from './Modal';
+import { MeetingsReducer, MeetingsMiddleware } from './reducer';
+import Calendar from './calendar/calendar';
+import { Regular } from './creation/regular';
+import { RegularMeeting } from '../lib/exp/regular-meeting';
+import { Others } from './creation/others';
+import { OthersMeeting } from '../lib/exp/other-meeting';
+import { Menu } from './creation/menu';
+import { Modal } from './modal';
 
 const App: FC<{ root: string }> = ({ root }) => {
   const [state, dispatchRoot] = useReducer(MeetingsReducer, {

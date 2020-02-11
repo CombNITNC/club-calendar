@@ -1,8 +1,8 @@
-import { FetchOutput } from '../services/fetch_service';
-import { CreateOutput } from '../services/create_service';
-import { UpdateOutput } from '../services/update_service';
-import { AbortOutput } from '../services/abort_service';
-import { Meeting } from '../meeting';
+import { FetchOutput } from '../op/fetch';
+import { CreateOutput } from '../op/create';
+import { UpdateOutput } from '../op/update';
+import { AbortOutput } from '../op/abort';
+import { Meeting } from '..';
 import { GetMeetings } from '../../db/meetings';
 
 export class RealRepository

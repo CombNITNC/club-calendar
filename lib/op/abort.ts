@@ -1,4 +1,4 @@
-import { Meeting } from '../meeting';
+import { Meeting } from '..';
 
 export type AbortInput = {
   askIdToAbort(): Promise<string>;

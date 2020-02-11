@@ -1,6 +1,6 @@
 import { FC, useState, useRef } from 'react';
-import { Meeting } from '../../lib/meeting';
-import MeetingDetails from './MeetingDetails';
+import { Meeting } from '../../lib';
+import MeetingDetails from './meeting-details';
 
 type DayCellProps = {
   pos: number;

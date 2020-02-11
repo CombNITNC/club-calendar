@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import App from '../view/App';
+import App from '../view/app';
 
 const Index: NextPage<{ root: string }> = ({ root }) => <App root={root} />;
 

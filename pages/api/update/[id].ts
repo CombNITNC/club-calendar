@@ -1,5 +1,5 @@
-import { DateString } from '../../../lib/meeting';
-import { UpdateService } from '../../../lib/services/update_service';
+import { DateString } from '../../../lib';
+import { UpdateService } from '../../../lib/op/update';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 type UpdateBody = { name?: string; date?: string };
@@ -37,8 +37,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       askParam: async () => param,
     },
     process.env.NODE_ENV === 'production'
-      ? await (await import('../../../lib/repository/Real')).default
-      : await (await import('../../../lib/repository/OnMemory')).default
+      ? await (await import('../../../lib/skin/real')).default
+      : await (await import('../../../lib/skin/on-memory')).default
   ).catch(e => res.status(400).end(e));
 
   res.status(202).end('Accepted');

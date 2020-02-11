@@ -1,5 +1,5 @@
 import { Reducer } from 'react';
-import { Meeting, MeetingKind, DateString } from '../lib/meeting';
+import { Meeting, MeetingKind, DateString } from '../lib';
 
 export type State = {
   root: string;

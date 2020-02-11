@@ -1,4 +1,4 @@
-import { Meeting, MeetingKind } from '../meeting';
+import { Meeting, MeetingKind } from '..';
 
 export class OthersMeeting implements Meeting {
   public readonly _id: string = '';

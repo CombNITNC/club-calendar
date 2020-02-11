@@ -1,12 +1,22 @@
+import hash from 'object-hash';
+
 export type MeetingKind = 'Regular' | 'Others';
 
-export type Meeting = {
-  _id: string;
+export class Meeting {
+  public readonly _id: string;
   kind: MeetingKind;
   name: string;
   date: Date;
   expired: boolean;
-};
+
+  public constructor(name: string, date: Date, kind: MeetingKind) {
+    this._id = hash({ name, date, kind });
+    this.name = name;
+    this.date = date;
+    this.kind = kind;
+    this.expired = false;
+  }
+}
 
 export class DateString {
   public readonly str: string;

@@ -1,4 +1,4 @@
-import { FetchService } from '../../lib/services/fetch_service';
+import { FetchService } from '../../lib/op/fetch';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,8 +13,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
     },
     process.env.NODE_ENV === 'production'
-      ? await (await import('../../lib/repository/Real')).default
-      : await (await import('../../lib/repository/OnMemory')).default
+      ? await (await import('../../lib/skin/real')).default
+      : await (await import('../../lib/skin/on-memory')).default
   ).catch(e => {
     console.error(e);
     res.status(400).end(e);

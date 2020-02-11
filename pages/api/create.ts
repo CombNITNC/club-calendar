@@ -1,5 +1,5 @@
-import { DateString, validateKind, MeetingKind } from '../../lib/meeting';
-import { CreateService } from '../../lib/services/create_service';
+import { DateString, validateKind, MeetingKind } from '../../lib';
+import { CreateService } from '../../lib/op/create';
 import { NextApiRequest, NextApiResponse } from 'next';
 import hash from 'object-hash';
 
@@ -46,8 +46,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
     },
     process.env.NODE_ENV === 'production'
-      ? await (await import('../../lib/repository/Real')).default
-      : await (await import('../../lib/repository/OnMemory')).default
+      ? await (await import('../../lib/skin/real')).default
+      : await (await import('../../lib/skin/on-memory')).default
   ).catch(e => {
     console.error(e);
     res.status(500).end('Internal Server Error');

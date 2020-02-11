@@ -1,7 +1,7 @@
-import { CreateService } from '../services/create_service';
-import { RegularMeeting } from '../entities/regular_meeting';
-import { UpdateService } from '../services/update_service';
-import { AbortService } from '../services/abort_service';
+import { CreateService } from '../op/create';
+import { RegularMeeting } from '../exp/regular-meeting';
+import { UpdateService } from '../op/update';
+import { AbortService } from '../op/abort';
 
 const regularName = '定例会';
 test('定例会の登録1', done => {

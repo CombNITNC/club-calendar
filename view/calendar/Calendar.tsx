@@ -1,6 +1,6 @@
 import { FC, ReactElement } from 'react';
-import { Meeting } from '../../lib/meeting';
-import { DayCell } from './DayCell';
+import { Meeting } from '../../lib';
+import { DayCell } from './day-cell';
 
 const dayOffset = (date: Date): number => {
   const _date = new Date(date);

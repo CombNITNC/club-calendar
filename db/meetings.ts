@@ -1,5 +1,5 @@
 import mongoose, { Schema, Model, Document } from 'mongoose';
-import { MeetingKind } from '../lib/meeting';
+import { MeetingKind } from '../lib';
 
 export interface MeetingDocument extends Document {
   _id: string;

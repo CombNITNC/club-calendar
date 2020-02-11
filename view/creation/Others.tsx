@@ -1,4 +1,4 @@
-import { Form } from './Form';
+import { Form } from './form';
 
 const schema = {
   名前: {
