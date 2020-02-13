@@ -1,15 +1,8 @@
-import { FetchOutput } from '../op/fetch';
-import { CreateOutput } from '../op/create';
-import { UpdateOutput } from '../op/update';
-import { AbortOutput } from '../op/abort';
-import { Meeting, Duration } from '..';
+import { Meeting, Duration, Repository } from '..';
 import { GetMeetings } from '../../db/meetings';
 
-export class RealRepository
-  implements FetchOutput, CreateOutput, UpdateOutput, AbortOutput {
-  static readonly inst = new RealRepository();
-
-  private constructor(private Meetings = GetMeetings()) {}
+export class RealRepository implements Repository {
+  constructor(private Meetings = GetMeetings()) {}
 
   async save(...meetings: Meeting[]): Promise<string[]> {
     return new Promise((resolve, reject) => {
@@ -62,5 +55,3 @@ export class RealRepository
     }
   }
 }
-
-export default RealRepository.inst;

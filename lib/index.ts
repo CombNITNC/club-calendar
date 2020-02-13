@@ -1,4 +1,8 @@
 import hash from 'object-hash';
+import { AbortInput, AbortOutput } from './op/abort';
+import { CreateInput, CreateOutput } from './op/create';
+import { FetchInput, FetchOutput } from './op/fetch';
+import { UpdateInput, UpdateOutput } from './op/update';
 
 export type Duration = [Date, Date];
 
@@ -59,6 +63,12 @@ export class DateString {
 
 export const validateKind = (str: any): str is MeetingKind =>
   str === 'Regular' || str === 'Others';
+
+export type Client = AbortInput & CreateInput & FetchInput & UpdateInput;
+export type Repository = AbortOutput &
+  CreateOutput &
+  FetchOutput &
+  UpdateOutput;
 
 export * from './exp/other-meeting';
 export * from './exp/regular-meeting';

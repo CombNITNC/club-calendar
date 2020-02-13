@@ -1,17 +1,8 @@
-import { FetchOutput } from '../op/fetch';
-import { CreateOutput } from '../op/create';
-import { UpdateOutput } from '../op/update';
-import { AbortOutput } from '../op/abort';
-import { Meeting, testDatas } from '..';
+import { Meeting, testDatas, Repository } from '..';
 
-export class OnMemoryRepository
-  implements FetchOutput, CreateOutput, UpdateOutput, AbortOutput {
-  static readonly inst = new OnMemoryRepository();
-
-  private constructor() {}
-
+export class OnMemoryRepository implements Repository {
   meetings: Meeting[] = testDatas;
-  incremental: number = 0;
+  private incremental: number = 0;
 
   save = async (...meetings: Meeting[]): Promise<string[]> => {
     const addedIds: string[] = [];
@@ -42,5 +33,3 @@ export class OnMemoryRepository
     this.meetings = [...this.meetings, ...meetings];
   };
 }
-
-export default OnMemoryRepository.inst;
