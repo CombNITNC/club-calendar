@@ -76,9 +76,7 @@ const apiRoot = process.env.API_ROOT || 'http://localhost:3080/';
 
 const refresh = async (state: State, dispatch: (action: Action) => void) => {
   try {
-    const { meetings } = await (
-      await fetch(apiRoot + 'meetings', { mode: 'cors' })
-    ).json();
+    const { meetings } = await (await fetch(apiRoot + 'meetings')).json();
     dispatch({
       type: 'fetch-end',
       newMeetings: meetings.map((m: Meeting & { date: string }) => ({
