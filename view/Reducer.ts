@@ -72,15 +72,23 @@ export const MeetingsReducer: Reducer<State, Action> = (
   return state;
 };
 
+const apiRoot = process.env.API_ROOT || 'http://localhost:3080/';
+
 const refresh = async (state: State, dispatch: (action: Action) => void) => {
-  const { meetings } = await (await fetch(state.root + 'api/meetings')).json();
-  dispatch({
-    type: 'fetch-end',
-    newMeetings: meetings.map((m: Meeting & { date: string }) => ({
-      ...m,
-      date: new Date(m.date),
-    })),
-  });
+  try {
+    const { meetings } = await (
+      await fetch(apiRoot + 'meetings', { mode: 'cors' })
+    ).json();
+    dispatch({
+      type: 'fetch-end',
+      newMeetings: meetings.map((m: Meeting & { date: string }) => ({
+        ...m,
+        date: new Date(m.date),
+      })),
+    });
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const MeetingsMiddleware = (
@@ -93,7 +101,7 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'new-regular') {
-    const res = await fetch(state.root + 'api/meetings', {
+    const res = await fetch(apiRoot + 'meetings', {
       method: 'POST',
       body: JSON.stringify({
         kind: 'Regular',
@@ -108,7 +116,7 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'new-others') {
-    const res = await fetch(state.root + 'api/meetings', {
+    const res = await fetch(apiRoot + 'meetings', {
       method: 'POST',
       body: JSON.stringify({
         kind: 'Others',
@@ -123,7 +131,7 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'update') {
-    const res = await fetch(state.root + `api/meetings/${action.id}`, {
+    const res = await fetch(apiRoot + `meetings/${action.id}`, {
       method: 'PATCH',
       body: JSON.stringify({
         kind: action.kind,
@@ -138,7 +146,7 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'abort') {
-    const res = await fetch(state.root + `api/${action.id}/expire`, {
+    const res = await fetch(apiRoot + `${action.id}/expire`, {
       method: 'PATCH',
     });
     if (!res.ok) {

@@ -10,7 +10,7 @@ import { OthersMeeting } from '../exp/other-meeting';
 export class ExpressClient
   implements FetchInput, CreateInput, UpdateInput, AbortInput {
   query: { [key: string]: string } = {};
-  constructor(private req: Request, private res: Response) {
+  constructor(req: Request, private res: Response) {
     const query = req.query;
     if (typeof query === 'object') {
       for (const [k, v] of Object.entries(query)) {
@@ -30,9 +30,9 @@ export class ExpressClient
 
   // Fetch
   async show(meetings: Meeting[]): Promise<void> {
-    this.res.setHeader('Content-Type', 'application/json');
-    this.res.write(JSON.stringify({ meetings }));
-    this.res.end();
+    this.res.send({
+      meetings: meetings.map(m => ({ ...m, date: m.date.toString() })),
+    });
   }
 
   // Create
@@ -55,8 +55,7 @@ export class ExpressClient
     return [date, date];
   }
   async reportCreatedIds(ids: string[]): Promise<void> {
-    this.res.write(JSON.stringify({ ids }));
-    this.res.end();
+    this.res.send({ ids });
   }
 
   // Update

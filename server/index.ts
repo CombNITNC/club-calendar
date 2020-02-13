@@ -18,11 +18,17 @@ const withLib = (fn: (client: Client, repository: Repository) => void) => (
   req: Request,
   res: Response
 ) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
   const client = new ExpressClient(req, res);
   const repo = new (process.env.NODE_ENV === 'production'
     ? RealRepository
     : OnMemoryRepository)();
-  fn(client, repo);
+  try {
+    fn(client, repo);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
 };
 
 app.get('/meetings', withLib(FetchService));

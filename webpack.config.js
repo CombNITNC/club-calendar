@@ -1,9 +1,8 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = {
-  entry: { server: './server' },
-  devtool: 'inline-source-map',
+const config = {
+  entry: ['./server'],
   module: {
     rules: [
       {
@@ -29,3 +28,5 @@ module.exports = {
   externals: [nodeExternals()],
   plugins: [new (require('dotenv-webpack'))()],
 };
+
+module.exports = config;
