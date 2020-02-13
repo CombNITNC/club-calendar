@@ -1,5 +1,7 @@
 import hash from 'object-hash';
 
+export type Duration = [Date, Date];
+
 export type MeetingKind = 'Regular' | 'Others';
 
 export class Meeting {
@@ -57,6 +59,18 @@ export class DateString {
 
 export const validateKind = (str: any): str is MeetingKind =>
   str === 'Regular' || str === 'Others';
+
+export * from './exp/other-meeting';
+export * from './exp/regular-meeting';
+
+export * from './op/abort';
+export * from './op/create';
+export * from './op/fetch';
+export * from './op/update';
+
+export * from './skin/express';
+export * from './skin/on-memory';
+export * from './skin/real';
 
 export const testDatas: Meeting[] = [
   {

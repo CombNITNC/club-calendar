@@ -93,7 +93,7 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'new-regular') {
-    const res = await fetch(state.root + 'api/create', {
+    const res = await fetch(state.root + 'api/meetings', {
       method: 'POST',
       body: JSON.stringify({
         kind: 'Regular',
@@ -108,7 +108,7 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'new-others') {
-    const res = await fetch(state.root + 'api/create', {
+    const res = await fetch(state.root + 'api/meetings', {
       method: 'POST',
       body: JSON.stringify({
         kind: 'Others',
@@ -123,8 +123,8 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'update') {
-    const res = await fetch(state.root + `api/update/${action.id}`, {
-      method: 'PUT',
+    const res = await fetch(state.root + `api/meetings/${action.id}`, {
+      method: 'PATCH',
       body: JSON.stringify({
         kind: action.kind,
         name: action.name,
@@ -138,8 +138,8 @@ export const MeetingsMiddleware = (
     return;
   }
   if (action.type === 'abort') {
-    const res = await fetch(state.root + `api/abort/${action.id}`, {
-      method: 'PUT',
+    const res = await fetch(state.root + `api/${action.id}/expire`, {
+      method: 'PATCH',
     });
     if (!res.ok) {
       console.error({ action });

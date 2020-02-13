@@ -2,7 +2,7 @@ import { FetchOutput } from '../op/fetch';
 import { CreateOutput } from '../op/create';
 import { UpdateOutput } from '../op/update';
 import { AbortOutput } from '../op/abort';
-import { Meeting } from '..';
+import { Meeting, Duration } from '..';
 import { GetMeetings } from '../../db/meetings';
 
 export class RealRepository
@@ -30,7 +30,7 @@ export class RealRepository
     }));
   }
 
-  async read(duration: [Date, Date]): Promise<Meeting[]> {
+  async read(duration: Duration): Promise<Meeting[]> {
     const [from, to] = duration;
     return new Promise((resolve, reject) => {
       this.Meetings.find({ date: { $gte: from, $lte: to } }, (e, res) => {

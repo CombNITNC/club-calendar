@@ -1,9 +1,9 @@
-import { Meeting } from '..';
+import { Meeting, Duration } from '..';
 import { RegularMeeting } from '../exp/regular-meeting';
 
 export type CreateInput = {
   askMeeting(): Promise<Meeting>;
-  askDuration(): Promise<[Date, Date]>;
+  askDuration(): Promise<Duration>;
   reportCreatedIds(ids: string[]): Promise<void>;
 };
 

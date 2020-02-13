@@ -58,7 +58,7 @@
 
 ### 作成
 
-`POST /api/create` に以下の JSON を付けてアクセスする。
+`POST /api/meetings` に以下の JSON を付けてアクセスする。
 
 正常な JSON を渡さないと `400 Bad Request` を返す。
 
@@ -82,7 +82,7 @@
 
 ### 更新
 
-`PUT /api/update/[id]` に以下の JSON を付けてアクセスする。
+`PATCH /api/meetings/[id]` に以下の JSON を付けてアクセスする。
 
 JSON には更新したい属性だけを渡す。
 
@@ -101,7 +101,7 @@ JSON には更新したい属性だけを渡す。
 
 ### 中止
 
-`PUT /api/abort/[id]` に以下の JSON を付けてアクセスする。
+`PATCH /api/meetings/[id]/expire` に以下の JSON を付けてアクセスする。
 
 正常な ID でないと `400 Bad Request` を返す。
 
