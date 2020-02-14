@@ -1,5 +1,4 @@
 import { Meeting, Duration } from '..';
-import { RegularMeeting } from '../exp/regular-meeting';
 
 export type CreateInput = {
   askMeeting(): Promise<Meeting>;
@@ -23,13 +22,13 @@ export const CreateService = async (
   }
 
   const { name, date } = meeting;
-  const [start, end] = await input.askDuration();
+  const { from: start, to: end } = await input.askDuration();
   const regulars: Meeting[] = [];
   while (date.getDate() < start.getDate()) {
     date.setDate(date.getDate() + 7);
   }
   for (; date.getTime() <= end.getTime(); date.setDate(date.getDate() + 7)) {
-    regulars.push(RegularMeeting.from(name, new Date(date)));
+    regulars.push(Meeting.regular(name, new Date(date)));
   }
   const ids = await output.save(...regulars);
   input.reportCreatedIds(ids);

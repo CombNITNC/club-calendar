@@ -1,14 +1,14 @@
-import { FetchInput } from '../op/fetch';
-import { CreateInput } from '../op/create';
-import { AbortInput } from '../op/abort';
-import { UpdateInput, UpdateParam } from '../op/update';
-import { Meeting, Duration, DateString, validateKind } from '..';
+import {
+  UpdateParam,
+  Client,
+  Meeting,
+  Duration,
+  DateString,
+  validateKind,
+} from '..';
 import { Request, Response } from 'express';
-import { RegularMeeting } from '../exp/regular-meeting';
-import { OthersMeeting } from '../exp/other-meeting';
 
-export class ExpressClient
-  implements FetchInput, CreateInput, UpdateInput, AbortInput {
+export class ExpressClient implements Client {
   query: { [key: string]: string } = {};
   constructor(req: Request, private res: Response) {
     const query = req.query;
@@ -42,9 +42,9 @@ export class ExpressClient
       throw 'invalid queries';
     }
     if (kind === 'Regular') {
-      return RegularMeeting.from(name, new Date(date));
+      return Meeting.regular(name, new Date(date));
     }
-    return OthersMeeting.from(name, new Date(date));
+    return Meeting.others(name, new Date(date));
   }
   async askDuration(): Promise<Duration> {
     const { date: dateStr } = this.query;
@@ -52,7 +52,7 @@ export class ExpressClient
       throw 'invalid queries';
     }
     const date = DateString.from(dateStr).toDate();
-    return [date, date];
+    return new Duration(date, date);
   }
   async reportCreatedIds(ids: string[]): Promise<void> {
     this.res.send({ ids });

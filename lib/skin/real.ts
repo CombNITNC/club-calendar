@@ -24,7 +24,7 @@ export class RealRepository implements Repository {
   }
 
   async read(duration: Duration): Promise<Meeting[]> {
-    const [from, to] = duration;
+    const { from, to } = duration;
     return new Promise((resolve, reject) => {
       this.Meetings.find({ date: { $gte: from, $lte: to } }, (e, res) => {
         if (e != null) reject(e);

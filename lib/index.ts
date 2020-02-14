@@ -1,77 +1,18 @@
-import hash from 'object-hash';
 import { AbortInput, AbortOutput } from './op/abort';
 import { CreateInput, CreateOutput } from './op/create';
 import { FetchInput, FetchOutput } from './op/fetch';
 import { UpdateInput, UpdateOutput } from './op/update';
+import { Meeting } from './exp/meeting';
 
-export type Duration = [Date, Date];
-
-export type MeetingKind = 'Regular' | 'Others';
-
-export class Meeting {
-  public readonly _id: string;
-  kind: MeetingKind;
-  name: string;
-  date: Date;
-  expired: boolean;
-
-  public constructor(name: string, date: Date, kind: MeetingKind) {
-    this._id = hash({ name, date, kind });
-    this.name = name;
-    this.date = date;
-    this.kind = kind;
-    this.expired = false;
-  }
-}
-
-export class DateString {
-  public readonly str: string;
-
-  constructor(date: Date) {
-    this.str = date.toString();
-  }
-
-  static from(str: any) {
-    if (typeof str !== 'string' || Date.parse(str) == NaN) {
-      throw 'str cannot be converted to Date';
-    }
-    return new DateString(new Date(str));
-  }
-
-  toDate() {
-    return new Date(this.str);
-  }
-
-  static to(obj: any): DateString {
-    if (!this.ableTo(obj)) {
-      throw 'obj cannot convert to DateString';
-    }
-    const str = new DateString(new Date(obj));
-    return str;
-  }
-
-  static ableTo(obj: any): boolean {
-    return typeof obj === 'string' && Date.parse(obj) != NaN;
-  }
-
-  toFormValueString() {
-    return this.toDate()
-      .toISOString()
-      .slice(0, 10);
-  }
-}
-
-export const validateKind = (str: any): str is MeetingKind =>
-  str === 'Regular' || str === 'Others';
+export * from './exp/duration';
+export * from './exp/meeting';
+export * from './exp/date-string';
 
 export type Client = AbortInput & CreateInput & FetchInput & UpdateInput;
 export type Repository = AbortOutput &
   CreateOutput &
   FetchOutput &
   UpdateOutput;
-
-export * from './exp/other-meeting';
-export * from './exp/regular-meeting';
 
 export * from './op/abort';
 export * from './op/create';

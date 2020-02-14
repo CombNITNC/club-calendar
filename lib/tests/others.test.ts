@@ -1,20 +1,24 @@
-import { CreateService } from '../op/create';
-import { OthersMeeting } from '../exp/other-meeting';
-import { UpdateService } from '../op/update';
-import { AbortService } from '../op/abort';
+import {
+  CreateService,
+  UpdateService,
+  AbortService,
+  Duration,
+  Meeting,
+} from '..';
 
 test('その他の集会の登録1', done => {
   const name = 'helloworld2019';
   CreateService(
     {
-      askMeeting: async () => OthersMeeting.from(name, new Date('2019-04-08')),
-      askDuration: async () => [new Date('2019-04-04'), new Date('2019-04-31')],
+      askMeeting: async () => Meeting.others(name, new Date('2019-04-08')),
+      askDuration: async () =>
+        new Duration(new Date('2019-04-04'), new Date('2019-04-31')),
       reportCreatedIds: async id => {},
     },
     {
       save: async (...meetings): Promise<string[]> => {
         expect(meetings).toEqual([
-          OthersMeeting.from(name, new Date('2019-04-08')),
+          Meeting.others(name, new Date('2019-04-08')),
         ]);
         done();
         return ['0'];

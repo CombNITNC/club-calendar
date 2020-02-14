@@ -1,6 +1,6 @@
 import { useReducer, FC } from 'react';
 
-import { DateString, OthersMeeting, RegularMeeting } from '../lib';
+import { DateString, Meeting } from '../lib';
 
 import { MeetingsReducer, MeetingsMiddleware } from './reducer';
 import { Modal } from './modal';
@@ -72,7 +72,7 @@ const App: FC<{ root: string }> = ({ root }) => {
                   onClick={(v: { name: string; date: Date }) => {
                     dispatch({
                       type: 'new-regular',
-                      meeting: RegularMeeting.from(v.name, v.date),
+                      meeting: Meeting.regular(v.name, v.date),
                     });
                   }}
                 />
@@ -86,7 +86,7 @@ const App: FC<{ root: string }> = ({ root }) => {
                   onClick={(v: { name: string; date: Date }) => {
                     dispatch({
                       type: 'new-others',
-                      meeting: OthersMeeting.from(v.name, v.date),
+                      meeting: Meeting.others(v.name, v.date),
                     });
                   }}
                 />

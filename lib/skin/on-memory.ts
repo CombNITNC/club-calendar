@@ -1,4 +1,4 @@
-import { Meeting, testDatas, Repository } from '..';
+import { Meeting, Repository, testDatas } from '..';
 
 export class OnMemoryRepository implements Repository {
   meetings: Meeting[] = testDatas;
