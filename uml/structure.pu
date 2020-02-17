@@ -1,33 +1,23 @@
-@startuml システム構成
+@startuml structure
 
 actor 部員
-agent Slack
+agent 認証API
+agent Slackアプリ
 
-node ゲートウェイ
-
-node 認証ウェブ
 node カレンダーウェブ
 
-node 認証API
 node カレンダーAPI
-node 通知API
 
 database データベース {
-  storage ホワイトリスト
   storage 集会データ
 }
 
-部員 -- ゲートウェイ
+部員 -- カレンダーウェブ
 
-ゲートウェイ --> 認証ウェブ
-認証ウェブ -(0- 認証API
-認証API -0)- ホワイトリスト
-
-ゲートウェイ --> カレンダーウェブ
+認証API <-- カレンダーウェブ
 カレンダーウェブ -(0- カレンダーAPI
 カレンダーAPI -0)- 集会データ
 
-Slack -(0- 通知API 
-通知API -0)- 集会データ
+Slackアプリ -(0- カレンダーAPI
 
 @enduml

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="433px" preserveAspectRatio="none" style="width:301px;height:433px;" version="1.1" viewBox="0 0 301 433" width="301px" zoomAndPan="magnify"><defs><filter height="300%" id="f1ux0wl3wp306g" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--cluster データベース--><path d="M101,329 C101,319 162,319 162,319 C162,319 223,319 223,329 L223,411 C223,421 162,421 162,421 C162,421 101,421 101,411 L101,329 " fill="#FFFFFF" filter="url(#f1ux0wl3wp306g)" style="stroke: #000000; stroke-width: 1.5;"/><path d="M101,329 C101,339 162,339 162,339 C162,339 223,339 223,329 " fill="none" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="84" x="120" y="354.5352">データベース</text><!--entity 集会データ--><rect fill="#FEFECE" filter="url(#f1ux0wl3wp306g)" height="36.4883" rx="35" ry="35" style="stroke: #000000; stroke-width: 1.5;" width="90" x="117" y="369"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="127" y="392.5352">集会データ</text><!--entity 部員--><ellipse cx="40" cy="18" fill="#FEFECE" filter="url(#f1ux0wl3wp306g)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><path d="M40,26 L40,53 M27,34 L53,34 M40,53 L27,68 M40,53 L53,68 " fill="none" filter="url(#f1ux0wl3wp306g)" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="26" y="88.5352">部員</text><!--entity 認証API--><rect fill="#FEFECE" filter="url(#f1ux0wl3wp306g)" height="36.4883" style="stroke: #A80036; stroke-width: 1.5;" width="70" x="90" y="31.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="50" x="100" y="55.0352">認証API</text><!--entity Slackアプリ--><rect fill="#FEFECE" filter="url(#f1ux0wl3wp306g)" height="36.4883" style="stroke: #A80036; stroke-width: 1.5;" width="97" x="193.5" y="156"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="77" x="203.5" y="179.5352">Slackアプリ</text><!--entity カレンダーウェブ--><polygon fill="#FEFECE" filter="url(#f1ux0wl3wp306g)" points="6,161,16,151,158,151,158,187.4883,148,197.4883,6,197.4883,6,161" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="148" x2="157" y1="161" y2="152"/><line style="stroke: #000000; stroke-width: 1.5;" x1="6" x2="148" y1="161" y2="161"/><line style="stroke: #000000; stroke-width: 1.5;" x1="148" x2="148" y1="161" y2="197.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="112" x="21" y="184.5352">カレンダーウェブ</text><!--entity カレンダーAPI--><polygon fill="#FEFECE" filter="url(#f1ux0wl3wp306g)" points="96,267,106,257,228,257,228,293.4883,218,303.4883,96,303.4883,96,267" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="218" x2="227" y1="267" y2="258"/><line style="stroke: #000000; stroke-width: 1.5;" x1="96" x2="218" y1="267" y2="267"/><line style="stroke: #000000; stroke-width: 1.5;" x1="218" x2="218" y1="267" y2="303.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="92" x="111" y="290.5352">カレンダーAPI</text><!--link 部員 to カレンダーウェブ--><path d="M53.99,91.29 C60.81,111.2 68.75,134.36 74.43,150.93 " fill="none" id="部員-カレンダーウェブ" style="stroke: #A80036; stroke-width: 1.0;"/><!--reverse link 認証API to カレンダーウェブ--><path d="M117.34,72.33 C109.58,94.44 97.64,128.45 89.82,150.72 " fill="none" id="認証API&lt;-カレンダーウェブ" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="119.02,67.53,112.2685,74.7006,117.3663,72.2486,119.8183,77.3464,119.02,67.53" style="stroke: #A80036; stroke-width: 1.0;"/><!--link カレンダーウェブ to カレンダーAPI--><path d="M98.97,197.06 C112.54,214.7 131.49,239.34 145.06,256.98 " fill="none" id="カレンダーウェブ-カレンダーAPI" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M123.3088,217.1041 A10,10 0 0 0 112.0991 225.7262" fill="#FFFFFF" style="stroke: #A80036; stroke-width: 1.5;"/><ellipse cx="122.015" cy="227.02" fill="#FFFFFF" rx="6" ry="6" style="stroke: #A80036; stroke-width: 1.5;"/><!--link カレンダーAPI to 集会データ--><path d="M162,303.01 C162,322.62 162,350.9 162,368.86 " fill="none" id="カレンダーAPI-集会データ" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M154.9289,343.6248 A10,10 0 0 0 169.0711 343.6248" fill="#FFFFFF" style="stroke: #A80036; stroke-width: 1.5;"/><ellipse cx="162" cy="336.5538" fill="#FFFFFF" rx="6" ry="6" style="stroke: #A80036; stroke-width: 1.5;"/><!--link Slackアプリ to カレンダーAPI--><path d="M228.79,192.17 C215.21,209.83 194.01,237.39 179.14,256.72 " fill="none" id="Slackアプリ-カレンダーAPI" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M214.3647,222.5251 A10,10 0 0 0 203.1551 213.9028" fill="#FFFFFF" style="stroke: #A80036; stroke-width: 1.5;"/><ellipse cx="204.4488" cy="223.8188" fill="#FFFFFF" rx="6" ry="6" style="stroke: #A80036; stroke-width: 1.5;"/><!--
+@startuml structure
+
+actor 部員
+agent 認証API
+agent Slackアプリ
+
+node カレンダーウェブ
+
+node カレンダーAPI
+
+database データベース {
+  storage 集会データ
+}
+
+部員 - - カレンダーウェブ
+
+認証API <- - カレンダーウェブ
+カレンダーウェブ -(0- カレンダーAPI
+カレンダーAPI -0)- 集会データ
+
+Slackアプリ -(0- カレンダーAPI
+
+@enduml
+
+PlantUML version 1.2019.09(Tue Aug 27 01:19:51 JST 2019)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 1.8.0_131-b11
+Operating System: Mac OS X
+OS Version: 10.15.3
+Default Encoding: UTF-8
+Language: ja
+Country: JP
+--></g></svg>

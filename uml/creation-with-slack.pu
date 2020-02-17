@@ -1,0 +1,26 @@
+@startuml creation-with-slack
+
+== Installation ==
+
+autonumber
+
+User -> "Club Calendar": Add App to their workspace
+"Club Calendar" -> "Slack API": Redirect to permit
+"Slack API" -> User: Request permissions
+User --> "Slack API": Grant
+"Slack API" -> "Club Calendar": Pass an Acces Token
+"Club Calendar" -> "Slack API": Add a slash command
+
+== Creation ==
+
+autonumber
+
+User -> "Slack API": Use the command
+"Slack API" -> "Club Calendar": Call modal API
+"Club Calendar" -> "Slack API": Send a modal
+"Slack API" -> User: Show a modal
+User --> "Slack API": Submit
+"Slack API" -> "Club Calendar": Call submit API
+"Club Calendar" --> "Slack API": Notify to done
+
+@enduml

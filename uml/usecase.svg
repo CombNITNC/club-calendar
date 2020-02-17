@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="183px" preserveAspectRatio="none" style="width:347px;height:183px;" version="1.1" viewBox="0 0 347 183" width="347px" zoomAndPan="magnify"><defs><filter height="300%" id="f1jgh4x17zf6pn" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--cluster カレンダー--><rect fill="#FFFFFF" filter="url(#f1jgh4x17zf6pn)" height="148" style="stroke: #000000; stroke-width: 1.5;" width="166" x="170" y="24"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="70" x="218" y="39.5352">カレンダー</text><ellipse cx="252.9975" cy="74.159" fill="#FEFECE" filter="url(#f1jgh4x17zf6pn)" rx="52.4975" ry="14.659" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="217.9975" y="78.9031">集会を見る</text><ellipse cx="253.0324" cy="139.8065" fill="#FEFECE" filter="url(#f1jgh4x17zf6pn)" rx="67.0324" ry="15.8065" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="204.0324" y="144.5506">集会を変更する</text><!--entity 部員--><ellipse cx="111" cy="28.5" fill="#FEFECE" filter="url(#f1jgh4x17zf6pn)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><path d="M111,36.5 L111,63.5 M98,44.5 L124,44.5 M111,63.5 L98,78.5 M111,63.5 L124,78.5 " fill="none" filter="url(#f1jgh4x17zf6pn)" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="97" y="99.0352">部員</text><!--entity 部長--><ellipse cx="21" cy="76.5" fill="#FEFECE" filter="url(#f1jgh4x17zf6pn)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><path d="M21,84.5 L21,111.5 M8,92.5 L34,92.5 M21,111.5 L8,126.5 M21,111.5 L34,126.5 " fill="none" filter="url(#f1jgh4x17zf6pn)" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="7" y="147.0352">部長</text><!--link 部長 to 部員--><path d="M36.14,100.29 C47.43,94.13 63.69,85.26 78.07,77.41 " fill="none" id="部長-&gt;部員" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="74.99,71.12,95.9,67.69,81.69,83.42,74.99,71.12" style="stroke: #A80036; stroke-width: 1.0;"/><!--link 部員 to 集会を見る--><path d="M126.19,61.42 C143.07,63.11 172.24,66.02 198.24,68.62 " fill="none" id="部員-&gt;集会を見る" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="203.39,69.14,194.8355,64.2594,198.4151,68.6397,194.0349,72.2193,203.39,69.14" style="stroke: #A80036; stroke-width: 1.0;"/><!--link 部長 to 集会を変更する--><path d="M36.18,110.17 C51.07,112.43 75.17,116.05 96,119 C126.44,123.31 160.25,127.89 188.59,131.67 " fill="none" id="部長-&gt;集会を変更する" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="193.82,132.36,185.4237,127.212,188.8634,131.7029,184.3724,135.1426,193.82,132.36" style="stroke: #A80036; stroke-width: 1.0;"/><!--
+@startuml usecase
+
+left to right direction
+
+actor 部員
+actor 部長
+
+部長 - -|> 部員
+
+rectangle カレンダー {
+  部員 - -> (集会を見る)
+  部長 - -> (集会を変更する)
+}
+
+@enduml
+
+PlantUML version 1.2019.09(Tue Aug 27 01:19:51 JST 2019)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 1.8.0_131-b11
+Operating System: Mac OS X
+OS Version: 10.15.3
+Default Encoding: UTF-8
+Language: ja
+Country: JP
+--></g></svg>

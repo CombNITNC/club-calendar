@@ -1,4 +1,4 @@
-@startuml ユースケース
+@startuml usecase
 
 left to right direction
 
@@ -9,8 +9,7 @@ actor 部長
 
 rectangle カレンダー {
   部員 --> (集会を見る)
-  部長 --> (集会を作る)
-  部長 --> (集会を中止する)
+  部長 --> (集会を変更する)
 }
 
 @enduml
