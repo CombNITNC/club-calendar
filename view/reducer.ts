@@ -2,7 +2,6 @@ import { Reducer } from 'react';
 import { Meeting, MeetingKind, DateString } from '../lib';
 
 export type State = {
-  root: string;
   meetings: Meeting[];
   showing: Date;
   creationModal: 'none' | 'regular' | 'others';

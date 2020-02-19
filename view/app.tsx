@@ -11,9 +11,8 @@ import { Regular } from './creation/regular';
 import { Others } from './creation/others';
 import { Menu } from './creation/menu';
 
-const App: FC<{ root: string }> = ({ root }) => {
+const App: FC = () => {
   const [state, dispatchRoot] = useReducer(MeetingsReducer, {
-    root,
     meetings: [],
     requesting: false,
     creationModal: 'none',
