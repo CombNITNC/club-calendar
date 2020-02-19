@@ -20,7 +20,7 @@ const MeetingSchema = new Schema(
   { versionKey: false }
 );
 
-const uri = process.env.DB_HOST || 'mongodb://example.com';
+const uri = process.env.DB_HOST || 'mysql://meetings@localhost:3306';
 
 let con: Connection | null = null;
 let Meetings: Model<MeetingDocument> | null = null;

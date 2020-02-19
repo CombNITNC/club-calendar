@@ -32,15 +32,17 @@
 
 ## 設定
 
-| 環境変数               | 説明                        | デフォルト値            |
-| ---------------------- | --------------------------- | ----------------------- |
-| `API_PORT`             | API サーバーのポート        | `3080`                  |
-| `DB_HOST`              | 接続する DB の URI          | `mongodb://example.com` |
-| `DB_USER`              | 接続する DB のユーザ        | なし                    |
-| `DB_PASS`              | 接続する DB のパスワード    | なし                    |
-| `SLACK_CLIENT_SECRET`  | Slack API の秘密鍵          | なし                    |
-| `SLACK_SIGNING_SECRET` | Slack API の署名鍵          | なし                    |
-| `SLACK_OAUTH_TOKEN`    | Slack API の OAuth トークン | なし                    |
+| 環境変数               | 説明                        | デフォルト値                      |
+| ---------------------- | --------------------------- | --------------------------------- |
+| `API_PORT`             | API サーバーのポート        | `3080`                            |
+| `AUTH_PUBLIC`          | 認証サーバーの公開鍵        | なし                              |
+| `AUTH_HMAC_KEY`        | 認証サーバーの HMAC 暗号鍵  | なし                              |
+| `DB_HOST`              | 接続する DB の URI          | `mysql://meetings@localhost:3306` |
+| `DB_USER`              | 接続する DB のユーザ        | なし                              |
+| `DB_PASS`              | 接続する DB のパスワード    | なし                              |
+| `SLACK_CLIENT_SECRET`  | Slack API の秘密鍵          | なし                              |
+| `SLACK_SIGNING_SECRET` | Slack API の署名鍵          | なし                              |
+| `SLACK_OAUTH_TOKEN`    | Slack API の OAuth トークン | なし                              |
 
 ## 使い方
 
