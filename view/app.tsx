@@ -11,12 +11,14 @@ import { Regular } from './creation/regular';
 import { Others } from './creation/others';
 import { Menu } from './creation/menu';
 
-const App: FC = () => {
+const App: FC<{ defaultShowing?: Date }> = ({
+  defaultShowing = new Date(),
+}) => {
   const [state, dispatchRoot] = useReducer(MeetingsReducer, {
     meetings: [],
     requesting: false,
     creationModal: 'none',
-    showing: new Date(),
+    showing: new Date(defaultShowing),
   });
   const dispatch = MeetingsMiddleware(state, dispatchRoot);
   const { meetings, requesting } = state;
