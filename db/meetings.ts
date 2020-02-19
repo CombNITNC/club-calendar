@@ -1,47 +1,21 @@
-import mongoose, { Schema, Model, Document, Connection } from 'mongoose';
-import { MeetingKind } from '../lib';
-
-export interface MeetingDocument extends Document {
-  _id: string;
-  name: string;
-  kind: MeetingKind;
-  date: number;
-  expired: boolean;
-}
-
-const MeetingSchema = new Schema(
-  {
-    _id: String,
-    name: String,
-    kind: { type: String, match: /Regular|Others/ },
-    date: Number,
-    expired: Boolean,
-  },
-  { versionKey: false }
-);
+import mysql, { Connection } from 'mysql';
 
 const uri = process.env.DB_HOST || 'mysql://meetings@localhost:3306';
 
 let con: Connection | null = null;
-let Meetings: Model<MeetingDocument> | null = null;
 
-export const GetMeetings = (): Model<MeetingDocument> => {
+export const GetMeetings = (): Connection => {
   if (con == null) {
     console.log('connecting to DB ' + process.env.DB_HOST);
-    con = mongoose.createConnection(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      dbName: 'meetings',
-      user: process.env.DB_USER,
-      pass: process.env.DB_PASS,
+    con = mysql.createConnection({
+      host: uri,
+      password: process.env.DB_PASS,
     });
-    con.on('error', () => console.error('DB connection failure'));
-    con.once('open', () => {
+    con.connect(e => {
+      if (e) console.error(e.message);
       console.log('connected to DB ' + process.env.DB_HOST);
     });
+    con.on('error', e => console.error(`DB connection failure ${e}`));
   }
-  if (Meetings == null) {
-    Meetings = con.model('Meetings', MeetingSchema);
-  }
-  return Meetings;
+  return con;
 };

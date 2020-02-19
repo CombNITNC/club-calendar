@@ -38,7 +38,6 @@
 | `AUTH_PUBLIC`          | 認証サーバーの公開鍵        | なし                              |
 | `AUTH_HMAC_KEY`        | 認証サーバーの HMAC 暗号鍵  | なし                              |
 | `DB_HOST`              | 接続する DB の URI          | `mysql://meetings@localhost:3306` |
-| `DB_USER`              | 接続する DB のユーザ        | なし                              |
 | `DB_PASS`              | 接続する DB のパスワード    | なし                              |
 | `SLACK_CLIENT_SECRET`  | Slack API の秘密鍵          | なし                              |
 | `SLACK_SIGNING_SECRET` | Slack API の署名鍵          | なし                              |
