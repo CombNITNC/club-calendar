@@ -1,6 +1,13 @@
 import mysql, { Connection } from 'mysql';
-import { Meeting, Duration, Repository } from '..';
-import { MeetingKind } from '../exp/meeting';
+import {
+  Meeting,
+  Duration,
+  Repository,
+  MeetingKind,
+  MeetingQueryNode,
+  transform,
+} from '..';
+import { MySQLQuery } from './mysql-query';
 
 type Param = [string, MeetingKind, string, Date, boolean];
 
@@ -53,10 +60,17 @@ export class MySQLRepository implements Repository {
     });
   }
 
-  getAll(): Promise<Meeting[]> {
+  get(query: MeetingQueryNode): Promise<Meeting[]> {
     return new Promise((resolve, reject) => {
-      this.con.query('SELECT * FROM `con`', (e, results: Param[]) =>
-        e ? reject(e) : resolve(results.map(fromParam))
+      const additionalQuery =
+        0 < query.length
+          ? 'WHERE ' + transform(query, MySQLQuery)(this.con)
+          : '';
+
+      this.con.query(
+        'SELECT * FROM `con`' + additionalQuery,
+        (e, results: Param[]) =>
+          e ? reject(e) : resolve(results.map(fromParam))
       );
     });
   }

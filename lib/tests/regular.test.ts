@@ -1,12 +1,46 @@
 import {
+  FetchService,
   CreateService,
   UpdateService,
   AbortService,
   Duration,
   Meeting,
 } from '..';
+import { transform } from '../abst/meeting-query';
+import { BoolQuery } from '../skin/bool-query';
 
 const regularName = '定例会';
+test('定例会の取得', done => {
+  FetchService(
+    {
+      askQuery: async () => [
+        'and',
+        ['holdAfter', new Date('2019-04-10')],
+        ['holdBefore', new Date('2019-04-20')],
+      ],
+      show: async meetings => {
+        expect(meetings).toEqual([
+          Meeting.regular(regularName, new Date('2019-04-10')),
+          Meeting.regular(regularName, new Date('2019-04-15')),
+          Meeting.regular(regularName, new Date('2019-04-20')),
+        ]);
+        done();
+      },
+    },
+    {
+      get: async query =>
+        [
+          Meeting.regular(regularName, new Date('2019-04-08')),
+          Meeting.regular(regularName, new Date('2019-04-10')),
+          Meeting.regular(regularName, new Date('2019-04-15')),
+          Meeting.regular(regularName, new Date('2019-04-22')),
+          Meeting.regular(regularName, new Date('2019-04-20')),
+          Meeting.regular(regularName, new Date('2019-04-29')),
+        ].filter(e => transform(query, BoolQuery)(e)),
+    }
+  );
+});
+
 test('定例会の登録1', done => {
   CreateService(
     {

@@ -22,10 +22,11 @@ export type FetchOutput = {
    *
    * @returns {Promise<Meeting[]>}
    */
-  getAll(): Promise<Meeting[]>;
+  get(query: MeetingQueryNode): Promise<Meeting[]>;
 };
 
 export const FetchService = async (input: FetchInput, output: FetchOutput) => {
-  const fetched = await output.getAll();
+  const query = await input.askQuery();
+  const fetched = await output.get(query);
   return input.show(fetched);
 };

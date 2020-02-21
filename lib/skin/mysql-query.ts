@@ -1,9 +1,9 @@
 import { MeetingQuery } from '..';
 import { Connection } from 'mysql';
 
-type MySQLQueryBuilder = (con: Connection) => string;
+type MySQLQueryNode = (con: Connection) => string;
 
-export const MySQLQuery: MeetingQuery<MySQLQueryBuilder> = {
+export const MySQLQuery: MeetingQuery<MySQLQueryNode> = {
   isId: id => con => '`id` = ' + con.escape(id),
   named: name => con => '`name` = ' + con.escape(name),
   isKind: kind => con => '`kind` = ' + con.escape(kind),

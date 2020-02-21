@@ -23,10 +23,10 @@ export type MeetingQueryNode =
   | ['or', MeetingQueryNode, MeetingQueryNode]
   | ['not', MeetingQueryNode];
 
-export function transform<T, U extends MeetingQuery<T>>(
-  node: MeetingQueryNode,
-  target: U
-): T {
+export function transform<
+  T extends MeetingQuery<U>,
+  U = T extends MeetingQuery<infer V> ? V : never
+>(node: MeetingQueryNode, target: T): U {
   switch (node[0]) {
     case 'isId':
       return target.isId(node[1]);
