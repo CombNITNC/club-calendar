@@ -22,7 +22,7 @@ const fromParam = (p: Param): Meeting => ({
 
 const uri = process.env.DB_HOST || 'mysql://con@localhost:3306';
 
-export class RealRepository implements Repository {
+export class MySQLRepository implements Repository {
   private con: Connection;
 
   constructor() {

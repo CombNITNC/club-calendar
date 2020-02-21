@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 
 import {
   ExpressClient,
-  RealRepository,
+  MySQLRepository,
   FetchService,
   CreateService,
   UpdateService,
@@ -13,7 +13,7 @@ import {
 } from '../lib';
 
 const repo = new (process.env.NODE_ENV === 'production'
-  ? RealRepository
+  ? MySQLRepository
   : OnMemoryRepository)();
 
 const withLib = (fn: (client: Client, repository: Repository) => void) => (

@@ -14,7 +14,11 @@
   - fetch -- 集会を取得
   - update -- 集会を修正
   - abort -- 集会を中止
-- skin -- op に必要な外部の実装
+- abst -- op に必要な外部を抽象化したもの
+  - client -- サーバーにアクセスしてくる存在
+  - repository -- データベース
+  - meeting-query -- クエリ処理
+- skin -- abst の様々な実装
   - express -- Express サーバー
   - on-memory -- メモリ上で動作するテスト向けレポジトリ
   - mysql -- MySQL レポジトリ

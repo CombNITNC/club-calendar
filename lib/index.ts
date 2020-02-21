@@ -1,18 +1,10 @@
-import { AbortInput, AbortOutput } from './op/abort';
-import { CreateInput, CreateOutput } from './op/create';
-import { FetchInput, FetchOutput } from './op/fetch';
-import { UpdateInput, UpdateOutput } from './op/update';
-import { Meeting } from './exp/meeting';
-
 export * from './exp/duration';
 export * from './exp/meeting';
 export * from './exp/date-string';
 
-export type Client = AbortInput & CreateInput & FetchInput & UpdateInput;
-export type Repository = AbortOutput &
-  CreateOutput &
-  FetchOutput &
-  UpdateOutput;
+export * from './abst/meeting-query';
+export * from './abst/client';
+export * from './abst/repository';
 
 export * from './op/abort';
 export * from './op/create';
@@ -22,6 +14,8 @@ export * from './op/update';
 export * from './skin/express';
 export * from './skin/on-memory';
 export * from './skin/mysql';
+
+import { Meeting } from './exp/meeting';
 
 export const testDatas: Meeting[] = [
   {
