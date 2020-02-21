@@ -48,10 +48,7 @@ export class ExpressClient implements Client {
   }
   async askDuration(): Promise<Duration> {
     const { date: dateStr } = this.query;
-    if (!DateString.ableTo(dateStr)) {
-      throw 'invalid queries';
-    }
-    const date = DateString.from(dateStr).toDate();
+    const date = DateString.to(dateStr).toDate();
     return new Duration(date, date);
   }
   async reportCreatedIds(ids: string[]): Promise<void> {

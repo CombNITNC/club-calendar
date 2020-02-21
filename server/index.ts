@@ -12,7 +12,9 @@ import {
   Repository,
 } from '../lib';
 
-const app = express();
+const repo = new (process.env.NODE_ENV === 'production'
+  ? RealRepository
+  : OnMemoryRepository)();
 
 const withLib = (fn: (client: Client, repository: Repository) => void) => (
   req: Request,
@@ -20,9 +22,6 @@ const withLib = (fn: (client: Client, repository: Repository) => void) => (
 ) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   const client = new ExpressClient(req, res);
-  const repo = new (process.env.NODE_ENV === 'production'
-    ? RealRepository
-    : OnMemoryRepository)();
   try {
     fn(client, repo);
   } catch (e) {
@@ -30,6 +29,8 @@ const withLib = (fn: (client: Client, repository: Repository) => void) => (
     res.sendStatus(500);
   }
 };
+
+const app = express();
 
 app.get('/meetings', withLib(FetchService));
 

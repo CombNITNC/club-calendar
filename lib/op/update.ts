@@ -1,6 +1,11 @@
 import { Meeting } from '..';
 
 export type UpdateInput = {
+  /**
+   * Returns an id of the meeting to update.
+   *
+   * @returns {Promise<string>}
+   */
   askId(): Promise<string>;
   askParam(): Promise<UpdateParam>;
 };
@@ -8,7 +13,19 @@ export type UpdateInput = {
 export type UpdateParam = { name?: string; date?: Date };
 
 export type UpdateOutput = {
+  /**
+   * Returns a meeting from `id`.
+   *
+   * @param {string} id
+   * @returns {Promise<Meeting>}
+   */
   find(id: string): Promise<Meeting>;
+  /**
+   * Overwrites database with `meetings`.
+   *
+   * @param {...Meeting[]} meetings
+   * @returns {Promise<void>}
+   */
   update(...meetings: Meeting[]): Promise<void>;
 };
 

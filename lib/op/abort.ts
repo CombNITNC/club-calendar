@@ -1,11 +1,29 @@
 import { Meeting } from '..';
 
 export type AbortInput = {
+  /**
+   * Returns an id of the meeting to abort.
+   *
+   * @returns {Promise<string>}
+   */
   askIdToAbort(): Promise<string>;
 };
 
 export type AbortOutput = {
+  /**
+   * Returns a meeting from `id`.
+   *
+   * @param {string} id
+   * @returns {Promise<Meeting>}
+   */
   find(id: string): Promise<Meeting>;
+
+  /**
+   * Overwrites database with `meetings`.
+   *
+   * @param {...Meeting[]} meetings
+   * @returns {Promise<void>}
+   */
   update(...meetings: Meeting[]): Promise<void>;
 };
 

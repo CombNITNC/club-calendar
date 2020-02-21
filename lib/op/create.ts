@@ -1,12 +1,34 @@
 import { Meeting, Duration } from '..';
 
 export type CreateInput = {
+  /**
+   * Returns a meeting to add to database.
+   *
+   * @returns {Promise<Meeting>}
+   */
   askMeeting(): Promise<Meeting>;
+  /**
+   * Returns a duration of to add meetings.
+   *
+   * @returns {Promise<Duration>}
+   */
   askDuration(): Promise<Duration>;
+  /**
+   * Presents created ids to an user.
+   *
+   * @param {string[]} ids
+   * @returns {Promise<void>}
+   */
   reportCreatedIds(ids: string[]): Promise<void>;
 };
 
 export type CreateOutput = {
+  /**
+   * Saves meetings to database.
+   *
+   * @param {...Meeting[]} meetings
+   * @returns {Promise<string[]>}
+   */
   save(...meetings: Meeting[]): Promise<string[]>;
 };
 

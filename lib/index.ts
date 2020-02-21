@@ -21,7 +21,7 @@ export * from './op/update';
 
 export * from './skin/express';
 export * from './skin/on-memory';
-export * from './skin/real';
+export * from './skin/mysql';
 
 export const testDatas: Meeting[] = [
   {

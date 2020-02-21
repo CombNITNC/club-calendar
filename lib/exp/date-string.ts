@@ -1,3 +1,9 @@
+/**
+ * Expresses a string of Date
+ *
+ * @export
+ * @class DateString
+ */
 export class DateString {
   public readonly str: string;
 
@@ -5,32 +11,41 @@ export class DateString {
     this.str = date.toString();
   }
 
-  static from(str: any) {
-    if (typeof str !== 'string' || Date.parse(str) == NaN) {
-      throw 'str cannot be converted to Date';
-    }
-    return new DateString(new Date(str));
-  }
-
+  /**
+   * Creates a Date.
+   *
+   * @returns
+   * @memberof DateString
+   */
   toDate() {
     return new Date(this.str);
   }
 
-  static to(obj: any): DateString {
-    if (!this.ableTo(obj)) {
+  /**
+   * Creates a DateString from a string `str`
+   *
+   * @static
+   * @param {*} str
+   * @returns
+   * @memberof DateString
+   */
+  static to(str: any): DateString {
+    if (!this.ableTo(str)) {
       throw 'obj cannot convert to DateString';
     }
-    const str = new DateString(new Date(obj));
-    return str;
+    const obj = new DateString(new Date(str));
+    return obj;
   }
 
-  static ableTo(obj: any): boolean {
-    return typeof obj === 'string' && Date.parse(obj) != NaN;
-  }
-
-  toFormValueString() {
-    return this.toDate()
-      .toISOString()
-      .slice(0, 10);
+  /**
+   * Returns whether `str` can convert to a DateString.
+   *
+   * @static
+   * @param {*} str
+   * @returns {boolean}
+   * @memberof DateString
+   */
+  static ableTo(str: any): boolean {
+    return typeof str === 'string' && Date.parse(str) != NaN;
   }
 }

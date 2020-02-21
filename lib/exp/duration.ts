@@ -1,3 +1,9 @@
+/**
+ * Expresses a range of dates
+ *
+ * @export
+ * @class Duration
+ */
 export class Duration {
   readonly from: Date;
   readonly to: Date;
