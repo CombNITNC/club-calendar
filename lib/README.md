@@ -17,11 +17,13 @@
 - abst -- op に必要な外部を抽象化したもの
   - client -- サーバーにアクセスしてくる存在
   - repository -- データベース
-  - meeting-query -- クエリ処理
+  - meeting-query -- 集会クエリ
 - skin -- abst の様々な実装
   - express -- Express サーバー
   - on-memory -- メモリ上で動作するテスト向けレポジトリ
   - mysql -- MySQL レポジトリ
+  - bool-query -- 真偽値のみの集会クエリの実装
+  - mysql-query -- MySQL 用の集会クエリの実装
 - tests -- op のテスト
   - regular.test.ts -- 定例会に関する処理のテスト
   - others.test.ts -- その他の集会に関する処理のテスト
