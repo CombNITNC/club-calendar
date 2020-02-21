@@ -1,6 +1,12 @@
-import { Meeting } from '..';
+import { MeetingQueryNode, Meeting } from '..';
 
 export type FetchInput = {
+  /**
+   * Returns a query of fecthing.
+   *
+   * @returns {Promise<MeetingQueryNode>}
+   */
+  askQuery(): Promise<MeetingQueryNode>;
   /**
    * Presents meetings to an user.
    *

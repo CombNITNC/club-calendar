@@ -7,6 +7,7 @@ import {
   validateKind,
 } from '..';
 import { Request, Response } from 'express';
+import { MeetingQueryNode } from '../abst/meeting-query';
 
 export class ExpressClient implements Client {
   query: { [key: string]: string } = {};
@@ -29,6 +30,29 @@ export class ExpressClient implements Client {
   }
 
   // Fetch
+  async askQuery(): Promise<MeetingQueryNode> {
+    const queries: MeetingQueryNode[] = [];
+    if ('kind' in this.query && validateKind(this.query.kind)) {
+      queries.push(['isKind', this.query.kind]);
+    }
+    if ('from' in this.query && DateString.ableTo(this.query.from)) {
+      const date = DateString.to(this.query.from).toDate();
+      queries.push(['holdAfter', date]);
+    }
+    if ('to' in this.query && DateString.ableTo(this.query.to)) {
+      const date = DateString.to(this.query.to).toDate();
+      queries.push(['holdBefore', date]);
+    }
+    if (
+      'expired' in this.query &&
+      (this.query.expired === 'true' || this.query.expired === 'false')
+    ) {
+      queries.push(['isExpired', this.query.expired === 'true']);
+    }
+    /* kind, from, to, expired */
+    return queries.reduce((prev, q) => ['and', prev, q]);
+  }
+
   async show(meetings: Meeting[]): Promise<void> {
     this.res.send({
       meetings: meetings.map(m => ({ ...m, date: m.date.toString() })),
