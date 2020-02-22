@@ -3,7 +3,7 @@ import { Meeting } from '../../lib';
 
 const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
   <>
-    <div onClick={e => e.preventDefault()}>
+    <a href={'./' + encodeURIComponent(meeting._id)}>
       <p>{meeting.name}</p>
       <p>
         {meeting.date
@@ -17,9 +17,9 @@ const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
           .padStart(2, '0')}
         ~
       </p>
-    </div>
+    </a>
     <style jsx>{`
-      div {
+      a {
         position: relative;
         margin: 0;
         text-align: center;
