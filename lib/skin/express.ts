@@ -49,7 +49,7 @@ export class ExpressClient implements Client {
     ) {
       queries.push(['isExpired', this.query.expired === 'true']);
     }
-    /* kind, from, to, expired */
+    if (queries.length <= 0) return ['everything'];
     return queries.reduce((prev, q) => ['and', prev, q]);
   }
 

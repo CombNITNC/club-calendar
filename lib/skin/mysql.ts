@@ -63,9 +63,9 @@ export class MySQLRepository implements Repository {
   get(query: MeetingQueryNode): Promise<Meeting[]> {
     return new Promise((resolve, reject) => {
       const additionalQuery =
-        0 < query.length
-          ? 'WHERE ' + transform(query, MySQLQuery)(this.con)
-          : '';
+        query[0] === 'everything'
+          ? ''
+          : 'WHERE ' + transform(query, MySQLQuery)(this.con);
 
       this.con.query(
         'SELECT * FROM `con`' + additionalQuery,

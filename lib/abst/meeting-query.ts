@@ -1,6 +1,7 @@
 import { MeetingKind } from '../exp/meeting';
 
 export type MeetingQuery<T> = {
+  everything(): T;
   isId(id: string): T;
   named(name: string): T;
   isKind(kind: MeetingKind): T;
@@ -13,6 +14,7 @@ export type MeetingQuery<T> = {
 };
 
 export type MeetingQueryNode =
+  | ['everything']
   | ['isId', string]
   | ['named', string]
   | ['isKind', MeetingKind]
@@ -28,6 +30,8 @@ export function transform<
   U = T extends MeetingQuery<infer V> ? V : never
 >(node: MeetingQueryNode, target: T): U {
   switch (node[0]) {
+    case 'everything':
+      return target.everything();
     case 'isId':
       return target.isId(node[1]);
     case 'named':

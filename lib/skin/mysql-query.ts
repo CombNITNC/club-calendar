@@ -4,6 +4,7 @@ import { Connection } from 'mysql';
 type MySQLQueryNode = (con: Connection) => string;
 
 export const MySQLQuery: MeetingQuery<MySQLQueryNode> = {
+  everything: () => _con => '',
   isId: id => con => '`id` = ' + con.escape(id),
   named: name => con => '`name` = ' + con.escape(name),
   isKind: kind => con => '`kind` = ' + con.escape(kind),
