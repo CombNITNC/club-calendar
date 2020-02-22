@@ -12,7 +12,7 @@ import { MeetingQueryNode } from '../abst/meeting-query';
 export class ExpressClient implements Client {
   query: { [key: string]: string } = {};
   constructor(req: Request, private res: Response) {
-    const query = req.query;
+    const { query } = req;
     if (typeof query === 'object') {
       for (const [k, v] of Object.entries(query)) {
         if (typeof v !== 'string') continue;
@@ -20,9 +20,17 @@ export class ExpressClient implements Client {
       }
     }
 
-    const params = req.params;
+    const { params } = req;
     if (typeof params === 'object') {
       for (const [k, v] of Object.entries(params)) {
+        if (typeof v !== 'string') continue;
+        this.query[k] = v;
+      }
+    }
+
+    const { body } = req;
+    if (typeof body === 'object') {
+      for (const [k, v] of Object.entries(body)) {
         if (typeof v !== 'string') continue;
         this.query[k] = v;
       }
