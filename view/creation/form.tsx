@@ -1,11 +1,4 @@
-import {
-  FC,
-  ChangeEvent,
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-} from 'react';
+import { FC, ChangeEvent, useState } from 'react';
 
 export type SchemeKind = 'string' | 'number' | 'date' | 'option' | 'check';
 

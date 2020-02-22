@@ -2,7 +2,7 @@ import { useReducer, FC } from 'react';
 
 import { DateString, Meeting } from '../lib';
 
-import { MeetingsReducer, MeetingsMiddleware } from './reducer';
+import { MeetingsReducer, MeetingsMiddleware } from './main-reducer';
 import { Modal } from './modal';
 
 import Calendar from './calendar/calendar';

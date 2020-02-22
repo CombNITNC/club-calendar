@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { EditView } from '../view/edit/edit-view';
+import { EditView } from '../view/details/details-view';
 
 const Details: NextPage<{ id?: string }> = ({ id }) => <EditView id={id} />;
 
