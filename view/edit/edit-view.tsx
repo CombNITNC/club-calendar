@@ -29,7 +29,9 @@ export const EditView: FC<{ id?: string }> = ({ id }) => {
   }
   return (
     <>
-      <Link href={'../'}>Back</Link>
+      <Link href={'../'}>
+        <a>Back</a>
+      </Link>
       <div>{content}</div>
     </>
   );
