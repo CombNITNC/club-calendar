@@ -1,4 +1,6 @@
 import { Meeting, Repository, testDatas } from '..';
+import { MeetingQueryNode, transform } from '../abst/meeting-query';
+import { BoolQuery } from './bool-query';
 
 export class OnMemoryRepository implements Repository {
   meetings: Meeting[] = testDatas;
@@ -15,8 +17,8 @@ export class OnMemoryRepository implements Repository {
     return addedIds;
   };
 
-  getAll = async (): Promise<Meeting[]> => {
-    return this.meetings;
+  get = async (query: MeetingQueryNode): Promise<Meeting[]> => {
+    return this.meetings.filter(m => transform(query, BoolQuery)(m));
   };
 
   find = async (id: string): Promise<Meeting> => {
