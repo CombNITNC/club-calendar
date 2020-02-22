@@ -32,6 +32,9 @@ export class ExpressClient implements Client {
   // Fetch
   async askQuery(): Promise<MeetingQueryNode> {
     const queries: MeetingQueryNode[] = [];
+    if ('id' in this.query && typeof this.query.id === 'string') {
+      queries.push(['isId', this.query.id]);
+    }
     if ('kind' in this.query && validateKind(this.query.kind)) {
       queries.push(['isKind', this.query.kind]);
     }
