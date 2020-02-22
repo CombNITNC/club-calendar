@@ -2,10 +2,9 @@ import { Reducer } from 'react';
 import { Meeting, MeetingKind, DateString } from '../lib';
 
 export type State = {
-  meetings: Meeting[];
+  loading: ['pending'] | ['fetching'] | ['failed'] | ['loaded', Meeting[]];
   showing: Date;
   creationModal: 'none' | 'regular' | 'others';
-  requesting: boolean;
 };
 
 export type Action =
@@ -42,16 +41,18 @@ export const MeetingsReducer: Reducer<State, Action> = (
   state: State,
   action: Action
 ) => {
+  if (action.type === 'refresh') {
+    return { ...state, loading: ['fetching'] };
+  }
   if (action.type === 'fetch-end') {
     return {
       ...state,
-      meetings: action.newMeetings,
-      requesting: false,
+      loading: ['loaded', action.newMeetings],
       showing: action.newMeetings[0].date,
     };
   }
   if (['abort', 'update', 'refresh', 'new'].some(v => v === action.type)) {
-    return { ...state, requesting: true };
+    return { ...state, loading: ['fetching'] };
   }
   if (action.type === 'go-next-month') {
     return { ...state, showing: moveMonth(state.showing, 1) };
