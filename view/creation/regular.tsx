@@ -9,11 +9,11 @@ const schema = {
   期間: {
     開始: {
       type: 'date' as const,
-      value: '2020-01-01',
+      value: new DateString(new Date()).toDatetimeLocal(),
     },
     終了: {
       type: 'date' as const,
-      value: '2020-01-01',
+      value: new DateString(new Date()).toDatetimeLocal(),
     },
   },
 };

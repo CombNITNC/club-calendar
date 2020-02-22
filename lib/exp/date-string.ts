@@ -22,6 +22,18 @@ export class DateString {
   }
 
   /**
+   * Convert to a string for input, kind of datetime-local
+   *
+   * @returns
+   * @memberof DateString
+   */
+  toDatetimeLocal() {
+    const shift = this.toDate().getTime() + 9 * 60 * 60 * 1000;
+    const time = new Date(shift).toISOString().split('.')[0];
+    return time;
+  }
+
+  /**
    * Creates a DateString from a string `str`
    *
    * @static

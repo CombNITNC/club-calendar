@@ -47,6 +47,7 @@ export const DayCell: FC<DayCellProps> = ({ pos, day, meeting }) => {
           grid-column: ${x};
           grid-row: ${Math.ceil((pos + 1) / 7)};
           color: ${color};
+          cursor: pointer;
         }
       `}</style>
     </>

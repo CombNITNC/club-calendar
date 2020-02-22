@@ -23,7 +23,13 @@ const schemeElement = (
     case 'string':
       return <input defaultValue={v.value} onChange={setter(v)} />;
     case 'date':
-      return <input type="date" defaultValue={v.value} onChange={setter(v)} />;
+      return (
+        <input
+          type="datetime-local"
+          defaultValue={v.value}
+          onChange={setter(v)}
+        />
+      );
     case 'number':
       return (
         <input type="number" defaultValue={v.value} onChange={setter(v)} />
@@ -84,13 +90,12 @@ export function Form<S extends Schema, T>(
     const [sent, setSent] = useState(false);
     const [value, setValue] = useState(defaultValue);
     const [errors, setErrors] = useState<string[]>([]);
-    const isValidValue = errors.length === 0;
 
     const setter = (ref: Scheme) => (e: ChangeEvent<HTMLInputElement>) => {
       const input = e.target.value;
       const cloned = { ...value };
       ref.value = input;
-      console.log(value);
+
       const newErrors = validator(value);
       if (newErrors.length !== 0) {
         setValue(cloned); // Go back to as before
@@ -103,7 +108,7 @@ export function Form<S extends Schema, T>(
         {formElements(value, setter)}
         <button
           onClick={() => {
-            if (!isValidValue) {
+            if (0 < validator(value).length) {
               return;
             }
             setSent(true);
@@ -115,7 +120,7 @@ export function Form<S extends Schema, T>(
         </button>
         <ul>
           {errors.map(e => (
-            <li>{e}</li>
+            <li key={e}>{e}</li>
           ))}
         </ul>
         {sent && <span>送信しました</span>}
