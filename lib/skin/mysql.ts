@@ -27,7 +27,8 @@ const fromParam = (p: Param): Meeting => ({
   expired: p[4],
 });
 
-const uri = process.env.DB_HOST || 'mysql://con@localhost:3306';
+const uri = process.env.DB_HOST || '127.0.0.1';
+const user = process.env.DB_USER || 'meetings';
 
 export class MySQLRepository implements Repository {
   private con: Connection;
@@ -36,13 +37,18 @@ export class MySQLRepository implements Repository {
     console.log('connecting to DB ' + process.env.DB_HOST);
     this.con = mysql.createConnection({
       host: uri,
+      user,
       password: process.env.DB_PASS,
+      database: 'meetings',
+      insecureAuth: true,
     });
     this.con.connect(e => {
-      if (e) console.error(e.message);
+      if (e) {
+        console.error(`DB connection failure: ${e}`);
+        return;
+      }
       console.log('connected to DB ' + process.env.DB_HOST);
     });
-    this.con.on('error', e => console.error(`DB connection failure ${e}`));
   }
 
   save(...con: Meeting[]): Promise<string[]> {
@@ -52,37 +58,25 @@ export class MySQLRepository implements Repository {
         [] as Param[]
       );
       this.con.query(
-        'INSERT INTO `con` (id, kind, name, date, expired) VALUES ?',
+        'INSERT INTO `meetings` (id, kind, name, date, expired) VALUES ?',
         params,
-        (e, results: Param[]) =>
-          e ? reject(e) : resolve(results.map(p => p[0][0]))
+        (e, results: Meeting[]) =>
+          e ? reject(e) : resolve(results.map(p => p._id))
       );
     });
   }
 
   get(query: MeetingQueryNode): Promise<Meeting[]> {
-    return new Promise((resolve, reject) => {
-      const additionalQuery =
-        query[0] === 'everything'
-          ? ''
-          : 'WHERE ' + transform(query, MySQLQuery)(this.con);
+    const additionalQuery =
+      query[0] === 'everything'
+        ? ''
+        : 'WHERE ' + transform(query, MySQLQuery)(this.con);
 
-      this.con.query(
-        'SELECT * FROM `con`' + additionalQuery,
-        (e, results: Param[]) =>
-          e ? reject(e) : resolve(results.map(fromParam))
-      );
-    });
-  }
-
-  read(duration: Duration): Promise<Meeting[]> {
-    const { from, to } = duration;
     return new Promise((resolve, reject) => {
       this.con.query(
-        'SELECT * FROM `con` WHERE `date` BETWEEN ? AND ?',
-        [from, to],
-        (e, results: Param[]) =>
-          e ? reject(e) : resolve(results.map(fromParam))
+        'SELECT * FROM `meetings`' + additionalQuery,
+        (e, results: Meeting[]) =>
+          e ? reject(e) : resolve(results.map(e => ({ ...e })))
       );
     });
   }
@@ -90,7 +84,7 @@ export class MySQLRepository implements Repository {
   find(id: string): Promise<Meeting> {
     return new Promise((resolve, reject) => {
       this.con.query(
-        'SELECT * FROM `con` WHERE `id` = ?',
+        'SELECT * FROM `meetings` WHERE `id` = ?',
         [id],
         (e, results: Param[]) => {
           if (e) reject(e);
@@ -108,7 +102,7 @@ export class MySQLRepository implements Repository {
         m =>
           new Promise((resolve, reject) => {
             this.con.query(
-              'UPDATE `con` SET ? WHERE `id` = ?',
+              'UPDATE `meetings` SET ? WHERE `id` = ?',
               [toParam(m), m._id],
               e => (e ? reject(e) : resolve())
             );
