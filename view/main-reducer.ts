@@ -81,10 +81,13 @@ const refresh = async (state: State, dispatch: (action: Action) => void) => {
     const { meetings } = await (await fetch(apiRoot + 'meetings')).json();
     dispatch({
       type: 'fetch-end',
-      newMeetings: meetings.map((m: Meeting & { date: string }) => ({
-        ...m,
-        date: new Date(m.date),
-      })),
+      newMeetings: meetings.map(
+        (m: Meeting & { id: string; date: string }) => ({
+          ...m,
+          _id: m.id,
+          date: new Date(m.date),
+        })
+      ),
     });
   } catch (e) {
     console.error(e);
