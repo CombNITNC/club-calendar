@@ -1,7 +1,6 @@
 import mysql, { Connection } from 'mysql';
 import {
   Meeting,
-  Duration,
   Repository,
   MeetingKind,
   MeetingQueryNode,
@@ -9,23 +8,28 @@ import {
 } from '..';
 import { MySQLQuery } from './mysql-query';
 
-type Param = [string, MeetingKind, string, Date, boolean];
+type Param = {
+  id: string;
+  kind: MeetingKind;
+  name: string;
+  date: Date;
+  expired: boolean;
+};
 
-const toParam = (m: Meeting): Param => [
-  m._id,
-  m.kind,
-  m.name,
-  m.date,
-  m.expired,
-];
+const toParam = (m: Meeting): Param => {
+  const p = { ...m };
+  delete p._id;
+  return {
+    ...p,
+    id: m._id,
+  };
+};
 
-const fromParam = (p: Param): Meeting => ({
-  _id: p[0],
-  kind: p[1],
-  name: p[2],
-  date: p[3],
-  expired: p[4],
-});
+const fromParam = (p: Param): Meeting => {
+  const m = { ...p };
+  delete m.id;
+  return { _id: p.id, ...m };
+};
 
 const uri = process.env.DB_HOST || '127.0.0.1';
 const user = process.env.DB_USER || 'meetings';
@@ -52,18 +56,18 @@ export class MySQLRepository implements Repository {
   }
 
   save(...con: Meeting[]): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-      const params = con.reduce(
-        (prev, curr) => [...prev, toParam(curr)],
-        [] as Param[]
-      );
-      this.con.query(
-        'INSERT INTO `meetings` (id, kind, name, date, expired) VALUES ?',
-        params,
-        (e, results: Meeting[]) =>
-          e ? reject(e) : resolve(results.map(p => p._id))
+    const promises = con.map(m => {
+      const set = { ...m, id: m._id };
+      delete set._id;
+      return new Promise<string>((resolve, reject) =>
+        this.con.query(
+          'INSERT INTO `meetings` SET ?',
+          set,
+          (e, result: Param) => (e ? reject(e) : resolve(result.id))
+        )
       );
     });
+    return Promise.all(promises);
   }
 
   get(query: MeetingQueryNode): Promise<Meeting[]> {
@@ -75,8 +79,8 @@ export class MySQLRepository implements Repository {
     return new Promise((resolve, reject) => {
       this.con.query(
         'SELECT * FROM `meetings`' + additionalQuery,
-        (e, results: Meeting[]) =>
-          e ? reject(e) : resolve(results.map(e => ({ ...e })))
+        (e, results: Param[]) =>
+          e ? reject(e) : resolve(results.map(fromParam))
       );
     });
   }
@@ -84,13 +88,10 @@ export class MySQLRepository implements Repository {
   find(id: string): Promise<Meeting> {
     return new Promise((resolve, reject) => {
       this.con.query(
-        'SELECT * FROM `meetings` WHERE `id` = ?',
+        'SELECT * FROM `meetings` WHERE `id` = ? LIMIT 1',
         [id],
         (e, results: Param[]) => {
-          if (e) reject(e);
-          const found = results.map(fromParam);
-          if (found.length != 1) reject('no such mettings found');
-          resolve(found[0]);
+          return e ? reject(e) : resolve(fromParam(results[0]));
         }
       );
     });

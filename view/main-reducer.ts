@@ -106,6 +106,7 @@ export const MeetingsMiddleware = (
   if (action.type === 'new-regular') {
     const res = await fetch(apiRoot + 'meetings', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         kind: 'Regular',
         name: action.meeting.name,
@@ -121,6 +122,7 @@ export const MeetingsMiddleware = (
   if (action.type === 'new-others') {
     const res = await fetch(apiRoot + 'meetings', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         kind: 'Others',
         name: action.meeting.name,
@@ -136,6 +138,7 @@ export const MeetingsMiddleware = (
   if (action.type === 'update') {
     const res = await fetch(apiRoot + `meetings/${action.id}`, {
       method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         kind: action.kind,
         name: action.name,

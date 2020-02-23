@@ -62,6 +62,7 @@ CREATE TABLE meetings (
   expired BOOLEAN NOT NULL,
   PRIMARY KEY (id)
 );
+ALTER TABLE meetings CONVERT TO CHARACTER SET utf8mb4;
 ```
 
 
