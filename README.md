@@ -87,7 +87,7 @@ ALTER TABLE meetings CONVERT TO CHARACTER SET utf8mb4;
 {
   "meetings": [
     {
-      "_id": "hoge",
+      "id": "hoge",
       "kind": "Others",
       "name": "ホゲ談義",
       "date": "2019-12-12T12:12:00",
