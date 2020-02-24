@@ -1,6 +1,11 @@
-import { Meeting, Repository, testDatas } from '..';
-import { MeetingQueryNode, transform } from '../abst/meeting-query';
-import { BoolQuery } from './bool-query';
+import {
+  Meeting,
+  Repository,
+  MeetingQueryNode,
+  transform,
+  BoolQuery,
+  testDatas,
+} from '..';
 
 export class OnMemoryRepository implements Repository {
   meetings: Meeting[] = testDatas;

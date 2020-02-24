@@ -5,8 +5,8 @@ import {
   MeetingKind,
   MeetingQueryNode,
   transform,
+  MySQLQuery,
 } from '..';
-import { MySQLQuery } from './mysql-query';
 
 type Param = {
   id: string;

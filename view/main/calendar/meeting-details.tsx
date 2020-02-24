@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Meeting } from '../../lib';
+import { Meeting } from '../../../lib';
 
 const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
   <>

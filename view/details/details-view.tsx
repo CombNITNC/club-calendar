@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { FC } from 'react';
-import { Meeting, DateString } from '../lib';
-import { Form } from './creation/form';
+import { Meeting, DateString } from '../../lib';
+import { Form } from '../components/creation/form';
+import { ShadowedButton } from '../components/button';
+import { Title } from '../components/text';
 
 const detailsForm = (meeting: Meeting) => {
   const schema = {
@@ -56,24 +58,10 @@ export const DetailsView: FC<{ meeting?: Meeting }> = ({ meeting }) => {
   return (
     <>
       <Link href={'../'}>
-        <div>戻る</div>
+        <ShadowedButton>戻る</ShadowedButton>
       </Link>
-      <h1>集会情報の編集</h1>
+      <Title>集会情報の編集</Title>
       {content}
-      <style jsx>{`
-        h1 {
-          color: darkblue;
-        }
-        h3 {
-          margin: 0;
-        }
-        div {
-          width: 10em;
-          box-shadow: 1px 1px 5px gray;
-          text-align: center;
-          cursor: pointer;
-        }
-      `}</style>
     </>
   );
 };

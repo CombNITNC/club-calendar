@@ -1,5 +1,4 @@
-import { MeetingQuery } from '../abst/meeting-query';
-import { Meeting } from '../exp/meeting';
+import { MeetingQuery, Meeting } from '..';
 
 type BoolQueryNode = (meeting: Meeting) => boolean;
 

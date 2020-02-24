@@ -14,6 +14,8 @@ export * from './op/update';
 export * from './skin/express';
 export * from './skin/on-memory';
 export * from './skin/mysql';
+export * from './skin/bool-query';
+export * from './skin/mysql-query';
 
 import { Meeting } from './exp/meeting';
 

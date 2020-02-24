@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import App from '../view/app';
+import App from '../view/main/main-view';
 
 const Index: NextPage<{ defaultShowing?: Date }> = ({ defaultShowing }) => (
   <App defaultShowing={defaultShowing} />

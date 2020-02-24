@@ -1,6 +1,7 @@
 import { FC, ReactElement } from 'react';
-import { Meeting } from '../../lib';
+import { Meeting } from '../../../lib';
 import { DayCell } from './day-cell';
+import { ShadowedButton } from '../../components/button';
 
 const dayOffset = (date: Date): number => {
   const _date = new Date(date);
@@ -51,27 +52,20 @@ const MonthNav: FC<{ day: Date; goNext: () => void; goPrev: () => void }> = ({
 }) => (
   <>
     <div className="month-nav">
-      <span className="button" onClick={() => goPrev()}>
-        〈
-      </span>
-      <span>
+      <div>
+        <ShadowedButton onClick={() => goPrev()}>〈</ShadowedButton>
+      </div>
+      <div>
         {day.getFullYear()}年{day.getMonth() + 1}月
-      </span>
-      <span className="button" onClick={() => goNext()}>
-        〉
-      </span>
+      </div>
+      <div>
+        <ShadowedButton onClick={() => goNext()}>〉</ShadowedButton>
+      </div>
     </div>
     <style jsx>{`
       div {
         display: flex;
-        margin: 0 auto;
-      }
-      span {
-        flex: auto;
-        text-align: center;
-      }
-      .button {
-        box-shadow: 1px 1px 5px gray;
+        justify-content: space-around;
       }
     `}</style>
   </>

@@ -12,9 +12,9 @@ export class DateString {
   }
 
   /**
-   * Creates a Date.
+   * Creates a Date from this.str.
    *
-   * @returns
+   * @returns {Date} A Date from this.str.
    * @memberof DateString
    */
   toDate() {
@@ -24,7 +24,7 @@ export class DateString {
   /**
    * Convert to a string for input, kind of datetime-local
    *
-   * @returns
+   * @returns {string} A value of <input type="datetime-local" />
    * @memberof DateString
    */
   toDatetimeLocal() {
@@ -38,7 +38,7 @@ export class DateString {
    *
    * @static
    * @param {*} str
-   * @returns
+   * @returns {DateString} A DateString from a string `str`
    * @memberof DateString
    */
   static to(str: any): DateString {
@@ -54,7 +54,7 @@ export class DateString {
    *
    * @static
    * @param {*} str
-   * @returns {boolean}
+   * @returns {boolean} Whether `str` can convert to a DateString.
    * @memberof DateString
    */
   static ableTo(str: any): boolean {

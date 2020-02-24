@@ -4,20 +4,20 @@ export type CreateInput = {
   /**
    * Returns a meeting to add to database.
    *
-   * @returns {Promise<Meeting>}
+   * @returns {Promise<Meeting>} A meeting to add to database.
    */
   askMeeting(): Promise<Meeting>;
   /**
    * Returns a duration of to add meetings.
    *
-   * @returns {Promise<Duration>}
+   * @returns {Promise<Duration>} A duration of to add meetings.
    */
   askDuration(): Promise<Duration>;
   /**
    * Presents created ids to an user.
    *
    * @param {string[]} ids
-   * @returns {Promise<void>}
+   * @returns {Promise<void>} Resolves when done.
    */
   reportCreatedIds(ids: string[]): Promise<void>;
 };
@@ -27,7 +27,7 @@ export type CreateOutput = {
    * Saves meetings to database.
    *
    * @param {...Meeting[]} meetings
-   * @returns {Promise<string[]>}
+   * @returns {Promise<string[]>} Resolve with saved ids when done.
    */
   save(...meetings: Meeting[]): Promise<string[]>;
 };

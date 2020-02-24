@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { ShadowedButton } from '../button';
 
 export const Menu: FC<{
   items: string[];
@@ -7,8 +8,10 @@ export const Menu: FC<{
   <>
     <div className="menu-box">
       {items.map((e, i) => (
-        <div key={i} className="menu-item" onClick={() => onClick(i)}>
-          {e}
+        <div key={i} className="menu-item">
+          <ShadowedButton key={i} onClick={() => onClick(i)}>
+            {e}
+          </ShadowedButton>
         </div>
       ))}
     </div>
@@ -19,15 +22,11 @@ export const Menu: FC<{
         flex-flow: column nowrap;
         bottom: 1em;
         right: 1em;
-        box-shadow: 1px 1px 2px lightgray;
-        cursor: pointer;
       }
       .menu-item {
-        padding: 0.5em;
+        margin: 12px 0 0 0;
         height: 2em;
         font-size: 16pt;
-        border-radius: 2px;
-        border: 1px solid gray;
         background-color: white;
       }
     `}</style>

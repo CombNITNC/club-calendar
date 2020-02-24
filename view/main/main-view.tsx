@@ -1,15 +1,16 @@
 import { useReducer, FC } from 'react';
 
-import { DateString, Meeting } from '../lib';
+import { DateString, Meeting } from '../../lib';
 
 import { MeetingsReducer, MeetingsMiddleware } from './main-reducer';
-import { Modal } from './modal';
+import { Modal } from '../components/modal';
 
 import Calendar from './calendar/calendar';
 
-import { Regular } from './creation/regular';
-import { Others } from './creation/others';
-import { Menu } from './creation/menu';
+import { Regular } from '../components/creation/regular';
+import { Others } from '../components/creation/others';
+import { Menu } from '../components/creation/menu';
+import { Title } from '../components/text';
 
 const App: FC<{ defaultShowing?: Date }> = ({
   defaultShowing = new Date(),
@@ -103,16 +104,8 @@ const App: FC<{ defaultShowing?: Date }> = ({
   }
   return (
     <>
-      <h1>部内カレンダー</h1>
+      <Title>部内カレンダー</Title>
       {content}
-      <style jsx>{`
-        h1 {
-          color: darkblue;
-        }
-        h3 {
-          margin: 0;
-        }
-      `}</style>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { FC, useState, useRef } from 'react';
-import { Meeting } from '../../lib';
+import { Meeting } from '../../../lib';
 import MeetingDetails from './meeting-details';
 
 type DayCellProps = {

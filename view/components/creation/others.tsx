@@ -1,5 +1,5 @@
 import { Form } from './form';
-import { DateString } from '../../lib';
+import { DateString } from '../../../lib';
 
 const schema = {
   名前: {

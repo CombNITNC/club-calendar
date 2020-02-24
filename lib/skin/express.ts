@@ -4,10 +4,10 @@ import {
   Meeting,
   Duration,
   DateString,
+  MeetingQueryNode,
   validateKind,
 } from '..';
 import { Request, Response } from 'express';
-import { MeetingQueryNode } from '../abst/meeting-query';
 
 export class ExpressClient implements Client {
   query: { [key: string]: string } = {};
@@ -65,7 +65,11 @@ export class ExpressClient implements Client {
   }
 
   async show(meetings: Meeting[]): Promise<void> {
-    const payload = meetings.map(m => ({ ...m, date: m.date.toString() }));
+    const payload = meetings.map(m => {
+      const p = { ...m, date: m.date.toString() };
+      delete p._id;
+      return { ...p, id: m._id };
+    });
     this.res.send({
       meetings: payload,
     });

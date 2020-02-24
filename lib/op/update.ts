@@ -4,7 +4,7 @@ export type UpdateInput = {
   /**
    * Returns an id of the meeting to update.
    *
-   * @returns {Promise<string>}
+   * @returns {Promise<string>} An id of the meeting to update.
    */
   askId(): Promise<string>;
   askParam(): Promise<UpdateParam>;
@@ -17,14 +17,14 @@ export type UpdateOutput = {
    * Returns a meeting from `id`.
    *
    * @param {string} id
-   * @returns {Promise<Meeting>}
+   * @returns {Promise<Meeting>} A meeting from `id`.
    */
   find(id: string): Promise<Meeting>;
   /**
    * Overwrites database with `meetings`.
    *
    * @param {...Meeting[]} meetings
-   * @returns {Promise<void>}
+   * @returns {Promise<void>} Resolves when done.
    */
   update(...meetings: Meeting[]): Promise<void>;
 };

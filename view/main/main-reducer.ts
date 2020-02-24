@@ -1,7 +1,7 @@
 import { Reducer } from 'react';
 import fetch from 'isomorphic-unfetch';
 
-import { Meeting, MeetingKind, DateString } from '../lib';
+import { Meeting, MeetingKind, DateString } from '../../lib';
 
 export type State = {
   loading: ['pending'] | ['fetching'] | ['failed'] | ['loaded', Meeting[]];

@@ -32,7 +32,7 @@ export class Meeting {
    * @static
    * @param {string} name
    * @param {Date} date
-   * @returns {Meeting}
+   * @returns {Meeting} A Meeting, the kind of regular
    * @memberof Meeting
    */
   static regular(name: string, date: Date): Meeting {
@@ -44,7 +44,7 @@ export class Meeting {
    * @static
    * @param {string} name
    * @param {Date} date
-   * @returns {Meeting}
+   * @returns {Meeting} A Meeting, the kind of others
    * @memberof Meeting
    */
   static others(name: string, date: Date): Meeting {
