@@ -66,16 +66,24 @@ const formElements = (
     if (!isScheme(v)) {
       return (
         <div key={key}>
-          <label>{key}</label>
-          {formElements(v, setter)}
+          <div>{key}</div>
+          <div className="paragraph">{formElements(v, setter)}</div>
+          <style jsx>{`
+            .paragraph {
+              margin: 0 auto;
+              padding: 0 0 0 1em;
+            }
+          `}</style>
         </div>
       );
     }
     const body = schemeElement(key, v, setter);
     return (
       <div key={key}>
-        <label>{key}</label>
-        {body}
+        <label>
+          {key}
+          {body}
+        </label>
       </div>
     );
   });
