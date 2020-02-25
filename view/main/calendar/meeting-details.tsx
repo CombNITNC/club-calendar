@@ -1,23 +1,27 @@
+import Link from 'next/link';
 import { FC } from 'react';
+
 import { Meeting } from '../../../lib';
 
 const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
   <>
-    <a href={'./' + encodeURIComponent(meeting._id)}>
-      <p>{meeting.name}</p>
-      <p>
-        {meeting.date
-          .getHours()
-          ?.toString()
-          .padStart(2, '0')}
-        :
-        {meeting.date
-          .getMinutes()
-          ?.toString()
-          .padStart(2, '0')}
-        ~
-      </p>
-    </a>
+    <Link href={'./' + encodeURIComponent(meeting._id)}>
+      <a>
+        <p>{meeting.name}</p>
+        <p>
+          {meeting.date
+            .getHours()
+            ?.toString()
+            .padStart(2, '0')}
+          :
+          {meeting.date
+            .getMinutes()
+            ?.toString()
+            .padStart(2, '0')}
+          ~
+        </p>
+      </a>
+    </Link>
     <style jsx>{`
       a {
         position: relative;
