@@ -47,6 +47,12 @@ export const MeetingsReducer: Reducer<State, Action> = (
     return { ...state, loading: ['fetching'] };
   }
   if (action.type === 'fetch-end') {
+    if (action.newMeetings.length <= 0) {
+      return {
+        ...state,
+        loading: ['loaded', action.newMeetings],
+      };
+    }
     return {
       ...state,
       loading: ['loaded', action.newMeetings],

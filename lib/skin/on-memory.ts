@@ -4,11 +4,10 @@ import {
   MeetingQueryNode,
   transform,
   BoolQuery,
-  testDatas,
 } from '..';
 
 export class OnMemoryRepository implements Repository {
-  meetings: Meeting[] = testDatas;
+  meetings: Meeting[] = [];
   private incremental: number = 0;
 
   save = async (...meetings: Meeting[]): Promise<string[]> => {
