@@ -1,9 +1,7 @@
-const { parsed: localEnv } = require('dotenv').config();
-const webpack = require('webpack');
+const { parsed: env } = require('dotenv').config();
 
 module.exports = {
   webpack(config, { isServer }) {
-    config.plugins.push(new webpack.EnvironmentPlugin(localEnv));
     if (!isServer) {
       config.node = {
         fs: 'empty',
@@ -13,4 +11,5 @@ module.exports = {
     }
     return config;
   },
+  env,
 };

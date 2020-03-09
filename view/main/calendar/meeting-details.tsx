@@ -5,7 +5,7 @@ import { Meeting } from '../../../lib';
 
 const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
   <>
-    <Link href={'./' + encodeURIComponent(meeting._id)}>
+    <Link href={'./meetings/' + encodeURIComponent(meeting._id)}>
       <a>
         <p>{meeting.name}</p>
         <p>

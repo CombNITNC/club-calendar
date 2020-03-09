@@ -1,8 +1,8 @@
 import { NextPage } from 'next';
 import fetch from 'isomorphic-unfetch';
 
-import { DetailsView } from '../view/details/details-view';
-import { Meeting, DateString } from '../lib';
+import { DetailsView } from '../../view/details/details-view';
+import { Meeting, DateString } from '../../lib';
 
 const Details: NextPage<{ meeting?: Meeting }> = ({ meeting }) => (
   <DetailsView meeting={meeting} />

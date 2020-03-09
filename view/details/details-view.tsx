@@ -57,7 +57,7 @@ export const DetailsView: FC<{ meeting?: Meeting }> = ({ meeting }) => {
 
   return (
     <>
-      <Link href={'../'}>
+      <Link href={'../../'}>
         <ShadowedButton>戻る</ShadowedButton>
       </Link>
       <Title>集会情報の編集</Title>
