@@ -44,7 +44,7 @@ export const DetailsView: FC<{ meeting?: Meeting }> = ({ meeting }) => {
     const DetailsForm = detailsForm(meeting);
     content = (
       <DetailsForm
-        onClick={m => {
+        onSend={m => {
           fetch(apiRoot + 'meetings/' + encodeURIComponent(m._id), {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },

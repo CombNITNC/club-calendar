@@ -74,7 +74,7 @@ const App: FC<{ defaultShowing?: Date }> = ({
                   <Modal close={() => dispatch({ type: 'close-modal' })}>
                     <h3>新しい定例会</h3>
                     <Regular
-                      onClick={(v: { name: string; date: Date }) => {
+                      onSend={(v: { name: string; date: Date }) => {
                         dispatch({
                           type: 'new-regular',
                           meeting: Meeting.regular(v.name, v.date),
@@ -88,7 +88,7 @@ const App: FC<{ defaultShowing?: Date }> = ({
                   <Modal close={() => dispatch({ type: 'close-modal' })}>
                     <h3>新しいその他の集会</h3>
                     <Others
-                      onClick={(v: { name: string; date: Date }) => {
+                      onSend={(v: { name: string; date: Date }) => {
                         dispatch({
                           type: 'new-others',
                           meeting: Meeting.others(v.name, v.date),

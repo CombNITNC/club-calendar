@@ -93,8 +93,8 @@ export function Form<S extends Schema, T>(
   defaultValue: S,
   validator: (value: any) => string[],
   exporter: (value: S) => T
-): FC<{ onClick: (value: T) => void }> {
-  return ({ onClick }) => {
+): FC<{ onSend: (value: T) => void }> {
+  return ({ onSend }) => {
     const [sent, setSent] = useState(false);
     const [value, setValue] = useState(defaultValue);
     const [errors, setErrors] = useState<string[]>([]);
@@ -121,7 +121,7 @@ export function Form<S extends Schema, T>(
             }
             setSent(true);
             setTimeout(() => setSent(false), 1500);
-            onClick(exporter(value));
+            onSend(exporter(value));
           }}
         >
           送信
