@@ -1,11 +1,14 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, forwardRef, Ref } from 'react';
 
 export const ShadowedButton: FC<{
   onClick?: () => void;
   children?: ReactNode;
-}> = ({ onClick, children }) => (
+  ref?: Ref<HTMLDivElement>;
+}> = forwardRef(({ onClick, children }, ref) => (
   <>
-    <div onClick={onClick}>{children}</div>
+    <div onClick={onClick} ref={ref}>
+      {children}
+    </div>
     <style jsx>{`
       div {
         padding: 0 0.5em;
@@ -16,4 +19,4 @@ export const ShadowedButton: FC<{
       }
     `}</style>
   </>
-);
+));
