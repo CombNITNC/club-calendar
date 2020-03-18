@@ -36,6 +36,10 @@ export class OnMemoryRepository implements Repository {
   };
 
   update = async (...meetings: Meeting[]): Promise<void> => {
-    this.meetings = [...this.meetings, ...meetings];
+    const ids = meetings.map(m => m._id);
+    const removed = this.meetings.flatMap(m =>
+      ids.includes(m._id) ? [] : [m]
+    );
+    this.meetings = [...removed, ...meetings];
   };
 }
