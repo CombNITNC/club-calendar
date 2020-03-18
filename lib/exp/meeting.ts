@@ -50,4 +50,28 @@ export class Meeting {
   static others(name: string, date: Date): Meeting {
     return new Meeting(name, date, 'Others');
   }
+
+  static serialize(meeting: Meeting): SerializedMeeting {
+    const serial: SerializedMeeting = {
+      ...meeting,
+      date: meeting.date.toUTCString(),
+    };
+    return serial;
+  }
+
+  static deserialize(s: SerializedMeeting): Meeting {
+    const deserial: Meeting = {
+      ...s,
+      date: new Date(s.date),
+    };
+    return deserial;
+  }
 }
+
+export type SerializedMeeting = {
+  readonly _id: string;
+  readonly kind: MeetingKind;
+  readonly name: string;
+  readonly date: string;
+  readonly expired: boolean;
+};

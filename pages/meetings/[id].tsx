@@ -1,29 +1,42 @@
-import { NextPage } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import fetch from 'isomorphic-unfetch';
 
 import { DetailsView } from '../../view/details/details-view';
-import { Meeting, DateString } from '../../lib';
+import { SerializedMeeting, Meeting } from '../../lib';
 
-const Details: NextPage<{ meeting?: Meeting }> = ({ meeting }) => (
-  <DetailsView meeting={meeting} />
+type DetailsProps = { meeting?: SerializedMeeting };
+
+const Details: NextPage<DetailsProps> = ({ meeting }) => (
+  <DetailsView meeting={meeting && Meeting.deserialize(meeting)} />
 );
+
+export default Details;
 
 const apiRoot = process.env.API_ROOT || 'http://localhost:3080/';
 
-Details.getInitialProps = async ({ query }) => {
-  if (!('id' in query)) return {};
-
-  const id = typeof query.id === 'string' ? query.id : undefined;
-  if (id == null) return {};
-
-  const res = await fetch(apiRoot + 'meetings?id=' + encodeURIComponent(id));
-  const { meetings } = await res.json();
-  if (!(0 in meetings && DateString.ableTo(meetings[0].date))) {
-    return {};
+export const getServerSideProps: GetServerSideProps<DetailsProps> = async ({
+  params,
+  res,
+}) => {
+  if (params == null) {
+    res.end('Not found');
+    return { props: { meeting: undefined } };
   }
-  const m = meetings[0];
-  const meeting = { ...m, date: new Date(m.date) };
-  return { meeting };
-};
 
-export default Details;
+  const id = params.id || null;
+  if (typeof id !== 'string') {
+    res.end('Not found');
+    return { props: { meeting: undefined } };
+  }
+
+  const fetched = await fetch(
+    `${apiRoot}meetings?id=${encodeURIComponent(id)}`
+  );
+  const { meetings }: { meetings: SerializedMeeting[] } = await fetched.json();
+  if (!(0 in meetings)) {
+    res.end('Not found');
+    return { props: { meeting: undefined } };
+  }
+  const meeting = meetings[0];
+  return { props: { meeting } };
+};
