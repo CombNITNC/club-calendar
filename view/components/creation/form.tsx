@@ -1,4 +1,5 @@
 import { FC, ChangeEvent, useState } from 'react';
+import { Title } from '../text';
 
 export type SchemeKind = 'string' | 'number' | 'date' | 'option' | 'check';
 
@@ -93,8 +94,8 @@ export function Form<S extends Schema, T>(
   defaultValue: S,
   validator: (value: any) => string[],
   exporter: (value: S) => T
-): FC<{ onSend: (value: T) => void }> {
-  return ({ onSend }) => {
+): FC<{ onSend: (value: T) => void; title: string }> {
+  return ({ onSend, title }) => {
     const [sent, setSent] = useState(false);
     const [value, setValue] = useState(defaultValue);
     const [errors, setErrors] = useState<string[]>([]);
@@ -113,6 +114,7 @@ export function Form<S extends Schema, T>(
 
     return (
       <>
+        <Title>{title}</Title>
         {formElements(value, setter)}
         <button
           onClick={() => {

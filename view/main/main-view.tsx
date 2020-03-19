@@ -1,16 +1,15 @@
 import { useReducer, FC } from 'react';
 
-import { DateString, Meeting } from '../../lib';
+import { Meeting } from '../../lib';
 
-import { MeetingsReducer, MeetingsMiddleware } from './main-reducer';
 import { Modal } from '../components/modal';
-
-import Calendar from './calendar/calendar';
-
 import { Regular } from '../components/creation/regular';
 import { Others } from '../components/creation/others';
 import { Menu } from '../components/creation/menu';
 import { Title } from '../components/text';
+
+import { Calendar } from './calendar';
+import { MeetingsReducer, MeetingsMiddleware } from './main-reducer';
 
 const App: FC<{ defaultShowing?: Date }> = ({
   defaultShowing = new Date(),
@@ -63,8 +62,8 @@ const App: FC<{ defaultShowing?: Date }> = ({
               case 'regular':
                 return (
                   <Modal close={() => dispatch({ type: 'close-modal' })}>
-                    <h3>新しい定例会</h3>
                     <Regular
+                      title="新しい定例会"
                       onSend={(v: { name: string; date: Date }) => {
                         dispatch({
                           type: 'new-regular',
@@ -77,8 +76,8 @@ const App: FC<{ defaultShowing?: Date }> = ({
               case 'others':
                 return (
                   <Modal close={() => dispatch({ type: 'close-modal' })}>
-                    <h3>新しいその他の集会</h3>
                     <Others
+                      title="新しいその他の集会"
                       onSend={(v: { name: string; date: Date }) => {
                         dispatch({
                           type: 'new-others',

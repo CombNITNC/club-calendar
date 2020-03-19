@@ -100,7 +100,18 @@ const refresh = async (state: State, dispatch: (action: Action) => void) => {
   }
 };
 
-export const MeetingsMiddleware = (
+type Middleware = (
+  state: State,
+  dispatch: (action: Action) => void
+) => (action: Action) => Promise<void>;
+
+const connect = (...wares: Middleware[]): Middleware =>
+  wares.length === 1
+    ? wares[0]
+    : (state: State, dispatch: (action: Action) => void) =>
+        wares[0](state, connect(...wares.slice(1))(state, dispatch));
+
+const LibMiddleware: Middleware = (
   state: State,
   dispatch: (action: Action) => void
 ) => async (action: Action) => {
@@ -168,3 +179,5 @@ export const MeetingsMiddleware = (
     return;
   }
 };
+
+export const MeetingsMiddleware = connect(LibMiddleware);

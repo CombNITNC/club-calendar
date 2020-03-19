@@ -44,6 +44,7 @@ export const DetailsView: FC<{ meeting?: Meeting }> = ({ meeting }) => {
     const DetailsForm = detailsForm(meeting);
     content = (
       <DetailsForm
+        title="集会情報の編集"
         onSend={m => {
           fetch(apiRoot + 'meetings/' + encodeURIComponent(m._id), {
             method: 'PATCH',
@@ -60,7 +61,6 @@ export const DetailsView: FC<{ meeting?: Meeting }> = ({ meeting }) => {
       <Link href={'../../'}>
         <ShadowedButton>戻る</ShadowedButton>
       </Link>
-      <Title>集会情報の編集</Title>
       {content}
     </>
   );
