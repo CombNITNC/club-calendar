@@ -1,30 +1,16 @@
 import { Reducer } from 'react';
 import fetch from 'isomorphic-unfetch';
 
-import { Meeting, MeetingKind, DateString } from '../../lib';
+import { Meeting } from '../../lib';
+
+export type ModalKind = 'none' | 'regular' | 'others';
 
 export type State = {
-  loading: ['pending'] | ['fetching'] | ['failed'] | ['loaded', Meeting[]];
   showing: Date;
-  creationModal: 'none' | 'regular' | 'others';
+  creationModal: ModalKind;
 };
 
 export type Action =
-  | {
-      type: 'refresh';
-    }
-  | {
-      type: 'update';
-      id: string;
-      name: string;
-      kind: MeetingKind;
-      date: DateString;
-    }
-  | {
-      type: 'abort';
-      id: string;
-    }
-  | { type: 'fetch-end'; newMeetings: Meeting[] }
   | { type: 'go-next-month' }
   | { type: 'go-prev-month' }
   | { type: 'modal-regular' }
@@ -43,22 +29,6 @@ export const MeetingsReducer: Reducer<State, Action> = (
   state: State,
   action: Action
 ) => {
-  if (action.type === 'refresh') {
-    return { ...state, loading: ['fetching'] };
-  }
-  if (action.type === 'fetch-end') {
-    if (action.newMeetings.length <= 0) {
-      return {
-        ...state,
-        loading: ['loaded', action.newMeetings],
-      };
-    }
-    return {
-      ...state,
-      loading: ['loaded', action.newMeetings],
-      showing: action.newMeetings[0].date,
-    };
-  }
   if (['abort', 'update', 'refresh', 'new'].some(v => v === action.type)) {
     return { ...state, loading: ['fetching'] };
   }
@@ -82,24 +52,6 @@ export const MeetingsReducer: Reducer<State, Action> = (
 
 const apiRoot = process.env.API_ROOT || 'http://localhost:3080/';
 
-const refresh = async (state: State, dispatch: (action: Action) => void) => {
-  try {
-    const { meetings } = await (await fetch(apiRoot + 'meetings')).json();
-    dispatch({
-      type: 'fetch-end',
-      newMeetings: meetings.map(
-        (m: Meeting & { id: string; date: string }) => ({
-          ...m,
-          _id: m.id,
-          date: new Date(m.date),
-        })
-      ),
-    });
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 type Middleware = (
   state: State,
   dispatch: (action: Action) => void
@@ -111,15 +63,11 @@ const connect = (...wares: Middleware[]): Middleware =>
     : (state: State, dispatch: (action: Action) => void) =>
         wares[0](state, connect(...wares.slice(1))(state, dispatch));
 
-const LibMiddleware: Middleware = (
+const PostMiddleware: Middleware = (
   state: State,
   dispatch: (action: Action) => void
 ) => async (action: Action) => {
   dispatch(action);
-  if (action.type === 'refresh') {
-    await refresh(state, dispatch);
-    return;
-  }
   if (action.type === 'new-regular') {
     const res = await fetch(apiRoot + 'meetings', {
       method: 'POST',
@@ -133,7 +81,6 @@ const LibMiddleware: Middleware = (
     if (!res.ok) {
       console.error({ action });
     }
-    await refresh(state, dispatch);
     return;
   }
   if (action.type === 'new-others') {
@@ -149,35 +96,8 @@ const LibMiddleware: Middleware = (
     if (!res.ok) {
       console.error({ action });
     }
-    await refresh(state, dispatch);
-    return;
-  }
-  if (action.type === 'update') {
-    const res = await fetch(apiRoot + `meetings/${action.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        kind: action.kind,
-        name: action.name,
-        date: action.date,
-      }),
-    });
-    if (!res.ok) {
-      console.error({ action });
-    }
-    await refresh(state, dispatch);
-    return;
-  }
-  if (action.type === 'abort') {
-    const res = await fetch(apiRoot + `${action.id}/expire`, {
-      method: 'PATCH',
-    });
-    if (!res.ok) {
-      console.error({ action });
-    }
-    await refresh(state, dispatch);
     return;
   }
 };
 
-export const MeetingsMiddleware = connect(LibMiddleware);
+export const MeetingsMiddleware = connect(PostMiddleware);
