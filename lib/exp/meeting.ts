@@ -54,6 +54,7 @@ export class Meeting {
   static serialize(meeting: Meeting): SerializedMeeting {
     const serial: SerializedMeeting = {
       ...meeting,
+      id: meeting._id,
       date: meeting.date.toUTCString(),
     };
     return serial;
@@ -62,6 +63,7 @@ export class Meeting {
   static deserialize(s: SerializedMeeting): Meeting {
     const deserial: Meeting = {
       ...s,
+      _id: s.id,
       date: new Date(s.date),
     };
     return deserial;
@@ -69,7 +71,7 @@ export class Meeting {
 }
 
 export type SerializedMeeting = {
-  readonly _id: string;
+  readonly id: string;
   readonly kind: MeetingKind;
   readonly name: string;
   readonly date: string;
