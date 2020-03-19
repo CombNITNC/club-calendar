@@ -15,12 +15,8 @@ const dayOffset = (date: Date): number => {
 const DayGrid: FC<{
   day: Date;
   meetings: Meeting[];
-  onSelect: (element: HTMLElement, meeting: Meeting) => void;
+  onSelect: (element: HTMLElement, meetings: Meeting[]) => void;
 }> = ({ day, meetings, onSelect }) => {
-  const meetingsByDay = meetings.reduce<{ [key: number]: Meeting }>(
-    (prev, curr) => ({ ...prev, [curr.date.getDate()]: curr }),
-    {}
-  );
   const dayCells: ReactElement[] = [];
   let i = new Date(day);
   i.setDate(1);
@@ -29,13 +25,13 @@ const DayGrid: FC<{
     i.getMonth() === day.getMonth();
     i.setDate(i.getDate() + 1), ++e
   ) {
-    const m = meetingsByDay[e];
+    const m: Meeting[] = meetings.filter(m => m.date.getDate() === e);
     dayCells.push(
       <DayCell
         pos={e + dayOffset(day)}
         day={e}
         key={e}
-        meeting={m}
+        hasMeeting={0 < m?.length}
         onClick={ref => onSelect(ref, m)}
       />
     );
@@ -105,11 +101,11 @@ const Calendar: FC<{
   goPrev: () => void;
 }> = ({ showing, meetings, goNext, goPrev }) => {
   type CalendarSelection = {
-    meeting: Meeting;
+    meetings: Meeting[];
     element: HTMLElement;
   };
   const [selection, setSelection] = useState<CalendarSelection | null>(null);
-
+  console.log(selection);
   return (
     <>
       <MonthNav day={showing} goPrev={goPrev} goNext={goNext} />
@@ -122,14 +118,14 @@ const Calendar: FC<{
         onSelect={
           (e, m) =>
             setSelection(old =>
-              old?.element == e ? null : { meeting: m, element: e }
+              old?.element == e ? null : { meetings: m, element: e }
             ) // If selected the same element, toggle it
         }
       />
       {selection == null ? (
         <></>
       ) : (
-        <DayFinder toStick={selection.element} meeting={selection.meeting} />
+        <DayFinder toStick={selection.element} meetings={selection.meetings} />
       )}
     </>
   );

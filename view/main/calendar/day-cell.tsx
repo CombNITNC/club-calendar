@@ -1,14 +1,18 @@
 import { FC, useRef } from 'react';
-import { Meeting } from '../../../lib';
 
 type DayCellProps = {
   pos: number;
   day: number;
-  meeting?: Meeting;
+  hasMeeting: boolean;
   onClick: (ref: HTMLDivElement) => void;
 };
 
-export const DayCell: FC<DayCellProps> = ({ pos, day, meeting, onClick }) => {
+export const DayCell: FC<DayCellProps> = ({
+  pos,
+  day,
+  hasMeeting,
+  onClick,
+}) => {
   const x = (pos % 7) + 1;
   const color = x === 7 ? 'darkblue' : x === 1 ? 'darkred' : 'black';
   const ref = useRef<HTMLDivElement>(null);
@@ -17,7 +21,7 @@ export const DayCell: FC<DayCellProps> = ({ pos, day, meeting, onClick }) => {
       <div
         ref={ref}
         onClick={e => {
-          if (meeting == null || ref.current != e.target) return;
+          if (!hasMeeting || ref.current != e.target) return;
           onClick(ref.current);
         }}
       >
@@ -35,12 +39,12 @@ export const DayCell: FC<DayCellProps> = ({ pos, day, meeting, onClick }) => {
           grid-row: ${Math.ceil((pos + 1) / 7)};
           color: ${color};
           cursor: pointer;
-          ${meeting == null
-            ? ''
-            : `
+          ${hasMeeting
+            ? `
           background-color: darkcyan;
           color: white;
-          `}
+          `
+            : ''}
         }
       `}</style>
     </>

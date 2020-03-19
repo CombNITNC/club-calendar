@@ -3,30 +3,33 @@ import { FC } from 'react';
 
 import { Meeting } from '../../../lib';
 
-const DayFinder: FC<{ toStick: HTMLElement; meeting: Meeting }> = ({
+const DayFinder: FC<{ toStick: HTMLElement; meetings: Meeting[] }> = ({
   toStick,
-  meeting,
+  meetings,
 }) => (
   <>
-    <Link href={'./meetings/' + encodeURIComponent(meeting._id)}>
-      <a>
-        <p>{meeting.name}</p>
-        <p>
-          {meeting.date
-            .getHours()
-            ?.toString()
-            .padStart(2, '0')}
-          :
-          {meeting.date
-            .getMinutes()
-            ?.toString()
-            .padStart(2, '0')}
-          ~
-        </p>
-      </a>
-    </Link>
+    <span>
+      {meetings.map((meeting, i) => (
+        <Link key={i} href={'./meetings/' + encodeURIComponent(meeting._id)}>
+          <a>
+            {meeting.name}
+            {' - '}
+            {meeting.date
+              .getHours()
+              ?.toString()
+              .padStart(2, '0')}
+            :
+            {meeting.date
+              .getMinutes()
+              ?.toString()
+              .padStart(2, '0')}
+            ~
+          </a>
+        </Link>
+      ))}
+    </span>
     <style jsx>{`
-      a {
+      span {
         position: absolute;
         text-align: center;
         top: ${toStick.offsetTop + toStick.clientHeight}px;
@@ -38,6 +41,10 @@ const DayFinder: FC<{ toStick: HTMLElement; meeting: Meeting }> = ({
         box-sizing: border-box;
         box-shadow: 2px 4px 5px darkgray;
         z-index: 2;
+      }
+      a {
+        display: inline-block;
+        margin: 0.5em 0;
       }
       div:before {
         content: '';
