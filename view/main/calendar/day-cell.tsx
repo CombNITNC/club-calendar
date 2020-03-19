@@ -10,14 +10,7 @@ type DayCellProps = {
 
 export const DayCell: FC<DayCellProps> = ({ pos, day, meeting }) => {
   const x = (pos % 7) + 1;
-  const color =
-    meeting != null
-      ? 'darkgreen'
-      : x === 7
-      ? 'darkblue'
-      : x === 1
-      ? 'darkred'
-      : 'black';
+  const color = x === 7 ? 'darkblue' : x === 1 ? 'darkred' : 'black';
   const [showingDetails, setShowingDetails] = useState(false);
   const ref = useRef(null);
   return (
@@ -48,6 +41,12 @@ export const DayCell: FC<DayCellProps> = ({ pos, day, meeting }) => {
           grid-row: ${Math.ceil((pos + 1) / 7)};
           color: ${color};
           cursor: pointer;
+          ${meeting == null
+            ? ''
+            : `
+          background-color: darkcyan;
+          color: white;
+          `}
         }
       `}</style>
     </>
