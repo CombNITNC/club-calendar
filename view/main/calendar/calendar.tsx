@@ -32,7 +32,7 @@ const DayGrid: FC<{
         day={e}
         key={e}
         hasMeeting={0 < m?.length}
-        onClick={ref => onSelect(ref, m)}
+        onSelect={ref => onSelect(ref, m)}
       />
     );
   }

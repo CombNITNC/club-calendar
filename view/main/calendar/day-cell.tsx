@@ -4,14 +4,14 @@ type DayCellProps = {
   pos: number;
   day: number;
   hasMeeting: boolean;
-  onClick: (ref: HTMLDivElement) => void;
+  onSelect: (ref: HTMLDivElement) => void;
 };
 
 export const DayCell: FC<DayCellProps> = ({
   pos,
   day,
   hasMeeting,
-  onClick,
+  onSelect,
 }) => {
   const x = (pos % 7) + 1;
   const color = x === 7 ? 'darkblue' : x === 1 ? 'darkred' : 'black';
@@ -22,7 +22,7 @@ export const DayCell: FC<DayCellProps> = ({
         ref={ref}
         onClick={e => {
           if (!hasMeeting || ref.current != e.target) return;
-          onClick(ref.current);
+          onSelect(ref.current);
         }}
       >
         {day}
