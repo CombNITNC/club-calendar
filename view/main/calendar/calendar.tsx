@@ -95,7 +95,6 @@ const MonthNav: FC<{ day: Date; goNext: () => void; goPrev: () => void }> = ({
 const Calendar: FC<{
   showing: Date;
   meetings: Meeting[];
-  onChange: (newMeeting: Meeting) => void;
   disabled: boolean;
   goNext: () => void;
   goPrev: () => void;
@@ -108,7 +107,17 @@ const Calendar: FC<{
   console.log(selection);
   return (
     <>
-      <MonthNav day={showing} goPrev={goPrev} goNext={goNext} />
+      <MonthNav
+        day={showing}
+        goPrev={() => {
+          setSelection(null);
+          goPrev();
+        }}
+        goNext={() => {
+          setSelection(null);
+          goNext();
+        }}
+      />
       <p></p>
       <DayGrid
         day={showing}

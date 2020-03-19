@@ -42,15 +42,6 @@ const App: FC<{ defaultShowing?: Date }> = ({
             showing={state.showing}
             meetings={meetings}
             disabled={requesting}
-            onChange={newMeeting => {
-              const { _id, date } = newMeeting;
-              dispatch({
-                type: 'update',
-                ...newMeeting,
-                id: _id,
-                date: new DateString(date),
-              });
-            }}
             goNext={() => dispatch({ type: 'go-next-month' })}
             goPrev={() => dispatch({ type: 'go-prev-month' })}
           />
