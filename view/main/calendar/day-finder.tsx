@@ -3,7 +3,10 @@ import { FC } from 'react';
 
 import { Meeting } from '../../../lib';
 
-const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
+const DayFinder: FC<{ toStick: HTMLElement; meeting: Meeting }> = ({
+  toStick,
+  meeting,
+}) => (
   <>
     <Link href={'./meetings/' + encodeURIComponent(meeting._id)}>
       <a>
@@ -24,10 +27,11 @@ const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
     </Link>
     <style jsx>{`
       a {
-        position: relative;
-        margin: 0;
+        position: absolute;
         text-align: center;
-        top: 25%;
+        top: ${toStick.offsetTop + toStick.clientHeight}px;
+        left: ${toStick.offsetLeft}px;
+        width: ${toStick.clientWidth}px;
         background: #fff;
         border: thin solid #555;
         border-radius: 5px;
@@ -70,4 +74,4 @@ const MeetingDetails: FC<{ meeting: Meeting }> = ({ meeting }) => (
   </>
 );
 
-export default MeetingDetails;
+export default DayFinder;

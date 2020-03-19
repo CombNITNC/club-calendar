@@ -1,33 +1,27 @@
-import { FC, useState, useRef } from 'react';
+import { FC, useRef } from 'react';
 import { Meeting } from '../../../lib';
-import MeetingDetails from './meeting-details';
 
 type DayCellProps = {
   pos: number;
   day: number;
   meeting?: Meeting;
+  onClick: (ref: HTMLDivElement) => void;
 };
 
-export const DayCell: FC<DayCellProps> = ({ pos, day, meeting }) => {
+export const DayCell: FC<DayCellProps> = ({ pos, day, meeting, onClick }) => {
   const x = (pos % 7) + 1;
   const color = x === 7 ? 'darkblue' : x === 1 ? 'darkred' : 'black';
-  const [showingDetails, setShowingDetails] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   return (
     <>
       <div
         ref={ref}
         onClick={e => {
           if (meeting == null || ref.current != e.target) return;
-          setShowingDetails(!showingDetails);
+          onClick(ref.current);
         }}
       >
         {day}
-        {showingDetails && meeting != null ? (
-          <MeetingDetails meeting={meeting} />
-        ) : (
-          <></>
-        )}
       </div>
       <style jsx>{`
         div {

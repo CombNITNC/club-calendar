@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, useState } from 'react';
 
 import { Meeting } from '../../../lib';
 import { DayCell } from './day-cell';
 import { ShadowedButton } from '../../components/button';
+import DayFinder from './day-finder';
 
 const dayOffset = (date: Date): number => {
   const _date = new Date(date);
@@ -11,7 +12,11 @@ const dayOffset = (date: Date): number => {
   return _date.getDay();
 };
 
-const DayGrid: FC<{ day: Date; meetings: Meeting[] }> = ({ day, meetings }) => {
+const DayGrid: FC<{
+  day: Date;
+  meetings: Meeting[];
+  onSelect: (element: HTMLElement, meeting: Meeting) => void;
+}> = ({ day, meetings, onSelect }) => {
   const meetingsByDay = meetings.reduce<{ [key: number]: Meeting }>(
     (prev, curr) => ({ ...prev, [curr.date.getDate()]: curr }),
     {}
@@ -24,12 +29,14 @@ const DayGrid: FC<{ day: Date; meetings: Meeting[] }> = ({ day, meetings }) => {
     i.getMonth() === day.getMonth();
     i.setDate(i.getDate() + 1), ++e
   ) {
+    const m = meetingsByDay[e];
     dayCells.push(
       <DayCell
         pos={e + dayOffset(day)}
         day={e}
         key={e}
-        meeting={meetingsByDay[e]}
+        meeting={m}
+        onClick={ref => onSelect(ref, m)}
       />
     );
   }
@@ -96,15 +103,36 @@ const Calendar: FC<{
   disabled: boolean;
   goNext: () => void;
   goPrev: () => void;
-}> = ({ showing, meetings, goNext, goPrev }) => (
-  <>
-    <MonthNav day={showing} goPrev={goPrev} goNext={goNext} />
-    <p></p>
-    <DayGrid
-      day={showing}
-      meetings={meetings.filter(m => m.date.getMonth() === showing.getMonth())}
-    />
-  </>
-);
+}> = ({ showing, meetings, goNext, goPrev }) => {
+  type CalendarSelection = {
+    meeting: Meeting;
+    element: HTMLElement;
+  };
+  const [selection, setSelection] = useState<CalendarSelection | null>(null);
+
+  return (
+    <>
+      <MonthNav day={showing} goPrev={goPrev} goNext={goNext} />
+      <p></p>
+      <DayGrid
+        day={showing}
+        meetings={meetings.filter(
+          m => m.date.getMonth() === showing.getMonth()
+        )}
+        onSelect={
+          (e, m) =>
+            setSelection(old =>
+              old?.element == e ? null : { meeting: m, element: e }
+            ) // If selected the same element, toggle it
+        }
+      />
+      {selection == null ? (
+        <></>
+      ) : (
+        <DayFinder toStick={selection.element} meeting={selection.meeting} />
+      )}
+    </>
+  );
+};
 
 export default Calendar;
