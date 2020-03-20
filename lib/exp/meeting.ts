@@ -51,6 +51,14 @@ export class Meeting {
     return new Meeting(name, date, 'Others');
   }
 
+  /**
+   * Make a SerializedMeeting from the Meeting
+   *
+   * @static
+   * @param {Meeting} meeting
+   * @returns {SerializedMeeting}
+   * @memberof Meeting
+   */
   static serialize(meeting: Meeting): SerializedMeeting {
     const serial = {
       ...meeting,
@@ -61,6 +69,14 @@ export class Meeting {
     return serial;
   }
 
+  /**
+   * Make a Meeting from the SerializedMeeting
+   *
+   * @static
+   * @param {SerializedMeeting} s
+   * @returns {Meeting}
+   * @memberof Meeting
+   */
   static deserialize(s: SerializedMeeting): Meeting {
     const deserial = {
       ...s,
