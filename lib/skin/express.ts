@@ -77,17 +77,32 @@ export class ExpressClient implements Client {
 
   // Create
   async askMeeting(): Promise<Meeting> {
-    const { kind, name, date } = this.query;
-    if (!validateKind(kind) || name === '' || !DateString.ableTo(date)) {
-      throw 'invalid queries';
+    const { kind, name } = this.query;
+    if (!validateKind(kind)) {
+      throw `invalid kind: ${kind}`;
     }
     if (kind === 'Regular') {
-      return Meeting.regular(name, new Date(date));
+      const { from, to } = this.query;
+      if (name === '' || !DateString.ableTo(from) || !DateString.ableTo(to))
+        throw 'invalid queries for regular';
+      return Meeting.regular(name, new Date(from));
     }
-    return Meeting.others(name, new Date(date));
+    if (kind === 'Others') {
+      const { date } = this.query;
+      if (name === '' || !DateString.ableTo(date))
+        throw 'invalid queries for others';
+
+      return Meeting.others(name, new Date(date));
+    }
+    throw 'invalid queries';
   }
   async askDuration(): Promise<Duration> {
-    const { date: dateStr } = this.query;
+    const { kind, date: dateStr } = this.query;
+    if (kind === 'Regular') {
+      const { from, to } = this.query;
+      return new Duration(new Date(from), new Date(to));
+    }
+
     const date = DateString.to(dateStr).toDate();
     return new Duration(date, date);
   }

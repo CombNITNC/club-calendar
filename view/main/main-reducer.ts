@@ -1,7 +1,7 @@
 import { Reducer } from 'react';
 import fetch from 'isomorphic-unfetch';
 
-import { Meeting, YearMonth } from '../../lib';
+import { Meeting, YearMonth, Duration } from '../../lib';
 
 export type ModalKind = 'none' | 'regular' | 'others';
 
@@ -16,7 +16,7 @@ export type Action =
   | { type: 'modal-regular' }
   | { type: 'modal-others' }
   | { type: 'close-modal' }
-  | { type: 'new-regular'; meeting: Meeting }
+  | { type: 'new-regular'; meeting: Meeting; duration: Duration }
   | { type: 'new-others'; meeting: Meeting };
 
 export const MeetingsReducer: Reducer<State, Action> = (
@@ -63,13 +63,15 @@ const PostMiddleware: Middleware = (
 ) => async (action: Action) => {
   dispatch(action);
   if (action.type === 'new-regular') {
+    const { from, to } = action.duration;
     const res = await fetch(apiRoot + 'meetings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         kind: 'Regular',
         name: action.meeting.name,
-        date: action.meeting.date,
+        from,
+        to,
       }),
     });
     if (!res.ok) {

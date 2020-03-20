@@ -41,6 +41,7 @@ export const Regular = Form(
   },
   (v: typeof schema) => ({
     name: v['名前'].value,
-    date: new Date(v['期間']['開始'].value),
+    from: new Date(v['期間']['開始'].value),
+    to: new Date(v['期間']['終了'].value),
   })
 );
