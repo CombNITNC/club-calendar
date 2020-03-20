@@ -1,12 +1,12 @@
 import { Reducer } from 'react';
 import fetch from 'isomorphic-unfetch';
 
-import { Meeting } from '../../lib';
+import { Meeting, YearMonth } from '../../lib';
 
 export type ModalKind = 'none' | 'regular' | 'others';
 
 export type State = {
-  showing: Date;
+  showing: YearMonth;
   creationModal: ModalKind;
 };
 
@@ -19,12 +19,6 @@ export type Action =
   | { type: 'new-regular'; meeting: Meeting }
   | { type: 'new-others'; meeting: Meeting };
 
-const moveMonth = (day: Date, offset: number) => {
-  const cloned = new Date(day);
-  cloned.setMonth(day.getMonth() + offset);
-  return cloned;
-};
-
 export const MeetingsReducer: Reducer<State, Action> = (
   state: State,
   action: Action
@@ -33,10 +27,10 @@ export const MeetingsReducer: Reducer<State, Action> = (
     return { ...state, loading: ['fetching'] };
   }
   if (action.type === 'go-next-month') {
-    return { ...state, showing: moveMonth(state.showing, 1) };
+    return { ...state, showing: state.showing.next() };
   }
   if (action.type === 'go-prev-month') {
-    return { ...state, showing: moveMonth(state.showing, -1) };
+    return { ...state, showing: state.showing.prev() };
   }
   if (action.type === 'close-modal') {
     return { ...state, creationModal: 'none' };

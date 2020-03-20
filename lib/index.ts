@@ -1,6 +1,7 @@
 export * from './exp/duration';
 export * from './exp/meeting';
 export * from './exp/date-string';
+export * from './exp/year-month';
 
 export * from './abst/meeting-query';
 export * from './abst/client';

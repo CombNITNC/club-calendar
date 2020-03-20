@@ -1,12 +1,15 @@
 import { NextPage, GetServerSideProps } from 'next';
+
+import { YearMonthQuery, YearMonth } from '../lib';
+
 import App from '../view/main/main-view';
 
 type IndexProps = {
-  defaultShowing: string;
+  defaultShowing: YearMonthQuery;
 };
 
 const Index: NextPage<IndexProps> = ({ defaultShowing }) => (
-  <App defaultShowing={new Date(defaultShowing)} />
+  <App defaultShowing={YearMonth.fromQuery(defaultShowing)} />
 );
 
 export default Index;
@@ -14,18 +17,15 @@ export default Index;
 export const getServerSideProps: GetServerSideProps<IndexProps> = async ({
   query,
 }) => {
-  const defaultShowing = new Date();
-  if ('y' in query) {
+  const date = new Date();
+  const q: YearMonthQuery = { y: date.getFullYear(), m: date.getMonth() + 1 };
+  if ('y' in query && typeof query.y === 'string') {
     const year = query['y'];
-    defaultShowing.setFullYear(
-      parseInt(typeof year === 'string' ? year : year[0], 10)
-    );
+    q.y = parseInt(year, 10);
   }
-  if ('m' in query) {
+  if ('m' in query && typeof query.m === 'string') {
     const month = query['m'];
-    defaultShowing.setMonth(
-      parseInt(typeof month === 'string' ? month : month[0], 10) - 1
-    );
+    q.m = parseInt(month, 10);
   }
-  return { props: { defaultShowing: defaultShowing.toDateString() } };
+  return { props: { defaultShowing: q } };
 };

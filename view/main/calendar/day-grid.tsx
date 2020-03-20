@@ -1,33 +1,41 @@
 import { FC, ReactElement } from 'react';
 
-import { Meeting } from '../../../lib';
+import { Meeting, YearMonth } from '../../../lib';
 import { DayCell } from './day-cell';
 
-const dayOffset = (date: Date): number => {
-  const _date = new Date(date);
-  _date.setDate(0);
-  return _date.getDay();
+const offsetThisMonth = (month: number): number => {
+  const date = new Date();
+  date.setMonth(month - 1);
+  date.setDate(0);
+  return date.getDay();
+};
+
+const daysThisMonth = (month: number): number => {
+  let days = 0;
+  const date = new Date();
+  date.setDate(1);
+  date.setMonth(month - 1);
+  for (; month - 1 == date.getMonth(); date.setDate(date.getDate() + 1)) {
+    ++days;
+  }
+  return days;
 };
 
 export const DayGrid: FC<{
-  day: Date;
+  yearMonth: YearMonth;
   meetings: Meeting[];
   onSelect: (element: HTMLElement, meetings: Meeting[]) => void;
-}> = ({ day, meetings, onSelect }) => {
+}> = ({ yearMonth, meetings, onSelect }) => {
   const dayCells: ReactElement[] = [];
-  let i = new Date(day);
-  i.setDate(1);
-  for (
-    let e = 1;
-    i.getMonth() === day.getMonth();
-    i.setDate(i.getDate() + 1), ++e
-  ) {
-    const m: Meeting[] = meetings.filter(m => m.date.getDate() === e);
+  const offset = offsetThisMonth(yearMonth.month);
+  const days = daysThisMonth(yearMonth.month);
+  for (let day = 1; day <= days; ++day) {
+    const m: Meeting[] = meetings.filter(m => m.date.getDate() - 1 === day);
     dayCells.push(
       <DayCell
-        pos={e + dayOffset(day)}
-        day={e}
-        key={e}
+        pos={day + offset}
+        day={day}
+        key={day}
         hasMeeting={0 < m?.length}
         onSelect={ref => onSelect(ref, m)}
       />
