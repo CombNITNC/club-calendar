@@ -52,20 +52,22 @@ export class Meeting {
   }
 
   static serialize(meeting: Meeting): SerializedMeeting {
-    const serial: SerializedMeeting = {
+    const serial = {
       ...meeting,
       id: meeting._id,
       date: meeting.date.toUTCString(),
     };
+    delete serial._id;
     return serial;
   }
 
   static deserialize(s: SerializedMeeting): Meeting {
-    const deserial: Meeting = {
+    const deserial = {
       ...s,
       _id: s.id,
       date: new Date(s.date),
     };
+    delete deserial.id;
     return deserial;
   }
 }
