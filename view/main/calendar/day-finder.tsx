@@ -11,7 +11,7 @@ const DayFinder: FC<{ toStick: HTMLElement; meetings: Meeting[] }> = ({
     <span>
       {meetings.map((meeting, i) => (
         <Link key={i} href={'./meetings/' + encodeURIComponent(meeting._id)}>
-          <a>
+          <a className={meeting.expired ? 'aborted' : ''}>
             {meeting.name}
             {' - '}
             {meeting.date
@@ -29,6 +29,9 @@ const DayFinder: FC<{ toStick: HTMLElement; meetings: Meeting[] }> = ({
       ))}
     </span>
     <style jsx>{`
+      .aborted {
+        text-decoration: line-through;
+      }
       span {
         position: absolute;
         text-align: center;
