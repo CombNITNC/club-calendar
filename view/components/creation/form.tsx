@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState, useEffect } from 'react';
 import { Title } from '../text';
 
 export type SchemeKind = 'string' | 'number' | 'date' | 'option' | 'check';
@@ -112,6 +112,11 @@ export function Form<S extends Schema, T>(
       setErrors(newErrors);
     };
 
+    useEffect(() => {
+      const timer = setTimeout(() => setSent(false), 1500);
+      return () => clearTimeout(timer);
+    }, [sent]);
+
     return (
       <>
         <Title>{title}</Title>
@@ -122,7 +127,6 @@ export function Form<S extends Schema, T>(
               return;
             }
             setSent(true);
-            setTimeout(() => setSent(false), 1500);
             onSend(exporter(value));
           }}
         >
