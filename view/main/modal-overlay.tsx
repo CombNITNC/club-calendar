@@ -16,13 +16,17 @@ export const ModalOverlay: FC<{
     case 'regular':
       return (
         <Modal close={close}>
-          <Regular title="新しい定例会" onSend={newRegular} />
+          <Regular title="新しい定例会" onSend={newRegular} sendLabel="作成" />
         </Modal>
       );
     case 'others':
       return (
         <Modal close={close}>
-          <Others title="新しいその他の集会" onSend={newOthers} />
+          <Others
+            title="新しいその他の集会"
+            onSend={newOthers}
+            sendLabel="作成"
+          />
         </Modal>
       );
     default:

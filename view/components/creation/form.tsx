@@ -1,5 +1,6 @@
 import { FC, ChangeEvent, useState, useEffect } from 'react';
 import { Title } from '../text';
+import { ShadowedButton } from '../button';
 
 export type SchemeKind = 'string' | 'number' | 'date' | 'option' | 'check';
 
@@ -94,8 +95,8 @@ export function Form<S extends Schema, T>(
   defaultValue: S,
   validator: (value: any) => string[],
   exporter: (value: S) => T
-): FC<{ onSend: (value: T) => void; title: string }> {
-  return ({ onSend, title }) => {
+): FC<{ onSend: (value: T) => void; title: string; sendLabel: string }> {
+  return ({ onSend, title, sendLabel }) => {
     const [sent, setSent] = useState(false);
     const [value, setValue] = useState(defaultValue);
     const [errors, setErrors] = useState<string[]>([]);
@@ -121,7 +122,7 @@ export function Form<S extends Schema, T>(
       <>
         <Title>{title}</Title>
         {formElements(value, setter)}
-        <button
+        <ShadowedButton
           onClick={() => {
             if (0 < validator(value).length) {
               return;
@@ -130,8 +131,8 @@ export function Form<S extends Schema, T>(
             onSend(exporter(value));
           }}
         >
-          送信
-        </button>
+          {sendLabel}
+        </ShadowedButton>
         <ul>
           {errors.map(e => (
             <li key={e}>{e}</li>

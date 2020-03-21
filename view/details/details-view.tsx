@@ -33,6 +33,7 @@ const DetailsContent: FC<{ id: string }> = ({ id }) => {
             body: JSON.stringify(m),
           });
         }}
+        sendLabel="更新"
       />
       <ShadowedRedButton onClick={() => setShowingAbortDialog(true)}>
         中止
