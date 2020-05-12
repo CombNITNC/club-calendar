@@ -1,5 +1,4 @@
 import { Reducer } from 'react';
-import fetch from 'isomorphic-unfetch';
 
 import { Meeting, YearMonth, Duration } from '../../lib';
 

@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import fetch from 'isomorphic-unfetch';
 
 type SlackMessage = {
   token: string;

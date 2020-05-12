@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { MeetingKind, validateKind } from '../../lib';
-import fetch from 'isomorphic-unfetch';
 
 type SlackMessage = {
   type: 'view_submission';
