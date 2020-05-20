@@ -2,13 +2,12 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
 const config = {
-  entry: ['./server'],
+  entry: ['./src/server'],
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules|view|pages|public/,
       },
     ],
   },
