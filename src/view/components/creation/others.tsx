@@ -1,4 +1,4 @@
-import { Form } from './form';
+import { FormBuilder } from './form';
 import { DateString } from '../../../lib';
 
 const schema = {
@@ -12,7 +12,7 @@ const schema = {
   },
 };
 
-export const Others = Form(
+export const Others = FormBuilder(
   schema,
   (v: any) => {
     const errors: string[] = [];
@@ -24,7 +24,7 @@ export const Others = Form(
     }
     return errors;
   },
-  v => ({
+  (v) => ({
     name: v['名前'].value,
     date: DateString.fromDateTimeStrings(v['日時'].value).toDate(),
   })

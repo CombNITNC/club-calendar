@@ -1,4 +1,4 @@
-import { Form } from './form';
+import { FormBuilder } from './form';
 import { DateString } from '../../../lib';
 
 const schema = {
@@ -18,7 +18,7 @@ const schema = {
   },
 };
 
-export const Regular = Form(
+export const Regular = FormBuilder(
   schema,
   (value: any) => {
     const errors: string[] = [];
@@ -26,7 +26,7 @@ export const Regular = Form(
       errors.push('名前を入力してください');
     }
     try {
-      const [start, end] = ['開始', '終了'].map(k =>
+      const [start, end] = ['開始', '終了'].map((k) =>
         DateString.fromDateTimeStrings(value['期間'][k].value)
           .toDate()
           .getTime()

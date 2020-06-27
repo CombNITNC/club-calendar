@@ -1,5 +1,5 @@
 import { Meeting, DateString } from '../../lib';
-import { Form } from '../components/creation/form';
+import { FormBuilder } from '../components/creation/form';
 
 export const detailsForm = (meeting: Meeting) => {
   const schema = {
@@ -13,7 +13,7 @@ export const detailsForm = (meeting: Meeting) => {
     },
   };
 
-  return Form(
+  return FormBuilder(
     schema,
     (v: any) => {
       const errors: string[] = [];
@@ -25,7 +25,7 @@ export const detailsForm = (meeting: Meeting) => {
       }
       return errors;
     },
-    v => ({
+    (v) => ({
       ...meeting,
       name: v['名前'].value,
       date: DateString.fromDateTimeStrings(v['日時'].value).toDate(),

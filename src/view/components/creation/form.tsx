@@ -1,174 +1,145 @@
-import { FC, ChangeEvent, useState, useEffect } from 'react';
+import { FC, useState, useEffect, ReactNode } from 'react';
 import { Title } from '../text';
 import { ShadowedButton } from '../button';
+import {
+  StringScheme,
+  NumberScheme,
+  DateScheme,
+  OptionScheme,
+  CheckScheme,
+  formElementBody,
+} from './form/body';
 
 export type SchemeKind = 'string' | 'number' | 'date' | 'option' | 'check';
 
 export type Scheme =
-  | { type: 'string'; value: string }
-  | { type: 'number'; value: number }
-  | {
-      type: 'date';
-      value: {
-        date: string;
-        time: string;
-      };
-    }
-  | { type: 'option'; value: string[] }
-  | { type: 'check'; value: boolean };
+  | StringScheme
+  | NumberScheme
+  | DateScheme
+  | OptionScheme
+  | CheckScheme;
 
 export type Schema = {
   [key: string]: Scheme | Schema;
 };
 
+export type SchemeSetter = (ref: Scheme) => (input: Scheme['value']) => void;
+
 const isScheme = (v: Scheme | Schema): v is Scheme =>
   typeof v === 'object' && 'type' in v;
 
-const schemeElement = (
-  key: string,
-  v: Scheme,
-  setter: (ref: Scheme) => (input: Scheme['value']) => void
+const formElement = (
+  [key, v]: [string, Scheme | Schema],
+  setter: SchemeSetter
 ) => {
-  switch (v.type) {
-    case 'string':
-      return (
-        <input
-          defaultValue={v.value}
-          onChange={(e) => setter(v)(e.target.value)}
-        />
-      );
-    case 'date':
-      return (
-        <>
-          <input
-            type="date"
-            defaultValue={v.value.date}
-            onChange={(e) => setter(v)({ ...v.value, date: e.target.value })}
-          />
-          <input
-            type="time"
-            defaultValue={v.value.time}
-            onChange={(e) => setter(v)({ ...v.value, time: e.target.value })}
-          />
-        </>
-      );
-    case 'number':
-      return (
-        <input
-          type="number"
-          defaultValue={v.value}
-          onChange={(e) => setter(v)(e.target.value)}
-        />
-      );
-    case 'check':
-      return (
-        <input
-          type="checkbox"
-          checked={v.value}
-          onChange={(e) => setter(v)(e.target.value)}
-        />
-      );
-    case 'option':
-      return (
-        <>
-          <input
-            defaultValue={v.value[0]}
-            list={`list-${key}`}
-            onChange={(e) => setter(v)(e.target.value)}
-          />
-          <datalist id={`list-${key}`}>
-            {v.value.map((m: string) => (
-              <option value={m}></option>
-            ))}
-          </datalist>
-        </>
-      );
-    default:
-      return <input />;
-  }
-};
-
-const formElements = (
-  schema: Schema,
-  setter: (ref: Scheme) => (input: Scheme['value']) => void
-): JSX.Element[] => {
-  return Object.entries(schema).map(([key, v]) => {
-    if (!isScheme(v)) {
-      return (
-        <div key={key}>
-          <div>{key}</div>
-          <div className="paragraph">{formElements(v, setter)}</div>
-          <style jsx>{`
-            .paragraph {
-              margin: 0 auto;
-              padding: 0 0 0 1em;
-            }
-          `}</style>
-        </div>
-      );
-    }
-    const body = schemeElement(key, v, setter);
+  if (!isScheme(v)) {
     return (
       <div key={key}>
-        <label>
-          {key}
-          {body}
-        </label>
+        <div>{key}</div>
+        <div className="paragraph">{formElements(v, setter)}</div>
+        <style jsx>{`
+          .paragraph {
+            margin: 0 auto;
+            padding: 0 0 0 1em;
+          }
+        `}</style>
       </div>
     );
-  });
+  }
+  const body = formElementBody(key, v, setter);
+  return (
+    <div key={key}>
+      <label>
+        {key}
+        {body}
+      </label>
+    </div>
+  );
 };
 
-export const Form = <S extends Schema, T>(
+const formElements = (schema: Schema, setter: SchemeSetter): ReactNode[] =>
+  Object.entries(schema).map((entry) => formElement(entry, setter));
+
+const ErrorList: FC<{ errors: string[] }> = ({ errors }) => (
+  <ul>
+    {errors.map((e) => (
+      <li key={e}>{e}</li>
+    ))}
+  </ul>
+);
+
+const SentTip: FC<{ sent: boolean }> = ({ sent }) =>
+  sent ? <span>送信しました</span> : <></>;
+
+const makeSetter = <S extends Schema>(
+  value: S,
+  setValue: (newValue: S) => void,
+  setErrors: (newErrors: string[]) => void,
+  validator: (value: any) => string[]
+) => (ref: Scheme) => (input: Scheme['value']) => {
+  const cloned = { ...value };
+  ref.value = input;
+
+  const newErrors = validator(value);
+  if (newErrors.length !== 0) {
+    setValue(cloned); // Go back to as before
+  }
+  setErrors(newErrors);
+};
+
+const makeSendHandler = <S extends Schema, T>(
+  validator: (value: any) => string[],
+  value: S,
+  setSent: (newValue: boolean) => void,
+  onSend: (value: T) => void,
+  exporter: (value: S) => T
+) => () => {
+  if (0 < validator(value).length) {
+    return;
+  }
+  setSent(true);
+  onSend(exporter(value));
+};
+
+export type FormProps<T> = {
+  onSend: (value: T) => void;
+  title: string;
+  sendLabel: string;
+};
+
+export const FormBuilder = <S extends Schema, T>(
   defaultValue: S,
   validator: (value: any) => string[],
   exporter: (value: S) => T
-): FC<{ onSend: (value: T) => void; title: string; sendLabel: string }> => ({
-  onSend,
-  title,
-  sendLabel,
-}) => {
+): FC<FormProps<T>> => ({ onSend, title, sendLabel }) => {
+  const timeoutDelay = 1500;
+
   const [sent, setSent] = useState(false);
   const [value, setValue] = useState(defaultValue);
   const [errors, setErrors] = useState<string[]>([]);
 
-  const setter = (ref: Scheme) => (input: Scheme['value']) => {
-    const cloned = { ...value };
-    ref.value = input;
-
-    const newErrors = validator(value);
-    if (newErrors.length !== 0) {
-      setValue(cloned); // Go back to as before
-    }
-    setErrors(newErrors);
-  };
+  const setter = makeSetter<S>(value, setValue, setErrors, validator);
 
   useEffect(() => {
-    const timer = setTimeout(() => setSent(false), 1500);
+    const timer = setTimeout(() => setSent(false), timeoutDelay);
     return () => clearTimeout(timer);
   }, [sent]);
+
+  const sendHandler = makeSendHandler<S, T>(
+    validator,
+    value,
+    setSent,
+    onSend,
+    exporter
+  );
 
   return (
     <>
       <Title>{title}</Title>
       {formElements(value, setter)}
-      <ShadowedButton
-        onClick={() => {
-          if (0 < validator(value).length) {
-            return;
-          }
-          setSent(true);
-          onSend(exporter(value));
-        }}
-      >
-        {sendLabel}
-      </ShadowedButton>
-      <ul>
-        {errors.map((e) => (
-          <li key={e}>{e}</li>
-        ))}
-      </ul>
-      {sent && <span>送信しました</span>}
+      <ShadowedButton onClick={sendHandler}>{sendLabel}</ShadowedButton>
+      <ErrorList errors={errors} />
+      <SentTip sent={sent} />
       <style jsx>{`
         span {
           color: green;
