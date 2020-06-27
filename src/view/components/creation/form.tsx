@@ -34,7 +34,7 @@ const schemeElement = (
       return (
         <input
           defaultValue={v.value}
-          onChange={e => setter(v)(e.target.value)}
+          onChange={(e) => setter(v)(e.target.value)}
         />
       );
     case 'date':
@@ -43,12 +43,12 @@ const schemeElement = (
           <input
             type="date"
             defaultValue={v.value.date}
-            onChange={e => setter(v)({ ...v.value, date: e.target.value })}
+            onChange={(e) => setter(v)({ ...v.value, date: e.target.value })}
           />
           <input
             type="time"
             defaultValue={v.value.time}
-            onChange={e => setter(v)({ ...v.value, time: e.target.value })}
+            onChange={(e) => setter(v)({ ...v.value, time: e.target.value })}
           />
         </>
       );
@@ -57,7 +57,7 @@ const schemeElement = (
         <input
           type="number"
           defaultValue={v.value}
-          onChange={e => setter(v)(e.target.value)}
+          onChange={(e) => setter(v)(e.target.value)}
         />
       );
     case 'check':
@@ -65,7 +65,7 @@ const schemeElement = (
         <input
           type="checkbox"
           checked={v.value}
-          onChange={e => setter(v)(e.target.value)}
+          onChange={(e) => setter(v)(e.target.value)}
         />
       );
     case 'option':
@@ -74,7 +74,7 @@ const schemeElement = (
           <input
             defaultValue={v.value[0]}
             list={`list-${key}`}
-            onChange={e => setter(v)(e.target.value)}
+            onChange={(e) => setter(v)(e.target.value)}
           />
           <datalist id={`list-${key}`}>
             {v.value.map((m: string) => (
@@ -119,63 +119,65 @@ const formElements = (
   });
 };
 
-export function Form<S extends Schema, T>(
+export const Form = <S extends Schema, T>(
   defaultValue: S,
   validator: (value: any) => string[],
   exporter: (value: S) => T
-): FC<{ onSend: (value: T) => void; title: string; sendLabel: string }> {
-  return ({ onSend, title, sendLabel }) => {
-    const [sent, setSent] = useState(false);
-    const [value, setValue] = useState(defaultValue);
-    const [errors, setErrors] = useState<string[]>([]);
+): FC<{ onSend: (value: T) => void; title: string; sendLabel: string }> => ({
+  onSend,
+  title,
+  sendLabel,
+}) => {
+  const [sent, setSent] = useState(false);
+  const [value, setValue] = useState(defaultValue);
+  const [errors, setErrors] = useState<string[]>([]);
 
-    const setter = (ref: Scheme) => (input: Scheme['value']) => {
-      const cloned = { ...value };
-      ref.value = input;
+  const setter = (ref: Scheme) => (input: Scheme['value']) => {
+    const cloned = { ...value };
+    ref.value = input;
 
-      const newErrors = validator(value);
-      if (newErrors.length !== 0) {
-        setValue(cloned); // Go back to as before
-      }
-      setErrors(newErrors);
-    };
-
-    useEffect(() => {
-      const timer = setTimeout(() => setSent(false), 1500);
-      return () => clearTimeout(timer);
-    }, [sent]);
-
-    return (
-      <>
-        <Title>{title}</Title>
-        {formElements(value, setter)}
-        <ShadowedButton
-          onClick={() => {
-            if (0 < validator(value).length) {
-              return;
-            }
-            setSent(true);
-            onSend(exporter(value));
-          }}
-        >
-          {sendLabel}
-        </ShadowedButton>
-        <ul>
-          {errors.map(e => (
-            <li key={e}>{e}</li>
-          ))}
-        </ul>
-        {sent && <span>送信しました</span>}
-        <style jsx>{`
-          span {
-            color: green;
-            font-size: 12pt;
-          }
-          li {
-            color: darkred;
-          }
-        `}</style>
-      </>
-    );
+    const newErrors = validator(value);
+    if (newErrors.length !== 0) {
+      setValue(cloned); // Go back to as before
+    }
+    setErrors(newErrors);
   };
-}
+
+  useEffect(() => {
+    const timer = setTimeout(() => setSent(false), 1500);
+    return () => clearTimeout(timer);
+  }, [sent]);
+
+  return (
+    <>
+      <Title>{title}</Title>
+      {formElements(value, setter)}
+      <ShadowedButton
+        onClick={() => {
+          if (0 < validator(value).length) {
+            return;
+          }
+          setSent(true);
+          onSend(exporter(value));
+        }}
+      >
+        {sendLabel}
+      </ShadowedButton>
+      <ul>
+        {errors.map((e) => (
+          <li key={e}>{e}</li>
+        ))}
+      </ul>
+      {sent && <span>送信しました</span>}
+      <style jsx>{`
+        span {
+          color: green;
+          font-size: 12pt;
+        }
+        li {
+          color: darkred;
+        }
+      `}</style>
+    </>
+  );
+};

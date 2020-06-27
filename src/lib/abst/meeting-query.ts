@@ -25,10 +25,13 @@ export type MeetingQueryNode =
   | ['or', MeetingQueryNode, MeetingQueryNode]
   | ['not', MeetingQueryNode];
 
-export function transform<
+export const transform = <
   T extends MeetingQuery<U>,
   U = T extends MeetingQuery<infer V> ? V : never
->(node: MeetingQueryNode, target: T): U {
+>(
+  node: MeetingQueryNode,
+  target: T
+): U => {
   switch (node[0]) {
     case 'everything':
       return target.everything();
@@ -51,4 +54,4 @@ export function transform<
     case 'not':
       return target.not(transform(node[1], target));
   }
-}
+};
