@@ -75,7 +75,7 @@ const makeSetter = <S extends Schema>(
   value: S,
   setValue: (newValue: S) => void,
   setErrors: (newErrors: string[]) => void,
-  validator: (value: any) => string[],
+  validator: (value: unknown) => string[],
 ) => (ref: Scheme) => (input: Scheme["value"]) => {
   const cloned = { ...value };
   ref.value = input;
@@ -88,7 +88,7 @@ const makeSetter = <S extends Schema>(
 };
 
 const makeSendHandler = <S extends Schema, T>(
-  validator: (value: any) => string[],
+  validator: (value: unknown) => string[],
   value: S,
   setSent: (newValue: boolean) => void,
   onSend: (value: T) => void,
@@ -109,46 +109,47 @@ export type FormProps<T> = {
 
 export const FormBuilder = <S extends Schema, T>(
   defaultValue: S,
-  validator: (value: any) => string[],
+  validator: (value: unknown) => string[],
   exporter: (value: S) => T,
-): FC<FormProps<T>> => ({ onSend, title, sendLabel }) => {
-  const timeoutDelay = 1500;
+): FC<FormProps<T>> =>
+  function Form({ onSend, title, sendLabel }): JSX.Element {
+    const timeoutDelay = 1500;
 
-  const [sent, setSent] = useState(false);
-  const [value, setValue] = useState(defaultValue);
-  const [errors, setErrors] = useState<string[]>([]);
+    const [sent, setSent] = useState(false);
+    const [value, setValue] = useState(defaultValue);
+    const [errors, setErrors] = useState<string[]>([]);
 
-  const setter = makeSetter<S>(value, setValue, setErrors, validator);
+    const setter = makeSetter<S>(value, setValue, setErrors, validator);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setSent(false), timeoutDelay);
-    return () => clearTimeout(timer);
-  }, [sent]);
+    useEffect(() => {
+      const timer = setTimeout(() => setSent(false), timeoutDelay);
+      return () => clearTimeout(timer);
+    }, [sent]);
 
-  const sendHandler = makeSendHandler<S, T>(
-    validator,
-    value,
-    setSent,
-    onSend,
-    exporter,
-  );
+    const sendHandler = makeSendHandler<S, T>(
+      validator,
+      value,
+      setSent,
+      onSend,
+      exporter,
+    );
 
-  return (
-    <>
-      <Title>{title}</Title>
-      {formElements(value, setter)}
-      <ShadowedButton onClick={sendHandler}>{sendLabel}</ShadowedButton>
-      <ErrorList errors={errors} />
-      <SentTip sent={sent} />
-      <style jsx>{`
-        span {
-          color: green;
-          font-size: 12pt;
-        }
-        li {
-          color: darkred;
-        }
-      `}</style>
-    </>
-  );
-};
+    return (
+      <>
+        <Title>{title}</Title>
+        {formElements(value, setter)}
+        <ShadowedButton onClick={sendHandler}>{sendLabel}</ShadowedButton>
+        <ErrorList errors={errors} />
+        <SentTip sent={sent} />
+        <style jsx>{`
+          span {
+            color: green;
+            font-size: 12pt;
+          }
+          li {
+            color: darkred;
+          }
+        `}</style>
+      </>
+    );
+  };

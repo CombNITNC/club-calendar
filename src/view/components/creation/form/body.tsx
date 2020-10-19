@@ -62,8 +62,8 @@ const optionInput: InputBuilder<OptionScheme> = (key, v, setter) => (
       onChange={(e) => setter(v)(e.target.value)}
     />
     <datalist id={`list-${key}`}>
-      {v.value.map((m: string) => (
-        <option value={m}></option>
+      {v.value.map((m: string, i: number) => (
+        <option key={i} value={m}></option>
       ))}
     </datalist>
   </>

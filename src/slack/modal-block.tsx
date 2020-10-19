@@ -7,7 +7,7 @@ import JSXSlack, {
   DatePicker,
 } from "@speee-js/jsx-slack";
 
-export default () =>
+export default (): unknown =>
   JSXSlack(
     <Modal
       title="集会の新規作成"
