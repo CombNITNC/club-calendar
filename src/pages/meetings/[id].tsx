@@ -8,8 +8,6 @@ const Details: NextPage<DetailsProps> = ({ id }) => <DetailsView id={id} />;
 
 export default Details;
 
-const apiRoot = process.env.API_ROOT || "http://localhost:3080/";
-
 export const getServerSideProps: GetServerSideProps<DetailsProps> = async ({
   params,
   res,

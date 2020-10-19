@@ -13,17 +13,19 @@ type SlackMessage = {
   response_url: string;
 };
 
-const validate = (obj: any): obj is SlackMessage => {
-  if (typeof obj !== "object" || obj == null) {
+const validate = (obj: unknown): obj is SlackMessage => {
+  if (typeof obj !== "object" || obj === null) {
     return false;
   }
-  if (!("command" in obj && obj.command === "/meeting")) {
-    return false;
-  }
-  return true;
+  return (
+    "command" in obj && (obj as { command: unknown }).command === "/meeting"
+  );
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<void> => {
   if (req.method !== "POST" || !validate(req.body)) {
     res.status(400).end("Bad Request");
     return;
