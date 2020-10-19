@@ -99,7 +99,7 @@ test("定例会の更新1", (done) => {
       }),
       update: async (meeting) => {
         expect(meeting).toEqual({
-          _id: "0",
+          id: "0",
           kind: "Regular",
           name: "ホゲ談義",
           date: new Date("2019-09-30T16:15:00"),
@@ -124,7 +124,7 @@ test("定例会の中止1", (done) => {
       }),
       update: async (meeting) => {
         expect(meeting).toEqual({
-          _id: "0",
+          id: "0",
           kind: "Regular",
           name: "ホゲ談義",
           date: new Date("2019-09-30T16:15:00"),
