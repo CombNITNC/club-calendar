@@ -39,7 +39,7 @@ export class YearMonth {
   toString(): string {
     return `${this.year.toString()}-${this.month
       .toString()
-      .padStart(2, '0')}-01`;
+      .padStart(2, "0")}-01`;
   }
 
   /**

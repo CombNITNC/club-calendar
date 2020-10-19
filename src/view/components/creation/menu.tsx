@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { ShadowedButton } from '../button';
+import { FC } from "react";
+import { ShadowedButton } from "../button";
 
 export const Menu: FC<{
   items: string[];

@@ -1,8 +1,8 @@
-import { NextPage, GetServerSideProps } from 'next';
+import { NextPage, GetServerSideProps } from "next";
 
-import { YearMonthQuery, YearMonth } from '../lib';
+import { YearMonthQuery, YearMonth } from "../lib";
 
-import App from '../view/main/main-view';
+import App from "../view/main/main-view";
 
 type IndexProps = {
   defaultShowing: YearMonthQuery;
@@ -19,12 +19,12 @@ export const getServerSideProps: GetServerSideProps<IndexProps> = async ({
 }) => {
   const date = new Date();
   const q: YearMonthQuery = { y: date.getFullYear(), m: date.getMonth() + 1 };
-  if ('y' in query && typeof query.y === 'string') {
-    const year = query['y'];
+  if ("y" in query && typeof query.y === "string") {
+    const year = query["y"];
     q.y = parseInt(year, 10);
   }
-  if ('m' in query && typeof query.m === 'string') {
-    const month = query['m'];
+  if ("m" in query && typeof query.m === "string") {
+    const month = query["m"];
     q.m = parseInt(month, 10);
   }
   return { props: { defaultShowing: q } };

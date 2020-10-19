@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { Modal } from '../components/modal';
-import { ShadowedButton, ShadowedRedButton } from '../components/button';
-import Link from 'next/link';
+import { FC } from "react";
+import { Modal } from "../components/modal";
+import { ShadowedButton, ShadowedRedButton } from "../components/button";
+import Link from "next/link";
 
 export const AbortDialog: FC<{
   onConfirm: () => void;

@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-import { Modal } from '../components/modal';
-import { Regular } from '../components/creation/regular';
-import { Others } from '../components/creation/others';
+import { Modal } from "../components/modal";
+import { Regular } from "../components/creation/regular";
+import { Others } from "../components/creation/others";
 
-import { ModalKind } from './main-reducer';
+import { ModalKind } from "./main-reducer";
 
 export const ModalOverlay: FC<{
   kind: ModalKind;
@@ -13,13 +13,13 @@ export const ModalOverlay: FC<{
   newOthers: (v: { name: string; date: Date }) => void;
 }> = ({ kind, close, newRegular, newOthers }) => {
   switch (kind) {
-    case 'regular':
+    case "regular":
       return (
         <Modal close={close}>
           <Regular title="新しい定例会" onSend={newRegular} sendLabel="作成" />
         </Modal>
       );
-    case 'others':
+    case "others":
       return (
         <Modal close={close}>
           <Others

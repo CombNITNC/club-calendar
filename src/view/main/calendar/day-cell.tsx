@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, useRef } from "react";
 
 type DayCellProps = {
   pos: number;
@@ -14,13 +14,13 @@ export const DayCell: FC<DayCellProps> = ({
   onSelect,
 }) => {
   const x = (pos % 7) + 1;
-  const color = x === 7 ? 'darkblue' : x === 1 ? 'darkred' : 'black';
+  const color = x === 7 ? "darkblue" : x === 1 ? "darkred" : "black";
   const ref = useRef<HTMLDivElement>(null);
   return (
     <>
       <div
         ref={ref}
-        onClick={e => {
+        onClick={(e) => {
           if (!hasMeeting || ref.current != e.target) return;
           onSelect(ref.current);
         }}
@@ -45,7 +45,7 @@ export const DayCell: FC<DayCellProps> = ({
           background-color: darkcyan;
           color: white;
           `
-            : ''}
+            : ""}
         }
       `}</style>
     </>

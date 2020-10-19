@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, useRef } from "react";
 
 export const Modal: FC<{ close: () => void }> = ({ children, close }) => {
   const ref = useRef(null);
@@ -7,7 +7,7 @@ export const Modal: FC<{ close: () => void }> = ({ children, close }) => {
       <div
         className="back"
         ref={ref}
-        onClick={e => {
+        onClick={(e) => {
           if (e.target == ref.current) close();
         }}
       >

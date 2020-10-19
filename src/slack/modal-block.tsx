@@ -5,7 +5,7 @@ import JSXSlack, {
   Select,
   Option,
   DatePicker,
-} from '@speee-js/jsx-slack';
+} from "@speee-js/jsx-slack";
 
 export default () =>
   JSXSlack(
@@ -41,5 +41,5 @@ export default () =>
         placeholder="集会を開く日付"
         required
       />
-    </Modal>
+    </Modal>,
   );

@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import { FC } from 'react';
+import Link from "next/link";
+import { FC } from "react";
 
-import { Meeting } from '../../../lib';
+import { Meeting } from "../../../lib";
 
 const DayFinder: FC<{ toStick: HTMLElement; meetings: Meeting[] }> = ({
   toStick,
@@ -10,20 +10,12 @@ const DayFinder: FC<{ toStick: HTMLElement; meetings: Meeting[] }> = ({
   <>
     <span>
       {meetings.map((meeting, i) => (
-        <Link key={i} href={'./meetings/' + encodeURIComponent(meeting._id)}>
-          <a className={meeting.expired ? 'aborted' : ''}>
+        <Link key={i} href={"./meetings/" + encodeURIComponent(meeting.id)}>
+          <a className={meeting.expired ? "aborted" : ""}>
             {meeting.name}
-            {' - '}
-            {meeting.date
-              .getHours()
-              ?.toString()
-              .padStart(2, '0')}
-            :
-            {meeting.date
-              .getMinutes()
-              ?.toString()
-              .padStart(2, '0')}
-            ~
+            {" - "}
+            {meeting.date.getHours()?.toString().padStart(2, "0")}:
+            {meeting.date.getMinutes()?.toString().padStart(2, "0")}~
           </a>
         </Link>
       ))}
@@ -50,7 +42,7 @@ const DayFinder: FC<{ toStick: HTMLElement; meetings: Meeting[] }> = ({
         margin: 0.5em 0;
       }
       div:before {
-        content: '';
+        content: "";
         position: absolute;
         top: -24px;
         left: 50%;
@@ -60,7 +52,7 @@ const DayFinder: FC<{ toStick: HTMLElement; meetings: Meeting[] }> = ({
         z-index: 5;
       }
       div:after {
-        content: '';
+        content: "";
         position: absolute;
         top: -28px;
         left: 50%;

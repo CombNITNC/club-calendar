@@ -1,4 +1,4 @@
-import { Meeting } from '..';
+import { Meeting } from "..";
 
 export type UpdateInput = {
   /**
@@ -31,7 +31,7 @@ export type UpdateOutput = {
 
 export const UpdateService = async (
   input: UpdateInput,
-  output: UpdateOutput
+  output: UpdateOutput,
 ) => {
   const [id, param] = await Promise.all([input.askId(), input.askParam()]);
   const toUpdate = await output.find(id);

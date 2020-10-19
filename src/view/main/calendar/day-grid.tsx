@@ -1,7 +1,7 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement } from "react";
 
-import { Meeting, YearMonth } from '../../../lib';
-import { DayCell } from './day-cell';
+import { Meeting, YearMonth } from "../../../lib";
+import { DayCell } from "./day-cell";
 
 const offsetThisMonth = (month: number): number => {
   const date = new Date();
@@ -30,15 +30,15 @@ export const DayGrid: FC<{
   const offset = offsetThisMonth(yearMonth.month);
   const days = daysThisMonth(yearMonth.month);
   for (let day = 1; day <= days; ++day) {
-    const m: Meeting[] = meetings.filter(m => m.date.getDate() === day);
+    const m: Meeting[] = meetings.filter((m) => m.date.getDate() === day);
     dayCells.push(
       <DayCell
         pos={day + offset}
         day={day}
         key={day}
         hasMeeting={0 < m?.length}
-        onSelect={ref => onSelect(ref, m)}
-      />
+        onSelect={(ref) => onSelect(ref, m)}
+      />,
     );
   }
   return (

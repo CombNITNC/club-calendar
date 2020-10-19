@@ -1,6 +1,6 @@
-import { FC, useState, useEffect, ReactNode } from 'react';
-import { Title } from '../text';
-import { ShadowedButton } from '../button';
+import { FC, useState, useEffect, ReactNode } from "react";
+import { Title } from "../text";
+import { ShadowedButton } from "../button";
 import {
   StringScheme,
   NumberScheme,
@@ -8,9 +8,9 @@ import {
   OptionScheme,
   CheckScheme,
   formElementBody,
-} from './form/body';
+} from "./form/body";
 
-export type SchemeKind = 'string' | 'number' | 'date' | 'option' | 'check';
+export type SchemeKind = "string" | "number" | "date" | "option" | "check";
 
 export type Scheme =
   | StringScheme
@@ -23,14 +23,14 @@ export type Schema = {
   [key: string]: Scheme | Schema;
 };
 
-export type SchemeSetter = (ref: Scheme) => (input: Scheme['value']) => void;
+export type SchemeSetter = (ref: Scheme) => (input: Scheme["value"]) => void;
 
 const isScheme = (v: Scheme | Schema): v is Scheme =>
-  typeof v === 'object' && 'type' in v;
+  typeof v === "object" && "type" in v;
 
 const formElement = (
   [key, v]: [string, Scheme | Schema],
-  setter: SchemeSetter
+  setter: SchemeSetter,
 ) => {
   if (!isScheme(v)) {
     return (
@@ -75,8 +75,8 @@ const makeSetter = <S extends Schema>(
   value: S,
   setValue: (newValue: S) => void,
   setErrors: (newErrors: string[]) => void,
-  validator: (value: any) => string[]
-) => (ref: Scheme) => (input: Scheme['value']) => {
+  validator: (value: any) => string[],
+) => (ref: Scheme) => (input: Scheme["value"]) => {
   const cloned = { ...value };
   ref.value = input;
 
@@ -92,7 +92,7 @@ const makeSendHandler = <S extends Schema, T>(
   value: S,
   setSent: (newValue: boolean) => void,
   onSend: (value: T) => void,
-  exporter: (value: S) => T
+  exporter: (value: S) => T,
 ) => () => {
   if (0 < validator(value).length) {
     return;
@@ -110,7 +110,7 @@ export type FormProps<T> = {
 export const FormBuilder = <S extends Schema, T>(
   defaultValue: S,
   validator: (value: any) => string[],
-  exporter: (value: S) => T
+  exporter: (value: S) => T,
 ): FC<FormProps<T>> => ({ onSend, title, sendLabel }) => {
   const timeoutDelay = 1500;
 
@@ -130,7 +130,7 @@ export const FormBuilder = <S extends Schema, T>(
     value,
     setSent,
     onSend,
-    exporter
+    exporter,
   );
 
   return (

@@ -1,4 +1,4 @@
-import { MeetingKind } from '../exp/meeting';
+import { MeetingKind } from "../exp/meeting";
 
 export type MeetingQuery<T> = {
   everything(): T;
@@ -14,44 +14,44 @@ export type MeetingQuery<T> = {
 };
 
 export type MeetingQueryNode =
-  | ['everything']
-  | ['isId', string]
-  | ['named', string]
-  | ['isKind', MeetingKind]
-  | ['holdBefore', Date]
-  | ['holdAfter', Date]
-  | ['isExpired', boolean]
-  | ['and', MeetingQueryNode, MeetingQueryNode]
-  | ['or', MeetingQueryNode, MeetingQueryNode]
-  | ['not', MeetingQueryNode];
+  | ["everything"]
+  | ["isId", string]
+  | ["named", string]
+  | ["isKind", MeetingKind]
+  | ["holdBefore", Date]
+  | ["holdAfter", Date]
+  | ["isExpired", boolean]
+  | ["and", MeetingQueryNode, MeetingQueryNode]
+  | ["or", MeetingQueryNode, MeetingQueryNode]
+  | ["not", MeetingQueryNode];
 
 export const transform = <
   T extends MeetingQuery<U>,
   U = T extends MeetingQuery<infer V> ? V : never
 >(
   node: MeetingQueryNode,
-  target: T
+  target: T,
 ): U => {
   switch (node[0]) {
-    case 'everything':
+    case "everything":
       return target.everything();
-    case 'isId':
+    case "isId":
       return target.isId(node[1]);
-    case 'named':
+    case "named":
       return target.named(node[1]);
-    case 'isKind':
+    case "isKind":
       return target.isKind(node[1]);
-    case 'holdBefore':
+    case "holdBefore":
       return target.holdBefore(node[1]);
-    case 'holdAfter':
+    case "holdAfter":
       return target.holdAfter(node[1]);
-    case 'isExpired':
+    case "isExpired":
       return target.isExpired(node[1]);
-    case 'and':
+    case "and":
       return target.and(transform(node[1], target), transform(node[2], target));
-    case 'or':
+    case "or":
       return target.or(transform(node[1], target), transform(node[2], target));
-    case 'not':
+    case "not":
       return target.not(transform(node[1], target));
   }
 };

@@ -1,4 +1,4 @@
-import { MeetingQueryNode, Meeting } from '..';
+import { MeetingQueryNode, Meeting } from "..";
 
 export type FetchInput = {
   /**

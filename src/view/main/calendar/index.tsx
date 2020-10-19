@@ -1,13 +1,13 @@
-import { FC, useState } from 'react';
-import useSWR from 'swr';
+import { FC, useState } from "react";
+import useSWR from "swr";
 
-import { Meeting, YearMonth, SerializedMeeting } from '../../../lib';
+import { Meeting, YearMonth, SerializedMeeting } from "../../../lib";
 
-import DayFinder from './day-finder';
-import { DayGrid } from './day-grid';
-import { MonthNav } from './month-nav';
+import DayFinder from "./day-finder";
+import { DayGrid } from "./day-grid";
+import { MonthNav } from "./month-nav";
 
-const apiRoot = process.env.API_ROOT || 'http://localhost:3080/';
+const apiRoot = process.env.API_ROOT || "http://localhost:3080/";
 
 const fetcher = async (url: string): Promise<SerializedMeeting[]> => {
   const res = await fetch(url);
@@ -36,7 +36,7 @@ export const Calendar: FC<CalendarProps> = ({ showing, goNext, goPrev }) => {
     fetcher,
     {
       refreshInterval: 5000,
-    }
+    },
   );
 
   if (error != null) {
@@ -45,7 +45,7 @@ export const Calendar: FC<CalendarProps> = ({ showing, goNext, goPrev }) => {
   }
   if (data == null) return <>読み込み中……</>;
 
-  const meetings = data.map(d => Meeting.deserialize(d));
+  const meetings = data.map((d) => Meeting.deserialize(d));
 
   return (
     <>
@@ -66,8 +66,8 @@ export const Calendar: FC<CalendarProps> = ({ showing, goNext, goPrev }) => {
         meetings={meetings}
         onSelect={
           (e, m) =>
-            setSelection(old =>
-              old?.element == e ? null : { meetings: m, element: e }
+            setSelection((old) =>
+              old?.element == e ? null : { meetings: m, element: e },
             ) // If selected the same element, toggle it
         }
       />

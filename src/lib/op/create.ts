@@ -1,4 +1,4 @@
-import { Meeting, Duration } from '..';
+import { Meeting, Duration } from "..";
 
 export type CreateInput = {
   /**
@@ -34,10 +34,10 @@ export type CreateOutput = {
 
 export const CreateService = async (
   input: CreateInput,
-  output: CreateOutput
+  output: CreateOutput,
 ) => {
   const meeting = await input.askMeeting();
-  if (meeting.kind === 'Others') {
+  if (meeting.kind === "Others") {
     const ids = await output.save(meeting);
     await input.reportCreatedIds(ids);
     return;

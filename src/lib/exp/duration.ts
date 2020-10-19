@@ -10,7 +10,7 @@ export class Duration {
 
   constructor(from: Date, to: Date) {
     if (from.getTime() > to.getTime()) {
-      throw new Error('`from` must be before `to`');
+      throw new Error("`from` must be before `to`");
     }
     this.from = from;
     this.to = to;

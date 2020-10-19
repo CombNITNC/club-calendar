@@ -1,28 +1,28 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { MeetingKind, validateKind } from '../../lib';
+import { NextApiRequest, NextApiResponse } from "next";
+import { MeetingKind, validateKind } from "../../lib";
 
 type SlackMessage = {
-  type: 'view_submission';
+  type: "view_submission";
   view: {
     state: {
       values: [
         {
           kind: {
-            type: 'static_select';
+            type: "static_select";
             selected_option: {
               value: MeetingKind;
             };
           };
         },
-        { name: { type: 'plain_text_input'; value: string } },
-        { date: { type: 'datepicker'; selected_date: string } }
+        { name: { type: "plain_text_input"; value: string } },
+        { date: { type: "datepicker"; selected_date: string } },
       ];
     };
   };
 };
 
 const validate = (obj: any): obj is SlackMessage => {
-  if (obj.type !== 'view_submission') {
+  if (obj.type !== "view_submission") {
     return false;
   }
   if (obj.view == null) {
@@ -34,12 +34,12 @@ const validate = (obj: any): obj is SlackMessage => {
   if (obj.view.state.values == null) {
     return false;
   }
-  if ([0, 1, 2].some(key => obj.view.state.values[key] == null)) {
+  if ([0, 1, 2].some((key) => obj.view.state.values[key] == null)) {
     return false;
   }
   if (
-    ['kind', 'name', 'date'].some(
-      (key, i) => obj.view.state.values[i][key] == null
+    ["kind", "name", "date"].some(
+      (key, i) => obj.view.state.values[i][key] == null,
     )
   ) {
     return false;
@@ -51,7 +51,7 @@ const validate = (obj: any): obj is SlackMessage => {
   } = obj.view.state.values;
   if (
     !(
-      kind.type === 'static_select' &&
+      kind.type === "static_select" &&
       kind.selected_option != null &&
       validateKind(kind.selected_option.value)
     )
@@ -59,11 +59,11 @@ const validate = (obj: any): obj is SlackMessage => {
     console.log(kind);
     return false;
   }
-  if (!(name.type === 'plain_text_input' && name.value !== '')) {
+  if (!(name.type === "plain_text_input" && name.value !== "")) {
     console.log(name);
     return false;
   }
-  if (!(date.type === 'datepicker' && Date.parse(date.selected_date) != NaN)) {
+  if (!(date.type === "datepicker" && Date.parse(date.selected_date) != NaN)) {
     console.log(date);
     return false;
   }
@@ -73,12 +73,12 @@ const validate = (obj: any): obj is SlackMessage => {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.body.payload == null) {
     console.log(req.body);
-    res.status(400).end('Bad Request');
+    res.status(400).end("Bad Request");
     return;
   }
   const mes = JSON.parse(req.body.payload);
-  if (!(req.method === 'POST' && validate(mes))) {
-    res.status(400).end('Bad Request');
+  if (!(req.method === "POST" && validate(mes))) {
+    res.status(400).end("Bad Request");
     return;
   }
 
@@ -96,17 +96,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     },
   } = mes.view.state.values;
 
-  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
   const create_loc = `${protocol}://${req.headers.host}/api/create`;
   const create_res = await fetch(create_loc, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({ kind, name, date }),
   });
   if (!create_res.ok) {
     console.log(await create_res.text());
-    res.status(500).end('Internal Server Error');
+    res.status(500).end("Internal Server Error");
     return;
   }
 
-  res.status(200).end('集会を作成しました');
+  res.status(200).end("集会を作成しました");
 };

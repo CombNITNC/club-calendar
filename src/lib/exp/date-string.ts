@@ -17,7 +17,7 @@ export class DateString {
    * @returns {Date} A Date from this.str.
    * @memberof DateString
    */
-  toDate() {
+  toDate(): Date {
     return new Date(this.str);
   }
 
@@ -27,9 +27,9 @@ export class DateString {
    * @returns {string} A value of <input type="datetime-local" />
    * @memberof DateString
    */
-  toDatetimeLocal() {
+  toDatetimeLocal(): string {
     const shift = this.toDate().getTime() + 9 * 60 * 60 * 1000;
-    const time = new Date(shift).toISOString().split('.')[0];
+    const time = new Date(shift).toISOString().split(".")[0];
     return time;
   }
 
@@ -41,7 +41,7 @@ export class DateString {
    */
   toDateTimeStrings(): { date: string; time: string } {
     const datetimeLocal = this.toDatetimeLocal();
-    const [date, time] = datetimeLocal.split('T');
+    const [date, time] = datetimeLocal.split("T");
     return { date, time };
   }
 
@@ -67,7 +67,7 @@ export class DateString {
    */
   static to(str: any): DateString {
     if (!this.ableTo(str)) {
-      throw new Error('obj cannot convert to DateString');
+      throw new Error("obj cannot convert to DateString");
     }
     const obj = new DateString(new Date(str));
     return obj;
@@ -82,6 +82,6 @@ export class DateString {
    * @memberof DateString
    */
   static ableTo(str: any): boolean {
-    return typeof str === 'string' && Date.parse(str) != NaN;
+    return typeof str === "string" && Date.parse(str) != NaN;
   }
 }

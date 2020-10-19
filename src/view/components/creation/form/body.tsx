@@ -1,18 +1,18 @@
-import { ReactNode } from 'react';
-import { Scheme, SchemeSetter } from '../form';
+import { ReactNode } from "react";
+import { Scheme, SchemeSetter } from "../form";
 
 export type StringScheme = {
-  type: 'string';
+  type: "string";
   value: string;
 };
 
 export type NumberScheme = {
-  type: 'number';
+  type: "number";
   value: number;
 };
 
 export type DateScheme = {
-  type: 'date';
+  type: "date";
   value: {
     date: string;
     time: string;
@@ -20,19 +20,19 @@ export type DateScheme = {
 };
 
 export type OptionScheme = {
-  type: 'option';
+  type: "option";
   value: string[];
 };
 
 export type CheckScheme = {
-  type: 'check';
+  type: "check";
   value: boolean;
 };
 
 type InputBuilder<V extends Scheme> = (
   key: string,
   v: V,
-  setter: SchemeSetter
+  setter: SchemeSetter,
 ) => ReactNode;
 
 const stringInput: InputBuilder<StringScheme> = (_key, v, setter) => (
@@ -88,18 +88,18 @@ const numberInput: InputBuilder<NumberScheme> = (_key, v, setter) => (
 export const formElementBody = (
   key: string,
   v: Scheme,
-  setter: SchemeSetter
+  setter: SchemeSetter,
 ): ReactNode => {
   switch (v.type) {
-    case 'string':
+    case "string":
       return stringInput(key, v, setter);
-    case 'date':
+    case "date":
       return dateInput(key, v, setter);
-    case 'number':
+    case "number":
       return numberInput(key, v, setter);
-    case 'check':
+    case "check":
       return checkInput(key, v, setter);
-    case 'option':
+    case "option":
       return optionInput(key, v, setter);
     default:
       throw new Error(`unknown type of scheme: ${v}`);

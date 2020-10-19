@@ -1,4 +1,4 @@
-import { Meeting } from '..';
+import { Meeting } from "..";
 
 export type AbortInput = {
   /**

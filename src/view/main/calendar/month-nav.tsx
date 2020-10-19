@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import { FC } from 'react';
+import Link from "next/link";
+import { FC } from "react";
 
-import { YearMonth } from '../../../lib';
+import { YearMonth } from "../../../lib";
 
-import { ShadowedButton } from '../../components/button';
+import { ShadowedButton } from "../../components/button";
 
 export const MonthNav: FC<{
   yearMonth: YearMonth;
