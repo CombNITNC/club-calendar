@@ -2,34 +2,11 @@ import mysql, { Connection } from "mysql";
 import {
   Meeting,
   Repository,
-  MeetingKind,
   MeetingQueryNode,
   transform,
   MySQLQuery,
 } from "..";
-
-type Param = {
-  id: string;
-  kind: MeetingKind;
-  name: string;
-  date: Date;
-  expired: boolean;
-};
-
-const toParam = (m: Meeting): Param => {
-  const p = { ...m };
-  delete p.id;
-  return {
-    ...p,
-    id: m.id,
-  };
-};
-
-const fromParam = (p: Param): Meeting => {
-  const m = { ...p };
-  delete m.id;
-  return { id: p.id, ...m };
-};
+import { SerializedMeeting } from "../exp/meeting";
 
 const uri = process.env.DB_HOST || "127.0.0.1";
 const user = process.env.DB_USER || "meetings";
@@ -57,13 +34,13 @@ export class MySQLRepository implements Repository {
 
   save(...con: Meeting[]): Promise<string[]> {
     const promises = con.map((m) => {
-      const set = { ...m, id: m.id };
-      delete set.id;
+      const set = { ...m };
       return new Promise<string>((resolve, reject) =>
         this.con.query(
           "INSERT INTO `meetings` SET ?",
           set,
-          (e, result: Param) => (e ? reject(e) : resolve(result.id)),
+          (e, result: SerializedMeeting) =>
+            e ? reject(e) : resolve(result.id),
         ),
       );
     });
@@ -79,8 +56,8 @@ export class MySQLRepository implements Repository {
     return new Promise((resolve, reject) => {
       this.con.query(
         "SELECT * FROM `meetings`" + additionalQuery,
-        (e, results: Param[]) =>
-          e ? reject(e) : resolve(results.map(fromParam)),
+        (e, results: SerializedMeeting[]) =>
+          e ? reject(e) : resolve(results.map(Meeting.deserialize)),
       );
     });
   }
@@ -90,8 +67,8 @@ export class MySQLRepository implements Repository {
       this.con.query(
         "SELECT * FROM `meetings` WHERE `id` = ? LIMIT 1",
         [id],
-        (e, results: Param[]) => {
-          return e ? reject(e) : resolve(fromParam(results[0]));
+        (e, results: SerializedMeeting[]) => {
+          return e ? reject(e) : resolve(Meeting.deserialize(results[0]));
         },
       );
     });
@@ -104,7 +81,7 @@ export class MySQLRepository implements Repository {
           new Promise((resolve, reject) => {
             this.con.query(
               "UPDATE `meetings` SET ? WHERE `id` = ?",
-              [toParam(m), m.id],
+              [Meeting.serialize(m), m.id],
               (e) => (e ? reject(e) : resolve()),
             );
           }),

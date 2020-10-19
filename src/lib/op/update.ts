@@ -32,7 +32,7 @@ export type UpdateOutput = {
 export const UpdateService = async (
   input: UpdateInput,
   output: UpdateOutput,
-) => {
+): Promise<void> => {
   const [id, param] = await Promise.all([input.askId(), input.askParam()]);
   const toUpdate = await output.find(id);
   await output.update({

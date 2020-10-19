@@ -2,7 +2,7 @@ import hash from "object-hash";
 
 export type MeetingKind = "Regular" | "Others";
 
-export const validateKind = (str: any): str is MeetingKind =>
+export const validateKind = (str: unknown): str is MeetingKind =>
   str === "Regular" || str === "Others";
 
 /**

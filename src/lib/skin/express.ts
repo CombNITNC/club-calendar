@@ -65,11 +65,10 @@ export class ExpressClient implements Client {
   }
 
   async show(meetings: Meeting[]): Promise<void> {
-    const payload = meetings.map((m) => {
-      const p = { ...m, date: m.date.toString() };
-      delete p.id;
-      return { ...p, id: m.id };
-    });
+    const payload = meetings.map((m) => ({
+      ...m,
+      date: m.date.toString(),
+    }));
     this.res.send({
       meetings: payload,
     });

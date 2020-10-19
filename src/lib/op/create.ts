@@ -35,7 +35,7 @@ export type CreateOutput = {
 export const CreateService = async (
   input: CreateInput,
   output: CreateOutput,
-) => {
+): Promise<void> => {
   const meeting = await input.askMeeting();
   if (meeting.kind === "Others") {
     const ids = await output.save(meeting);

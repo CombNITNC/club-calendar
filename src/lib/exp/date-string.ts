@@ -65,7 +65,7 @@ export class DateString {
    * @returns {DateString} A DateString from a string `str`
    * @memberof DateString
    */
-  static to(str: any): DateString {
+  static to(str: unknown): DateString {
     if (!this.ableTo(str)) {
       throw new Error("obj cannot convert to DateString");
     }
@@ -81,7 +81,7 @@ export class DateString {
    * @returns {boolean} Whether `str` can convert to a DateString.
    * @memberof DateString
    */
-  static ableTo(str: any): boolean {
-    return typeof str === "string" && Date.parse(str) != NaN;
+  static ableTo(str: unknown): str is string {
+    return typeof str === "string" && !Number.isNaN(Date.parse(str));
   }
 }

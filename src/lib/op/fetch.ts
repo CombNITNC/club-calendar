@@ -25,7 +25,10 @@ export type FetchOutput = {
   get(query: MeetingQueryNode): Promise<Meeting[]>;
 };
 
-export const FetchService = async (input: FetchInput, output: FetchOutput) => {
+export const FetchService = async (
+  input: FetchInput,
+  output: FetchOutput,
+): Promise<void> => {
   const query = await input.askQuery();
   const fetched = await output.get(query);
   return input.show(fetched);

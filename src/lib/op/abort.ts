@@ -27,7 +27,10 @@ export type AbortOutput = {
   update(...meetings: Meeting[]): Promise<void>;
 };
 
-export const AbortService = async (input: AbortInput, output: AbortOutput) => {
+export const AbortService = async (
+  input: AbortInput,
+  output: AbortOutput,
+): Promise<void> => {
   const id = await input.askIdToAbort();
   const found = await output.find(id);
   await output.update({ ...found, expired: true });

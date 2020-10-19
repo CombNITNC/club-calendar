@@ -13,7 +13,7 @@ test("その他の集会の登録1", (done) => {
       askMeeting: async () => Meeting.others(name, new Date("2019-04-08")),
       askDuration: async () =>
         new Duration(new Date("2019-04-04"), new Date("2019-04-31")),
-      reportCreatedIds: async (id) => {},
+      reportCreatedIds: () => Promise.resolve(),
     },
     {
       save: async (...meetings): Promise<string[]> => {
@@ -31,7 +31,7 @@ test("その他の集会の更新1", (done) => {
   UpdateService(
     { askId: async () => "hoge", askParam: async () => ({ name: "ホゲ談義" }) },
     {
-      find: async (id) => ({
+      find: async () => ({
         id: "0",
         kind: "Others",
         name: "ホゲホゲ談義",
@@ -56,7 +56,7 @@ test("その他の集会の中止1", (done) => {
   AbortService(
     { askIdToAbort: async () => "hoge" },
     {
-      find: async (id) => ({
+      find: async () => ({
         id: "0",
         kind: "Others",
         name: "ホゲ談義",
