@@ -14,7 +14,8 @@
     "start:next": "next start",
     "start:api": "node ./dist/bundle.js",
     "start": "npm-run-all -p start:*",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "keywords": [],
   "author": "MikuroXina",
