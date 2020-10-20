@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm-run-all -p dev:*",
-    "dev:next": "next",
+    "dev:next": "NODE_OPTIONS='--inspect' next",
     "dev:api": "webpack --mode=development && node ./dist/bundle.js",
     "build": "npm-run-all -p build:*",
     "build:next": "next build",
