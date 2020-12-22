@@ -78,7 +78,7 @@ export class MySQLRepository implements Repository {
     await Promise.all(
       con.map(
         (m) =>
-          new Promise((resolve, reject) => {
+          new Promise<void>((resolve, reject) => {
             this.con.query(
               "UPDATE `meetings` SET ? WHERE `id` = ?",
               [Meeting.serialize(m), m.id],
